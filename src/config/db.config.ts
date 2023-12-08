@@ -1,8 +1,8 @@
 export const config = {
-  HOST: "localhost",
+  HOST: "127.0.0.1",
   USER: "root",
-  PASSWORD: "123456",
-  DB: "testdb",
+  PASSWORD: "Endorse@2MySQL",
+  DB: "endorse",
   pool: {
     max: 5,
     min: 0,
