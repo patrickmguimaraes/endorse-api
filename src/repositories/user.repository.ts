@@ -15,18 +15,20 @@ interface SearchCondition {
 }
 
 class UserRepository implements IUserRepository {
+  async login(searchParams: {email?: string}): Promise<User | null> {
+    try {
+      let condition: SearchCondition = {};
+      condition.email = { [Op.like]: `${searchParams.email}` };
+
+      return await User.findOne({ where: condition });
+    } catch (error) {
+      throw new Error("Failed to login!");
+    }
+  }
+
   async save(user: User): Promise<User> {
     try {
-      return await User.create({
-        email: user.email,
-        password: user.password,
-        company: user.company,
-        name: user.name, 
-        surname: user.surname, 
-        date: user.date, 
-        removed: user.removed
-
-      });
+      return await User.create({...user});
     } catch (err) {
       throw new Error("Failed to create User!");
     }
@@ -56,12 +58,10 @@ class UserRepository implements IUserRepository {
   }
 
   async update(user: User): Promise<number> {
-    const { id, email, password, company, name, surname, date, removed } = user;
-
     try {
       const affectedRows = await User.update(
-        { email, password, company, name, surname, date, removed },
-        { where: { id: id } }
+        { ...user },
+        { where: { id: user.id } }
       );
 
       return affectedRows[0];

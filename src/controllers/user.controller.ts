@@ -3,8 +3,20 @@ import User from "../models/user.model";
 import userRepository from "../repositories/user.repository";
 
 export default class UserController {
+  async login(req: Request, res: Response) {
+    try {
+      const user = await userRepository.login({ email: req.params.id});
+
+      res.status(200).send(user);
+    } catch (err) {
+      res.status(500).send({
+        message: "Some error occurred while retrieving users."
+      });
+    }
+  }
+
   async create(req: Request, res: Response) {
-    if (!req.body.title) {
+    if (!req.body.name) {
       res.status(400).send({
         message: "Content can not be empty!"
       });

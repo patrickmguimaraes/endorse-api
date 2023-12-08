@@ -2,11 +2,14 @@ import express, { Application } from "express";
 import Server from "./src/index";
 
 const app: Application = express();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 const server: Server = new Server(app);
 const PORT: number = process.env.PORT ? parseInt(process.env.PORT, 10) : 8080;
 
-app
-  .listen(PORT, "localhost", function () {
+app.listen(PORT, "localhost", function () {
     console.log(`Server is running on port ${PORT}.`);
   })
   .on("error", (err: any) => {

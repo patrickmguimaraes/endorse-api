@@ -44,10 +44,10 @@ export default class User extends Model {
   surname?: string;
 
   @Column({
-    type: DataType.DATE,
+    type: DataType.STRING(10),
     field: "birth"
   })
-  birth?: Date;
+  birth?: string;
   
   @Column({
     type: DataType.STRING(30),
@@ -116,6 +116,12 @@ export default class User extends Model {
   state?: string;
 
   @Column({
+    type: DataType.STRING(50),
+    field: "city"
+  })
+  city?: string;
+
+  @Column({
     type: DataType.STRING(15),
     field: "postalCode"
   })
@@ -147,6 +153,18 @@ export default class User extends Model {
     field: "notification"
   })
   notification?: string;
+
+  @Column({
+    type: DataType.STRING(15),
+    field: "signupProvider"
+  })
+  signupProvider?: string;
+
+  @Column({
+    type: DataType.STRING(50),
+    field: "signupProviderId"
+  })
+  signupProviderId?: string;
 
   @Column({
     type: DataType.DATE,
