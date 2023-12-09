@@ -15,10 +15,10 @@ interface SearchCondition {
 }
 
 class UserRepository implements IUserRepository {
-  async login(searchParams: {email?: string}): Promise<User | null> {
+  async login(searchParams: {authId?: string}): Promise<User | null> {
     try {
       let condition: SearchCondition = {};
-      condition.email = { [Op.like]: `${searchParams.email}` };
+      condition.authId = { [Op.like]: `${searchParams.authId}` };
 
       return await User.findOne({ where: condition });
     } catch (error) {

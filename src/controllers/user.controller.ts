@@ -5,7 +5,7 @@ import userRepository from "../repositories/user.repository";
 export default class UserController {
   async login(req: Request, res: Response) {
     try {
-      const user = await userRepository.login({ email: req.params.id});
+      const user = await userRepository.login({ authId: req.params.id});
 
       res.status(200).send(user);
     } catch (err) {

@@ -15,6 +15,18 @@ export default class User extends Model {
 
   @Column({
     type: DataType.STRING(100),
+    field: "authId"
+  })
+  authId?: string;
+
+  @Column({
+    type: DataType.STRING(100),
+    field: "username"
+  })
+  username?: string;
+  
+  @Column({
+    type: DataType.STRING(100),
     field: "email"
   })
   email?: string;
@@ -159,12 +171,6 @@ export default class User extends Model {
     field: "signupProvider"
   })
   signupProvider?: string;
-
-  @Column({
-    type: DataType.STRING(50),
-    field: "signupProviderId"
-  })
-  signupProviderId?: string;
 
   @Column({
     type: DataType.DATE,
