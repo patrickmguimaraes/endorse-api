@@ -8,7 +8,9 @@ export const config = {
     min: 0,
     acquire: 30000,
     idle: 10000
-  }
+  },
+
+  OPEN_AI_API_KEY: "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"
 };
 
 export const dialect = "mysql";

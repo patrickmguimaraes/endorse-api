@@ -3,9 +3,6 @@ import Server from "./src/index";
 
 const app: Application = express();
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
 const server: Server = new Server(app);
 const PORT: number = process.env.PORT ? parseInt(process.env.PORT, 10) : 8080;
 
