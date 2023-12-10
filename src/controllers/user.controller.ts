@@ -38,9 +38,7 @@ export default class UserController {
 
     try {
       const user: User = req.body;
-      
-      console.log(JSON.stringify(user));
-
+  
       const savedUser = await userRepository.save(user);
 
       res.status(201).send(savedUser);

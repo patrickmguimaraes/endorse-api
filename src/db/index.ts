@@ -96,26 +96,150 @@ class Database {
     Copyright.belongsTo(Company, { foreignKey: 'companyId' });
 
     this.sequelize?.sync({ force: false }).then((value) => {
-      //this.insertInitialValuesCategory();
+      this.insertInitialValuesCategory();this.insertInitialValuesActivationDate()
+      this.insertInitialValuesCompliance();
+      this.insertInitialValuesContentElement();
+      this.insertInitialValuesGeografic();
+      this.insertInitialValuesMediaChannel();
+      this.insertInitialValuesMetrics();
       //this.insertInitialValuesCopyright();
     })
   }
 
   insertInitialValuesCategory() {
     Category.sync().then(() => {
-      Category.create({
-        name: 'Information Technology'
-      });
-      Category.create({
-        name: 'Consulting'
-      });
-      Category.create({
-        name: 'Marketing'
-      });
-      Category.create({
-        name: 'Entertainment'
-      });
+      Category.findAll().then(value => {
+        if (!value || value.length == 0) {
+          Category.create({
+            name: 'Information Technology'
+          });
+          Category.create({
+            name: 'Consulting'
+          });
+          Category.create({
+            name: 'Marketing'
+          });
+          Category.create({
+            name: 'Entertainment'
+          });
+        }
+      })
+
     });
+  }
+
+  insertInitialValuesActivationDate() {
+    ActivationDate.findAll().then(value => {
+      if (!value || value.length == 0) {
+        ActivationDate.sync().then(() => {
+          ActivationDate.create({
+            name: 'Event'
+          });
+          ActivationDate.create({
+            name: 'Webnar'
+          });
+          ActivationDate.create({
+            name: 'Product Lunch'
+          });
+        });
+      }
+    })
+  }
+
+  insertInitialValuesCompliance() {
+    ComplianceMeasure.findAll().then(value => {
+      if (!value || value.length == 0) {
+        ComplianceMeasure.sync().then(() => {
+          ComplianceMeasure.create({
+            name: 'Regular Audits'
+          });
+          ComplianceMeasure.create({
+            name: 'Reporting'
+          });
+        });
+      }
+    })
+  }
+
+  insertInitialValuesContentElement() {
+    ContentElement.findAll().then(value => {
+      if (!value || value.length == 0) {
+        ContentElement.sync().then(() => {
+          ContentElement.create({
+            name: 'Digital Graphics'
+          });
+          ContentElement.create({
+            name: 'Print Materials'
+          });
+          ContentElement.create({
+            name: 'Video Content'
+          });
+        });
+      }
+    })
+  }
+
+  insertInitialValuesMediaChannel() {
+    MediaChannel.findAll().then(value => {
+      if (!value || value.length == 0) {
+        MediaChannel.sync().then(() => {
+          MediaChannel.create({
+            name: 'Digital Platforms'
+          });
+          MediaChannel.create({
+            name: 'Print materials'
+          });
+        });
+      }
+    })
+  }
+
+  insertInitialValuesGeografic() {
+    GeograficScope.findAll().then(value => {
+      if (!value || value.length == 0) {
+        GeograficScope.sync().then(() => {
+          GeograficScope.create({
+            name: 'North America'
+          });
+          GeograficScope.create({
+            name: 'Europe'
+          });
+          GeograficScope.create({
+            name: 'Asia'
+          });
+          GeograficScope.create({
+            name: 'South America'
+          });
+          GeograficScope.create({
+            name: 'Central America'
+          });
+          GeograficScope.create({
+            name: 'Africa'
+          });
+          GeograficScope.create({
+            name: 'Oceania'
+          });
+        });
+      }
+    })
+  }
+
+  insertInitialValuesMetrics() {
+    Metric.findAll().then(value => {
+      if (!value || value.length == 0) {
+        Metric.sync().then(() => {
+          Metric.create({
+            name: 'Engagement rates'
+          });
+          Metric.create({
+            name: 'Website traffic'
+          });
+          Metric.create({
+            name: 'Social media impressions'
+          });
+        });
+      }
+    })
   }
 
   insertInitialValuesCopyright() {

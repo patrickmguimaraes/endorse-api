@@ -2,6 +2,12 @@ import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo 
 import Contract from "./contract.model";
 import User from "./user.model";
 import Category from "./category.model";
+import EndorseActivationDate from "./endorse-activation-date.model";
+import EndorseComplianceMeasure from "./endorse-compliance-measure.model";
+import EndorseContentElement from "./endorse-content-element.model";
+import EndorseGeograficScope from "./endorse-geografic-scope.model";
+import EndorseMediaChannel from "./endorse-media-channel.model";
+import EndorseMetric from "./endorse-metric.model";
 
 @Table({
   tableName: "endorsements",
@@ -94,4 +100,22 @@ export default class Endorse extends Model {
 
   @BelongsTo(() => Category)
   category?: Category;
+
+  @HasMany(() => EndorseActivationDate, { foreignKey: 'endorseId', sourceKey: 'id' })
+  endorseActivationDates?: EndorseActivationDate[];
+
+  @HasMany(() => EndorseComplianceMeasure, { foreignKey: 'endorseId', sourceKey: 'id' })
+  endorseComplianceMeasures?: EndorseComplianceMeasure[];
+
+  @HasMany(() => EndorseContentElement, { foreignKey: 'endorseId', sourceKey: 'id' })
+  endorseContentElements?: EndorseContentElement[];
+
+  @HasMany(() => EndorseGeograficScope, { foreignKey: 'endorseId', sourceKey: 'id' })
+  endorseGeograficScopes?: EndorseGeograficScope[];
+
+  @HasMany(() => EndorseMediaChannel, { foreignKey: 'endorseId', sourceKey: 'id' })
+  endorseMediasChannels?: EndorseMediaChannel[];
+
+  @HasMany(() => EndorseMetric, { foreignKey: 'endorseId', sourceKey: 'id' })
+  endorseMetrics?: EndorseMetric[];
 }

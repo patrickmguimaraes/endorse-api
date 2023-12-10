@@ -155,5 +155,5 @@ export default class User extends Model {
   contract?: Contract;
   
   @HasMany(() => Endorse, { foreignKey: 'userId', sourceKey: 'id' })
-  endorsements?: Endorse;
+  endorsements?: Endorse[];
 }
