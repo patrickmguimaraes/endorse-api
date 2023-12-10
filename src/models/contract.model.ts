@@ -1,4 +1,4 @@
-import { Model, Table, Column, DataType, HasMany } from "sequelize-typescript";
+import { Model, Table, Column, DataType, HasMany, BelongsTo, HasOne } from "sequelize-typescript";
 import User from "./user.model";
 
 @Table({
@@ -19,8 +19,8 @@ export default class Contract extends Model {
   })
   text?: string;
 
-  @HasMany(() => User, { foreignKey: 'userId' })
-  users?: User[];
+  @HasOne(() => User, { foreignKey: 'contractId', sourceKey: 'id' })
+  user?: User;
 
   @Column({
     type: DataType.DATE,

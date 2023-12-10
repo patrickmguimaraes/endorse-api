@@ -1,40 +1,36 @@
 import { Router } from "express";
-import UserController from "../controllers/user.controller";
+import CompanyController from "../controllers/company.controller";
 
-class UserRoutes {
+class CompanyRoutes {
   router = Router();
-  controller = new UserController();
+  controller = new CompanyController();
 
   constructor() {
     this.intializeRoutes();
   }
 
   intializeRoutes() {
-    this.router.get("/login/:id", this.controller.login);
-
-    this.router.get("/exists/:id", this.controller.existsEmail);
-
-    // Create a new User
+    // Create a new Company
     this.router.post("/", this.controller.create);
 
-    // Retrieve all Users
+    // Retrieve all Companys
     this.router.get("/", this.controller.findAll);
 
-    // Retrieve all published Users
+    // Retrieve all published Companys
     this.router.get("/published", this.controller.findAllPublished);
 
-    // Retrieve a single User with id
+    // Retrieve a single Company with id
     this.router.get("/:id", this.controller.findOne);
 
-    // Update a User with id
+    // Update a Company with id
     this.router.put("/:id", this.controller.update);
 
-    // Delete a User with id
+    // Delete a Company with id
     this.router.delete("/:id", this.controller.delete);
 
-    // Delete all Users
+    // Delete all Companys
     this.router.delete("/", this.controller.deleteAll);
   }
 }
 
-export default new UserRoutes().router;
+export default new CompanyRoutes().router;

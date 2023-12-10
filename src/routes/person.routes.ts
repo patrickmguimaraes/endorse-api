@@ -1,40 +1,37 @@
-import { Router } from "express";
-import UserController from "../controllers/user.controller";
 
-class UserRoutes {
+import { Router } from "express";
+import PersonController from "../controllers/person.controller";
+
+class PersonRoutes {
   router = Router();
-  controller = new UserController();
+  controller = new PersonController();
 
   constructor() {
     this.intializeRoutes();
   }
 
   intializeRoutes() {
-    this.router.get("/login/:id", this.controller.login);
-
-    this.router.get("/exists/:id", this.controller.existsEmail);
-
-    // Create a new User
+    // Create a new Person
     this.router.post("/", this.controller.create);
 
-    // Retrieve all Users
+    // Retrieve all Persons
     this.router.get("/", this.controller.findAll);
 
-    // Retrieve all published Users
+    // Retrieve all published Persons
     this.router.get("/published", this.controller.findAllPublished);
 
-    // Retrieve a single User with id
+    // Retrieve a single Person with id
     this.router.get("/:id", this.controller.findOne);
 
-    // Update a User with id
+    // Update a Person with id
     this.router.put("/:id", this.controller.update);
 
-    // Delete a User with id
+    // Delete a Person with id
     this.router.delete("/:id", this.controller.delete);
 
-    // Delete all Users
+    // Delete all Persons
     this.router.delete("/", this.controller.deleteAll);
   }
 }
 
-export default new UserRoutes().router;
+export default new PersonRoutes().router;

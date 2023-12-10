@@ -6,11 +6,24 @@ export default class UserController {
   async login(req: Request, res: Response) {
     try {
       const user = await userRepository.login({ authId: req.params.id});
-
+      console.log(JSON.stringify(user));
+      
       res.status(200).send(user);
     } catch (err) {
       res.status(500).send({
         message: "Some error occurred while retrieving users."
+      });
+    }
+  }
+
+  async existsEmail(req: Request, res: Response) {
+    try {
+      const user = await userRepository.existsEmail({ email: req.params.id});
+
+      res.status(200).send(user!=null);
+    } catch (err) {
+      res.status(500).send({
+        message: "Some error occurred while existsEmail."
       });
     }
   }

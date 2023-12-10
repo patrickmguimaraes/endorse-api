@@ -1,5 +1,7 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey } from "sequelize-typescript";
 import Contract from "./contract.model";
+import Person from "./person.model";
+import Company from "./company.model";
 
 @Table({
   tableName: "users",
@@ -45,63 +47,9 @@ export default class User extends Model {
 
   @Column({
     type: DataType.STRING(20),
-    field: "name"
-  })
-  name?: string;
-
-  @Column({
-    type: DataType.STRING(50),
-    field: "surname"
-  })
-  surname?: string;
-
-  @Column({
-    type: DataType.STRING(10),
-    field: "birth"
-  })
-  birth?: string;
-  
-  @Column({
-    type: DataType.STRING(30),
-    field: "gender"
-  })
-  gender?: string;
-
-  @Column({
-    type: DataType.STRING(50),
-    field: "profession"
-  })
-  profession?: string;
-
-  @Column({
-    type: DataType.STRING(20),
     field: "phone"
   })
   phone?: string;
-
-  @Column({
-    type: DataType.STRING(100),
-    field: "businessIndustry"
-  })
-  businessIndustry?: string;
-
-  @Column({
-    type: DataType.STRING(100),
-    field: "businessLocation"
-  })
-  businessLocation?: string;
-
-  @Column({
-    type: DataType.STRING(100),
-    field: "businessWebsite"
-  })
-  businessWebsite?: string;
-
-  @Column({
-    type: DataType.STRING(50),
-    field: "businessSize"
-  })
-  businessSize?: string;
 
   @Column({
     type: DataType.STRING(100),
@@ -139,13 +87,13 @@ export default class User extends Model {
   })
   postalCode?: string;
 
-  @Column({
-    type: DataType.STRING(30),
-    field: "exploreOption"
-  })
-  exploreOption?: string;
+  @HasOne(() => Person, { foreignKey: 'userId', sourceKey: 'id' })
+  person?: Person;
 
-  @HasOne(() => Contract, { foreignKey: 'contractId' })
+  @HasOne(() => Company, { foreignKey: 'userId', sourceKey: 'id' })
+  company?: Company;
+
+  @HasOne(() => Contract, { foreignKey: 'userId', sourceKey: 'id' })
   contract?: Contract;
 
   @Column({

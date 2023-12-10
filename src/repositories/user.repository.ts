@@ -1,7 +1,11 @@
 import { Op } from "sequelize";
 import User from "../models/user.model";
+import Person from "../models/person.model";
+import Company from "../models/company.model";
 
 interface IUserRepository {
+  login(searchParams: {authId: string}): Promise<User | null>;
+  existsEmail(searchParams: {email: string}): Promise<User | null>;
   save(user: User): Promise<User>;
   retrieveAll(searchParams: {title: string, published: boolean}): Promise<User[]>;
   retrieveById(userId: number): Promise<User | null>;
@@ -20,9 +24,20 @@ class UserRepository implements IUserRepository {
       let condition: SearchCondition = {};
       condition.authId = { [Op.like]: `${searchParams.authId}` };
 
-      return await User.findOne({ where: condition });
+      return await User.findOne({ where: condition, include: [{ model: Person, as: 'person' }, { model: Company, as: 'company' }] });
     } catch (error) {
       throw new Error("Failed to login!");
+    }
+  }
+
+  async existsEmail(searchParams: {email?: string}): Promise<User | null> {
+    try {
+      let condition: SearchCondition = {};
+      condition.email = { [Op.like]: `${searchParams.email}` };
+
+      return await User.findOne({ where: condition });
+    } catch (error) {
+      throw new Error("Failed to existsEmail!");
     }
   }
 

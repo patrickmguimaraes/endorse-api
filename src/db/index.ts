@@ -2,6 +2,8 @@ import { Sequelize } from "sequelize-typescript";
 import { config, dialect } from "../config/db.config";
 import User from "../models/user.model";
 import Contract from "../models/contract.model";
+import Company from "../models/company.model";
+import Person from "../models/person.model";
 
 class Database {
   public sequelize: Sequelize | undefined;
@@ -25,7 +27,9 @@ class Database {
       },
       models: [
         User,
-        Contract
+        Contract,
+        Company,
+        Person
       ]
     });
 
