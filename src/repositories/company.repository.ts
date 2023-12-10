@@ -1,5 +1,6 @@
 import { Op } from "sequelize";
 import Company from "../models/company.model";
+import Copyright from "../models/copyright.model";
 
 interface ICompanyRepository {
   save(company: Company): Promise<Company>;
@@ -15,17 +16,6 @@ interface SearchCondition {
 }
 
 class CompanyRepository implements ICompanyRepository {
-  async login(searchParams: {authId?: string}): Promise<Company | null> {
-    try {
-      let condition: SearchCondition = {};
-      condition.authId = { [Op.like]: `${searchParams.authId}` };
-
-      return await Company.findOne({ where: condition });
-    } catch (error) {
-      throw new Error("Failed to login!");
-    }
-  }
-
   async save(company: Company): Promise<Company> {
     try {
       return await Company.create({...company});
@@ -88,6 +78,17 @@ class CompanyRepository implements ICompanyRepository {
       });
     } catch (error) {
       throw new Error("Failed to delete Companys!");
+    }
+  }
+
+  async findByCategory(searchParams: {categoryId?: string}): Promise<Company[] | null> {
+    try {
+      let condition: SearchCondition = {};
+      condition.categoryId = { [Op.like]: `${searchParams.categoryId}` };
+
+      return await Company.findAll({ where: condition, include: [{ model: Copyright, as: 'copyrights' }] });
+    } catch (error) {
+      throw new Error("Failed to login!");
     }
   }
 }

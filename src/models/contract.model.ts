@@ -14,17 +14,17 @@ export default class Contract extends Model {
   id?: number;
 
   @Column({
-    type: DataType.STRING(1000),
+    type: DataType.TEXT,
     field: "text"
   })
   text?: string;
-
-  @HasOne(() => User, { foreignKey: 'contractId', sourceKey: 'id' })
-  user?: User;
 
   @Column({
     type: DataType.DATE,
     field: "date"
   })
   date?: Date;
+
+  @HasMany(() => User, { foreignKey: 'contractId', sourceKey: 'id' })
+  users?: User[];
 }

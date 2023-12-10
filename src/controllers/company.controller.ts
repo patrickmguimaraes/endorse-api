@@ -3,18 +3,6 @@ import Company from "../models/company.model";
 import companyRepository from "../repositories/company.repository";
 
 export default class CompanyController {
-  async login(req: Request, res: Response) {
-    try {
-      const company = await companyRepository.login({ authId: req.params.id});
-
-      res.status(200).send(company);
-    } catch (err) {
-      res.status(500).send({
-        message: "Some error occurred while retrieving companies."
-      });
-    }
-  }
-
   async create(req: Request, res: Response) {
     if (!req.body.name) {
       res.status(400).send({
@@ -31,7 +19,7 @@ export default class CompanyController {
       res.status(201).send(savedCompany);
     } catch (err) {
       res.status(500).send({
-        message: "Some error occurred while retrieving companies."
+        message: "Some error occurred while saving company."
       });
     }
   }
@@ -133,6 +121,18 @@ export default class CompanyController {
     } catch (err) {
       res.status(500).send({
         message: "Some error occurred while retrieving companies."
+      });
+    }
+  }
+
+  async findByCategory(req: Request, res: Response) {
+    try {
+      const categories = await companyRepository.findByCategory({ categoryId: req.params.categoryId});
+
+      res.status(200).send(categories);
+    } catch (err) {
+      res.status(500).send({
+        message: "Some error occurred while findByCategory."
       });
     }
   }

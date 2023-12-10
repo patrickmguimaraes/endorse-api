@@ -30,6 +30,8 @@ class CompanyRoutes {
 
     // Delete all Companys
     this.router.delete("/", this.controller.deleteAll);
+
+    this.router.get("/findByCategory/:categoryId", this.controller.findByCategory);
   }
 }
 

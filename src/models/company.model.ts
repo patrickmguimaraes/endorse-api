@@ -1,6 +1,8 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
 import Contract from "./contract.model";
 import User from "./user.model";
+import Category from "./category.model";
+import Copyright from "./copyright.model";
 
 @Table({
   tableName: "companies",
@@ -22,12 +24,6 @@ export default class Company extends Model {
 
   @Column({
     type: DataType.STRING(100),
-    field: "businessIndustry"
-  })
-  businessIndustry?: string;
-
-  @Column({
-    type: DataType.STRING(100),
     field: "businessLocation"
   })
   businessLocation?: string;
@@ -44,6 +40,19 @@ export default class Company extends Model {
   })
   businessSize?: string;
 
+  @ForeignKey(() => Category)
+  @Column({
+    type: DataType.INTEGER,
+    field: "categoryId"
+  })
+  categoryId!: number;
+
   @HasOne(() => User, { foreignKey: 'companyId', sourceKey: 'id' })
   user?: User;
+
+  @BelongsTo(() => Category)
+  category?: Category;
+
+  @HasMany(() => Copyright, { foreignKey: 'companyId', sourceKey: 'id' })
+  copyrights?: Copyright[];
 }

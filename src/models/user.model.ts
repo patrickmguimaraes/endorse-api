@@ -1,7 +1,8 @@
-import { Model, Table, Column, DataType, HasOne, ForeignKey } from "sequelize-typescript";
+import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
 import Contract from "./contract.model";
 import Person from "./person.model";
 import Company from "./company.model";
+import Endorse from "./endorse.model";
 
 @Table({
   tableName: "users",
@@ -87,15 +88,6 @@ export default class User extends Model {
   })
   postalCode?: string;
 
-  @HasOne(() => Person, { foreignKey: 'userId', sourceKey: 'id' })
-  person?: Person;
-
-  @HasOne(() => Company, { foreignKey: 'userId', sourceKey: 'id' })
-  company?: Company;
-
-  @HasOne(() => Contract, { foreignKey: 'userId', sourceKey: 'id' })
-  contract?: Contract;
-
   @Column({
     type: DataType.STRING(5),
     field: "language"
@@ -131,4 +123,37 @@ export default class User extends Model {
     field: "removed"
   })
   removed?: Date;
+
+  @ForeignKey(() => Person)
+  @Column({
+    type: DataType.INTEGER,
+    field: "personId",
+  })
+  personId!: number;
+
+  @ForeignKey(() => Company)
+  @Column({
+    type: DataType.INTEGER,
+    field: "companyId",
+  })
+  companyId!: number;
+
+  @ForeignKey(() => Contract)
+  @Column({
+    type: DataType.INTEGER,
+    field: "contractId",
+  })
+  contractId!: number;
+
+  @BelongsTo(() => Person)
+  person?: Person;
+
+  @BelongsTo(() => Company)
+  company?: Company;
+
+  @BelongsTo(() => Contract)
+  contract?: Contract;
+  
+  @HasMany(() => Endorse, { foreignKey: 'userId', sourceKey: 'id' })
+  endorsements?: Endorse;
 }

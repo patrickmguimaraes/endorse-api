@@ -3,6 +3,7 @@ import cors, { CorsOptions } from "cors";
 import Routes from "./routes";
 import Database from "./db";
 import OpenAIApi from "./openAI/index"
+import User from "./models/user.model";
 
 export default class Server {
   constructor(app: Application) {
@@ -24,6 +25,7 @@ export default class Server {
 
   private syncDatabase(): void {
     const db = new Database();
-    db.sequelize?.sync();
+    
+    db.sync();
   }
 }

@@ -39,12 +39,14 @@ export default class UserController {
     try {
       const user: User = req.body;
       
+      console.log(JSON.stringify(user));
+
       const savedUser = await userRepository.save(user);
 
       res.status(201).send(savedUser);
     } catch (err) {
       res.status(500).send({
-        message: "Some error occurred while retrieving users."
+        message: "Some error occurred while saving user."
       });
     }
   }
