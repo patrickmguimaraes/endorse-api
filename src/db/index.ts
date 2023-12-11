@@ -247,13 +247,13 @@ class Database {
       Company.findAll().then(companies => {
         companies.forEach(c => {
           Copyright.create({
-            name: 'Endorse an Idea Copyright 1',
+            name: 'Use of Snow White character',
             companyId: c.id,
             text: "",
           });
 
           Copyright.create({
-            name: 'Endorse an Idea Copyright 2',
+            name: 'Use of Cinderella character',
             companyId: c.id,
             text: "",
           });

@@ -10,6 +10,7 @@ import mediaChannelRoutes from "./media-channel.routes";
 import contentElementRoutes from "./content-element.routes";
 import complianceMeasureRoute from "./compliance-measure.route";
 import metricRoutes from "./metric.routes";
+import endorseRoutes from "./endorse.routes";
 
 export default class Routes {
   constructor(app: Application) {
@@ -24,5 +25,6 @@ export default class Routes {
     app.use("/api/contentElements", contentElementRoutes);
     app.use("/api/complianceMeasures", complianceMeasureRoute);
     app.use("/api/metrics", metricRoutes);
+    app.use("/api/endorsements", endorseRoutes);
   }
 }

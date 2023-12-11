@@ -76,7 +76,7 @@ export default class Endorse extends Model {
   reportingFrequency?: string;
 
   @Column({
-    type: DataType.TEXT,
+    type: DataType.STRING(5000),
     field: "requestText"
   })
   requestText?: string;
