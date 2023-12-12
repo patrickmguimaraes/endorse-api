@@ -34,6 +34,8 @@ class UserRoutes {
 
     // Delete all Users
     this.router.delete("/", this.controller.deleteAll);
+
+    this.router.post("/attachProfilePicture/:id", this.controller.attachProfilePicture);
   }
 }
 

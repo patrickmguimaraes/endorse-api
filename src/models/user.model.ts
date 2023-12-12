@@ -3,6 +3,8 @@ import Contract from "./contract.model";
 import Person from "./person.model";
 import Company from "./company.model";
 import Endorse from "./endorse.model";
+import EndorseAssignment from "./endorse-assignment.model";
+import File from "./file.model";
 
 @Table({
   tableName: "users",
@@ -156,4 +158,10 @@ export default class User extends Model {
   
   @HasMany(() => Endorse, { foreignKey: 'userId', sourceKey: 'id' })
   endorsements?: Endorse[];
+
+  @HasMany(() => EndorseAssignment, { foreignKey: 'userId', sourceKey: 'id' })
+  endorseAssignments?: EndorseAssignment[];
+
+  @HasMany(() => File, { foreignKey: 'userId', sourceKey: 'id' })
+  files?: File[];
 }

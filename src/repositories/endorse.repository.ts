@@ -10,6 +10,9 @@ interface IEndorseRepository {
 class EndorseRepository implements IEndorseRepository {
   async save(endorse: Endorse): Promise<Endorse> {
     try {
+      console.log(endorse);
+      console.log(JSON.stringify(endorse));
+      
       return await Endorse.create({...endorse}, {include:[{ all: true }]});
     } catch (err) {
       throw err;

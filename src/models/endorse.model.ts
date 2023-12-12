@@ -8,6 +8,8 @@ import EndorseContentElement from "./endorse-content-element.model";
 import EndorseGeograficScope from "./endorse-geografic-scope.model";
 import EndorseMediaChannel from "./endorse-media-channel.model";
 import EndorseMetric from "./endorse-metric.model";
+import EndorseAssignment from "./endorse-assignment.model";
+import File from "./file.model";
 
 @Table({
   tableName: "endorsements",
@@ -86,6 +88,18 @@ export default class Endorse extends Model {
     field: "visibility"
   })
   visibility?: string;
+ 
+  @Column({
+    type: DataType.STRING(300),
+    field: "picture"
+  })
+  picture?: string;
+
+  @Column({
+    type: DataType.STRING(30),
+    field: "status"
+  })
+  status?: string;
 
   @ForeignKey(() => User)
   @Column({
@@ -124,4 +138,10 @@ export default class Endorse extends Model {
 
   @HasMany(() => EndorseMetric, { foreignKey: 'endorseId', sourceKey: 'id' })
   endorseMetrics?: EndorseMetric[];
+
+  @HasMany(() => EndorseAssignment, { foreignKey: 'endorseId', sourceKey: 'id' })
+  endorseAssignments?: EndorseAssignment[];
+
+  @HasMany(() => File, { foreignKey: 'endorseId', sourceKey: 'id' })
+  files?: File[];
 }

@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
 import User from "../models/user.model";
 import userRepository from "../repositories/user.repository";
+import fileUpload from "express-fileupload";
+import path from "path";
+import fs from "fs";
 
 export default class UserController {
   async login(req: Request, res: Response) {
@@ -146,6 +149,37 @@ export default class UserController {
     } catch (err) {
       res.status(500).send({
         message: "Some error occurred while retrieving users."
+      });
+    }
+  }
+
+  async attachProfilePicture(req: Request, res: Response) {
+    try {
+      let sampleFile: fileUpload.UploadedFile;
+      let uploadPath: string;
+      let name: string;
+
+      if (!req.files || Object.keys(req.files).length === 0) {
+        return res.status(400).send('No files were uploaded.');
+      }
+
+      if (!fs.existsSync(path.join(__dirname, '../../../storage/users/' + parseInt(req.params.id)))) {
+        fs.mkdirSync(path.join(__dirname, '../../../storage/users/' + parseInt(req.params.id)), { recursive: true });
+      }
+
+      sampleFile = req.files.sampleFile as fileUpload.UploadedFile;
+      uploadPath = path.join(__dirname, '../../../storage/users/' + parseInt(req.params.id) + "/profile.png");
+
+      sampleFile.mv(uploadPath, function (err) {
+        if (err) {
+          return res.status(500).send(err);
+        }
+        
+        res.send({name});
+      });
+    } catch (err) {
+      res.status(500).send({
+        message: "Some error occurred while attaching a file."
       });
     }
   }

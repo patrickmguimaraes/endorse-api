@@ -1,6 +1,7 @@
 import { Op } from "sequelize";
 import Company from "../models/company.model";
 import Copyright from "../models/copyright.model";
+import User from "../models/user.model";
 
 interface ICompanyRepository {
   save(company: Company): Promise<Company>;
@@ -86,7 +87,7 @@ class CompanyRepository implements ICompanyRepository {
       let condition: SearchCondition = {};
       condition.categoryId = { [Op.like]: `${searchParams.categoryId}` };
 
-      return await Company.findAll({ where: condition, include: [{ model: Copyright, as: 'copyrights' }] });
+      return await Company.findAll({ where: condition, include: [{ model: Copyright, as: 'copyrights' }, { model: User, as: 'user' }] });
     } catch (error) {
       throw new Error("Failed to login!");
     }

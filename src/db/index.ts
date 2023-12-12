@@ -19,6 +19,8 @@ import EndorseMetric from "../models/endorse-metric.model";
 import GeograficScope from "../models/geografic-scope.model";
 import MediaChannel from "../models/media-channel.model";
 import Metric from "../models/metric.model";
+import EndorseAssignment from "../models/endorse-assignment.model";
+import File from "../models/file.model";
 
 class Database {
   public sequelize: Sequelize | undefined;
@@ -59,7 +61,9 @@ class Database {
         EndorseMetric,
         GeograficScope,
         MediaChannel,
-        Metric
+        Metric,
+        EndorseAssignment,
+        File
       ]
     });
 
@@ -131,7 +135,16 @@ class Database {
     Metric.hasMany(EndorseMetric, { foreignKey: 'metricId' });
     EndorseMetric.belongsTo(Metric, { foreignKey: 'metricId' });
 
-    this.sequelize?.sync({ force: false }).then((value) => {
+    Endorse.hasMany(EndorseAssignment, { foreignKey: 'endorseId' });
+    EndorseAssignment.belongsTo(Endorse, { foreignKey: 'endorseId' });
+
+    Endorse.hasMany(File, { foreignKey: 'endorseId' });
+    File.belongsTo(Endorse, { foreignKey: 'endorseId' });
+
+    User.hasMany(File, { foreignKey: 'userId' });
+    File.belongsTo(User, { foreignKey: 'userId' });
+
+    this.sequelize?.sync({ force: false, alter: true }).then((value) => {
       this.insertInitialValuesCategory();this.insertInitialValuesActivationDate()
       this.insertInitialValuesCompliance();
       this.insertInitialValuesContentElement();
