@@ -95,6 +95,42 @@ class Database {
     Company.hasMany(Copyright, { foreignKey: 'companyId' });
     Copyright.belongsTo(Company, { foreignKey: 'companyId' });
 
+    Endorse.hasMany(EndorseActivationDate, { foreignKey: 'endorseId' });
+    EndorseActivationDate.belongsTo(Endorse, { foreignKey: 'endorseId' });
+
+    Endorse.hasMany(EndorseComplianceMeasure, { foreignKey: 'endorseId' });
+    EndorseComplianceMeasure.belongsTo(Endorse, { foreignKey: 'endorseId' });
+
+    Endorse.hasMany(EndorseContentElement, { foreignKey: 'endorseId' });
+    EndorseContentElement.belongsTo(Endorse, { foreignKey: 'endorseId' });
+
+    Endorse.hasMany(EndorseGeograficScope, { foreignKey: 'endorseId' });
+    EndorseGeograficScope.belongsTo(Endorse, { foreignKey: 'endorseId' });
+
+    Endorse.hasMany(EndorseMediaChannel, { foreignKey: 'endorseId' });
+    EndorseMediaChannel.belongsTo(Endorse, { foreignKey: 'endorseId' });
+
+    Endorse.hasMany(EndorseMetric, { foreignKey: 'endorseId' });
+    EndorseMetric.belongsTo(Endorse, { foreignKey: 'endorseId' });
+
+    ActivationDate.hasMany(EndorseActivationDate, { foreignKey: 'activationDateId' });
+    EndorseActivationDate.belongsTo(ActivationDate, { foreignKey: 'activationDateId' });
+
+    ComplianceMeasure.hasMany(EndorseComplianceMeasure, { foreignKey: 'complianceMeasureId' });
+    EndorseComplianceMeasure.belongsTo(ComplianceMeasure, { foreignKey: 'complianceMeasureId' });
+
+    ContentElement.hasMany(EndorseContentElement, { foreignKey: 'contentElementId' });
+    EndorseContentElement.belongsTo(ContentElement, { foreignKey: 'contentElementId' });
+
+    GeograficScope.hasMany(EndorseGeograficScope, { foreignKey: 'geograficScopeId' });
+    EndorseGeograficScope.belongsTo(GeograficScope, { foreignKey: 'geograficScopeId' });
+
+    MediaChannel.hasMany(EndorseMediaChannel, { foreignKey: 'mediaChannelId' });
+    EndorseMediaChannel.belongsTo(MediaChannel, { foreignKey: 'mediaChannelId' });
+
+    Metric.hasMany(EndorseMetric, { foreignKey: 'metricId' });
+    EndorseMetric.belongsTo(Metric, { foreignKey: 'metricId' });
+
     this.sequelize?.sync({ force: false }).then((value) => {
       this.insertInitialValuesCategory();this.insertInitialValuesActivationDate()
       this.insertInitialValuesCompliance();

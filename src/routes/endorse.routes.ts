@@ -22,6 +22,8 @@ class EndorseRoutes {
 
     // Delete a Endorse with id
     this.router.delete("/:id", this.controller.delete);
+
+    this.router.post("/attachFile", this.controller.attachFile);
   }
 }
 

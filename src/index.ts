@@ -3,7 +3,8 @@ import cors, { CorsOptions } from "cors";
 import Routes from "./routes";
 import Database from "./db";
 import OpenAIApi from "./openAI/index"
-import User from "./models/user.model";
+import fileUpload from "express-fileupload";
+import path from "path";
 
 export default class Server {
   constructor(app: Application) {
@@ -21,6 +22,11 @@ export default class Server {
     app.use(cors(corsOptions));
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
+    app.use(fileUpload({
+      limits: { fileSize: 50 * 1024 * 1024 },
+    }));
+    app.use(express.urlencoded({ extended: true }));
+    app.use('/files', express.static(path.join(__dirname, '../../storage')))
   }
 
   private syncDatabase(): void {

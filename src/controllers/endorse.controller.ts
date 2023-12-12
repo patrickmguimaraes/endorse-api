@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
 import Endorse from "../models/endorse.model";
 import endorseRepository from "../repositories/endorse.repository";
+import fileUpload from "express-fileupload";
+import path from "path";
+import fs from "fs";
 
 export default class EndorseController {
   async create(req: Request, res: Response) {
@@ -13,7 +16,7 @@ export default class EndorseController {
 
     try {
       const endorse: Endorse = req.body;
-      
+
       const savedEndorse = await endorseRepository.save(endorse);
 
       res.status(201).send(savedEndorse);
@@ -79,6 +82,38 @@ export default class EndorseController {
     } catch (err) {
       res.status(500).send({
         message: `Could not delete Endorse with id==${id}.`
+      });
+    }
+  }
+
+  async attachFile(req: Request, res: Response) {
+    try {
+      let sampleFile: fileUpload.UploadedFile;
+      let uploadPath: string;
+      let name: string;
+
+      if (!req.files || Object.keys(req.files).length === 0) {
+        return res.status(400).send('No files were uploaded.');
+      }
+
+      if (!fs.existsSync(path.join(__dirname, '../../../storage/endorse/'))) {
+        fs.mkdirSync(path.join(__dirname, '../../../storage/endorse/'), { recursive: true });
+      }
+
+      sampleFile = req.files.sampleFile as fileUpload.UploadedFile;
+      name = new Date().getTime() + sampleFile.mimetype.replace("image/", ".").replace("application/", ".");
+      uploadPath = path.join(__dirname, '../../../storage/endorse/' + name);
+
+      sampleFile.mv(uploadPath, function (err) {
+        if (err) {
+          return res.status(500).send(err);
+        }
+        
+        res.send({name});
+      });
+    } catch (err) {
+      res.status(500).send({
+        message: "Some error occurred while attaching a file."
       });
     }
   }

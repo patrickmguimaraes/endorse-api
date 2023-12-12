@@ -28,13 +28,13 @@ export default class Endorse extends Model {
   name?: string;
 
   @Column({
-    type: DataType.STRING(200),
+    type: DataType.TEXT,
     field: "description"
   })
   description?: string;
 
   @Column({
-    type: DataType.STRING(200),
+    type: DataType.TEXT,
     field: "objective"
   })
   objective?: string;
@@ -76,10 +76,16 @@ export default class Endorse extends Model {
   reportingFrequency?: string;
 
   @Column({
-    type: DataType.STRING(5000),
+    type: DataType.TEXT,
     field: "requestText"
   })
   requestText?: string;
+
+  @Column({
+    type: DataType.STRING(10),
+    field: "visibility"
+  })
+  visibility?: string;
 
   @ForeignKey(() => User)
   @Column({
