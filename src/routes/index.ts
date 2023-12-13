@@ -11,6 +11,7 @@ import contentElementRoutes from "./content-element.routes";
 import complianceMeasureRoute from "./compliance-measure.route";
 import metricRoutes from "./metric.routes";
 import endorseRoutes from "./endorse.routes";
+import endorseHistoryRoutes from "./endorse-history.routes";
 
 export default class Routes {
   constructor(app: Application) {
@@ -26,5 +27,6 @@ export default class Routes {
     app.use("/api/complianceMeasures", complianceMeasureRoute);
     app.use("/api/metrics", metricRoutes);
     app.use("/api/endorsements", endorseRoutes);
+    app.use("/api/endorseHistory", endorseHistoryRoutes);
   }
 }

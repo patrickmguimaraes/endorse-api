@@ -10,6 +10,7 @@ import EndorseMediaChannel from "./endorse-media-channel.model";
 import EndorseMetric from "./endorse-metric.model";
 import EndorseAssignment from "./endorse-assignment.model";
 import File from "./file.model";
+import EndorseHistory from "./endorse-history.model";
 
 @Table({
   tableName: "endorsements",
@@ -144,4 +145,7 @@ export default class Endorse extends Model {
 
   @HasMany(() => File, { foreignKey: 'endorseId', sourceKey: 'id' })
   files?: File[];
+
+  @HasMany(() => EndorseHistory, { foreignKey: 'endorseId', sourceKey: 'id' })
+  endorseHistory?: EndorseHistory[];
 }

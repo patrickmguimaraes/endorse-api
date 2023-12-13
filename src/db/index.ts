@@ -21,6 +21,7 @@ import MediaChannel from "../models/media-channel.model";
 import Metric from "../models/metric.model";
 import EndorseAssignment from "../models/endorse-assignment.model";
 import File from "../models/file.model";
+import EndorseHistory from "../models/endorse-history.model";
 
 class Database {
   public sequelize: Sequelize | undefined;
@@ -63,7 +64,8 @@ class Database {
         MediaChannel,
         Metric,
         EndorseAssignment,
-        File
+        File,
+        EndorseHistory
       ]
     });
 
@@ -143,6 +145,12 @@ class Database {
 
     User.hasMany(File, { foreignKey: 'userId' });
     File.belongsTo(User, { foreignKey: 'userId' });
+
+    Endorse.hasMany(EndorseHistory, { foreignKey: 'endorseId' });
+    EndorseHistory.belongsTo(Endorse, { foreignKey: 'endorseId' });
+
+    User.hasMany(EndorseHistory, { foreignKey: 'userId' });
+    EndorseHistory.belongsTo(User, { foreignKey: 'userId' });
 
     this.sequelize?.sync({ force: false, alter: true }).then((value) => {
       this.insertInitialValuesCategory();this.insertInitialValuesActivationDate()

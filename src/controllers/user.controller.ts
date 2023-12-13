@@ -9,7 +9,6 @@ export default class UserController {
   async login(req: Request, res: Response) {
     try {
       const user = await userRepository.login({ authId: req.params.id});
-      console.log(JSON.stringify(user));
       
       res.status(200).send(user);
     } catch (err) {

@@ -5,6 +5,7 @@ import Company from "./company.model";
 import Endorse from "./endorse.model";
 import EndorseAssignment from "./endorse-assignment.model";
 import File from "./file.model";
+import EndorseHistory from "./endorse-history.model";
 
 @Table({
   tableName: "users",
@@ -188,4 +189,7 @@ export default class User extends Model {
 
   @HasMany(() => File, { foreignKey: 'userId', sourceKey: 'id' })
   files?: File[];
+
+  @HasMany(() => EndorseHistory, { foreignKey: 'userId', sourceKey: 'id' })
+  endorseHistory?: EndorseHistory[];
 }
