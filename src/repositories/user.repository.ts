@@ -2,6 +2,7 @@ import { Op } from "sequelize";
 import User from "../models/user.model";
 import Person from "../models/person.model";
 import Company from "../models/company.model";
+import Category from "../models/category.model";
 
 interface IUserRepository {
   login(searchParams: {authId: string}): Promise<User | null>;
@@ -24,7 +25,7 @@ class UserRepository implements IUserRepository {
       let condition: SearchCondition = {};
       condition.authId = { [Op.like]: `${searchParams.authId}` };
 
-      return await User.findOne({ where: condition, include: [{ model: Person, as: 'person' }, { model: Company, as: 'company' }] });
+      return await User.findOne({ where: condition, include: [{ model: Person, as: 'person' }, { model: Company, as: 'company', include: [{ model: Category, as: 'category' }] }] });
     } catch (error) {
       throw new Error("Failed to login!");
     }

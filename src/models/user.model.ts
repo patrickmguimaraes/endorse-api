@@ -91,6 +91,30 @@ export default class User extends Model {
   postalCode?: string;
 
   @Column({
+    type: DataType.STRING(255),
+    field: "linkedin"
+  })
+  linkedin?: string;
+
+  @Column({
+    type: DataType.STRING(255),
+    field: "facebook"
+  })
+  facebook?: string;
+
+  @Column({
+    type: DataType.STRING(255),
+    field: "instagram"
+  })
+  instagram?: string;
+
+  @Column({
+    type: DataType.STRING(255),
+    field: "x"
+  })
+  x?: string;
+
+  @Column({
     type: DataType.STRING(5),
     field: "language"
   })
