@@ -6,6 +6,8 @@ import Endorse from "./endorse.model";
 import EndorseAssignment from "./endorse-assignment.model";
 import File from "./file.model";
 import EndorseHistory from "./endorse-history.model";
+import UserTermAndCondition from "./user-term-and-condition.model";
+import Token from "./token.model";
 
 @Table({
   tableName: "users",
@@ -18,6 +20,12 @@ export default class User extends Model {
     field: "id"
   })
   id?: number;
+
+  @Column({
+    type: DataType.STRING(5),
+    field: "role"
+  })
+  role?: string;
 
   @Column({
     type: DataType.STRING(100),
@@ -140,6 +148,18 @@ export default class User extends Model {
   signupProvider?: string;
 
   @Column({
+    type: DataType.BOOLEAN,
+    field: "isEmailVerified",
+  })
+  isEmailVerified?: boolean;
+
+  @Column({
+    type: DataType.STRING(10),
+    field: "status"
+  })
+  status?: string;
+
+  @Column({
     type: DataType.DATE,
     field: "date"
   })
@@ -165,21 +185,11 @@ export default class User extends Model {
   })
   companyId!: number;
 
-  @ForeignKey(() => Contract)
-  @Column({
-    type: DataType.INTEGER,
-    field: "contractId",
-  })
-  contractId!: number;
-
   @BelongsTo(() => Person)
   person?: Person;
 
   @BelongsTo(() => Company)
   company?: Company;
-
-  @BelongsTo(() => Contract)
-  contract?: Contract;
   
   @HasMany(() => Endorse, { foreignKey: 'userId', sourceKey: 'id' })
   endorsements?: Endorse[];
@@ -192,4 +202,10 @@ export default class User extends Model {
 
   @HasMany(() => EndorseHistory, { foreignKey: 'userId', sourceKey: 'id' })
   endorseHistory?: EndorseHistory[];
+
+  @HasMany(() => UserTermAndCondition, { foreignKey: 'userId', sourceKey: 'id' })
+  userTermsAndConditions?: UserTermAndCondition[];
+
+  @HasMany(() => Token, { foreignKey: 'userId', sourceKey: 'id' })
+  tokens?: Token[];
 }

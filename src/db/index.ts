@@ -22,6 +22,10 @@ import Metric from "../models/metric.model";
 import EndorseAssignment from "../models/endorse-assignment.model";
 import File from "../models/file.model";
 import EndorseHistory from "../models/endorse-history.model";
+import UserTermAndCondition from "../models/user-term-and-condition.model";
+import TermAndCondition from "../models/term-and-condition.model";
+import Token from "../models/token.model";
+import { logger } from "../config/logger";
 
 class Database {
   public sequelize: Sequelize | undefined;
@@ -37,6 +41,7 @@ class Database {
       password: config.PASSWORD,
       host: config.HOST,
       dialect: dialect,
+      logging: false,
       pool: {
         max: config.pool.max,
         min: config.pool.min,
@@ -65,26 +70,26 @@ class Database {
         Metric,
         EndorseAssignment,
         File,
-        EndorseHistory
+        EndorseHistory,
+        UserTermAndCondition,
+        TermAndCondition,
+        Token
       ]
     });
 
     await this.sequelize
       .authenticate()
       .then(() => {
-        console.log("Connection has been established successfully.");
+        logger.info("Connection has been established successfully.");
       })
       .catch((err) => {
-        console.error("Unable to connect to the Database:", err);
+        logger.error("Unable to connect to the Database:", err);
       });
   }
 
   public sync() {
     User.hasMany(Endorse, { foreignKey: 'userId' });
     Endorse.belongsTo(User, { foreignKey: 'userId' });
-
-    Contract.hasMany(User, { foreignKey: 'contractId' });
-    User.belongsTo(Contract, { foreignKey: 'contractId' });
 
     Person.hasOne(User, { foreignKey: 'personId' });
     User.belongsTo(Person, { foreignKey: 'personId' });
@@ -153,7 +158,9 @@ class Database {
     EndorseHistory.belongsTo(User, { foreignKey: 'userId' });
 
     this.sequelize?.sync({ force: false, alter: true }).then((value) => {
-      this.insertInitialValuesCategory();this.insertInitialValuesActivationDate()
+      this.insertInitialTermsAndConditions();
+      this.insertInitialValuesCategory();
+      this.insertInitialValuesActivationDate()
       this.insertInitialValuesCompliance();
       this.insertInitialValuesContentElement();
       this.insertInitialValuesGeografic();
@@ -316,6 +323,21 @@ class Database {
           });
         })
       });
+    });
+  }
+
+  insertInitialTermsAndConditions() {
+    TermAndCondition.sync().then(() => {
+      TermAndCondition.findAll().then(value => {
+        if (!value || value.length == 0) {
+          TermAndCondition.create({
+            name: 'Terms and Conditions - 14/12/2023',
+            text: 'Terms',
+            date: new Date()
+          });
+        }
+      })
+
     });
   }
 }

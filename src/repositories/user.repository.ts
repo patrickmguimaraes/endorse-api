@@ -36,7 +36,7 @@ class UserRepository implements IUserRepository {
       let condition: SearchCondition = {};
       condition.email = { [Op.like]: `${searchParams.email}` };
 
-      return await User.findOne({ where: condition });
+      return await User.findOne({ where: condition, include: [{ model: Person, as: 'person' }, { model: Company, as: 'company', include: [{ model: Category, as: 'category' }] }] });
     } catch (error) {
       throw new Error("Failed to existsEmail!");
     }
@@ -44,7 +44,7 @@ class UserRepository implements IUserRepository {
 
   async save(user: User): Promise<User> {
     try {
-      return await User.create({...user});
+      return await User.create({...user}, {include:[{ all: true }]});
     } catch (err) {
       throw new Error("Failed to create User!");
     }
@@ -67,7 +67,7 @@ class UserRepository implements IUserRepository {
 
   async retrieveById(userId: number): Promise<User | null> {
     try {
-      return await User.findByPk(userId);
+      return await User.findByPk(userId, { include: [{ model: Person, as: 'person' }, { model: Company, as: 'company', include: [{ model: Category, as: 'category' }] }] });
     } catch (error) {
       throw new Error("Failed to retrieve Users!");
     }

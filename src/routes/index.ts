@@ -1,4 +1,4 @@
-import { Application } from "express";
+import { Application, Router } from "express";
 import usersRoutes from "./user.routes";
 import companiesRoutes from "./company.routes";
 import peopleRoutes from "./person.routes";
@@ -12,21 +12,77 @@ import complianceMeasureRoute from "./compliance-measure.route";
 import metricRoutes from "./metric.routes";
 import endorseRoutes from "./endorse.routes";
 import endorseHistoryRoutes from "./endorse-history.routes";
+import express from "express";
+import authRoute from "./auth.route";
+import termAndConditionRoute from "./term-and-condition.route";
 
-export default class Routes {
-  constructor(app: Application) {
-    app.use("/api", homeRoutes);
-    app.use("/api/users", usersRoutes);
-    app.use("/api/people", peopleRoutes);
-    app.use("/api/companies", companiesRoutes);
-    app.use("/api/categories", categoriesRoutes);
-    app.use("/api/activationDates", activationDateRoutes);
-    app.use("/api/geograficScopes", geograficScopeRoutes);
-    app.use("/api/mediaChannels", mediaChannelRoutes);
-    app.use("/api/contentElements", contentElementRoutes);
-    app.use("/api/complianceMeasures", complianceMeasureRoute);
-    app.use("/api/metrics", metricRoutes);
-    app.use("/api/endorsements", endorseRoutes);
-    app.use("/api/endorseHistory", endorseHistoryRoutes);
+class Routes {
+  public router = express.Router();
+
+  public defaultRoutes = [
+    {
+      path: '/auth',
+      route: authRoute,
+    },
+    {
+      path: '/users',
+      route: usersRoutes,
+    },
+    {
+      path: '/people',
+      route: peopleRoutes,
+    },
+    {
+      path: '/companies',
+      route: companiesRoutes,
+    },
+    {
+      path: '/categories',
+      route: categoriesRoutes,
+    },
+    { 
+      path: '/activationDates',
+      route: activationDateRoutes,
+    },
+    { 
+      path: '/geograficScopes',
+      route: geograficScopeRoutes,
+    },
+    { 
+      path: '/mediaChannels',
+      route: mediaChannelRoutes,
+    },
+    { 
+      path: '/contentElements',
+      route: contentElementRoutes,
+    },
+    { 
+      path: '/complianceMeasures',
+      route: complianceMeasureRoute,
+    },
+    { 
+      path: '/metrics',
+      route: metricRoutes,
+    },
+    { 
+      path: '/endorsements',
+      route: endorseRoutes,
+    },
+    { 
+      path: '/endorseHistory',
+      route: endorseHistoryRoutes,
+    },
+    { 
+      path: '/termsAndConditions',
+      route: termAndConditionRoute,
+    },
+  ];
+
+  constructor() {
+    this.defaultRoutes.forEach((route) => {
+      this.router.use(route.path, route.route);
+    });
   }
 }
+
+export default new Routes();

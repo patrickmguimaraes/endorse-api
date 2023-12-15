@@ -36,7 +36,7 @@ class UserRoutes {
     this.router.delete("/", this.controller.deleteAll);
 
     this.router.post("/attachProfilePicture/:id", this.controller.attachProfilePicture);
-  }
+  } 
 }
 
 export default new UserRoutes().router;
