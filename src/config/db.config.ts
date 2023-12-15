@@ -33,6 +33,10 @@ if (error) {
   throw new Error(`Config validation error: ${error.message}`);
 }
 
+export const SECRET_KEY = "Jesus is the King!";
+export const SECRET_IV = "Mary is the Queen!";
+export const ECNRYPTION_METHOD = "aes-256-cbc";
+
 export const config = {
   HOST: "127.0.0.1",
   USER: "root",

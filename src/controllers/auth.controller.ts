@@ -5,10 +5,14 @@ import tokenRepository from '../repositories/token.repository';
 import authRepository from '../repositories/auth.repository';
 import ApiError from '../utils/ApiError';
 import emailRepository from '../repositories/email.repository';
+import { encryptData } from '../utils/encriptation';
 
 export default class AuthController {
   register = catchAsync(async (req: any, res: any) => {
     req.body.isEmailVerified = false;
+    req.body.status = "Pending";
+    req.body.password = encryptData(req.body.password as string);
+
     const user = await userRepository.save(req.body);
     //const tokens = await tokenRepository.generateAuthTokens(user);
 
@@ -16,11 +20,17 @@ export default class AuthController {
     await emailRepository.sendVerificationEmail(user.email!, verifyEmailToken);
 
     res.status(httpStatus.CREATED).send(user);
-  });
+  }); 
 
   login = catchAsync(async (req: any, res: any) => {
     const { email, password } = req.body;
-    const user = await authRepository.loginUserWithEmailAndPassword(email, password);
+
+    const user = await authRepository.loginUserWithEmailAndPassword(email, password)
+    
+    if(!user) {
+      throw new ApiError(httpStatus.NOT_FOUND, "Error looking for the credentials");
+    }
+
     const tokens = await tokenRepository.generateAuthTokens(user);
     //const chats = await conversaService.getChats(user);
 
@@ -75,6 +85,6 @@ export default class AuthController {
 
   verifyEmail = catchAsync(async (req: any, res: any) => {
     await authRepository.verifyEmail(req.query.token);
-    res.status(httpStatus.NO_CONTENT).send(true);
+    res.status(httpStatus.ACCEPTED).send(true);
   });
 }

@@ -1,14 +1,11 @@
-import jwt from 'jsonwebtoken';
-import moment from 'moment';
 import httpStatus from 'http-status';
-import { config } from '../config/db.config';
 import Token from '../models/token.model';
 import User from '../models/user.model';
 import { tokenTypes } from '../config/tokens';
 import userRepository from './user.repository';
 import ApiError from '../utils/ApiError';
-import bcrypt from 'bcryptjs';
 import tokenRepository from './token.repository';
+import { decryptData } from '../utils/encriptation';
 
 class AuthRepository {
   /**
@@ -19,12 +16,19 @@ class AuthRepository {
  */
   async loginUserWithEmailAndPassword(email: string, password: string) {
     const user = await userRepository.existsEmail({email});
-    const isEqual = bcrypt.compare(password, user?.password!);
 
-    if (!user || !isEqual) {
-      throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
+    if(user) {
+      const passwordDec = decryptData(user?.password!);
+
+      if (passwordDec!==password) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'Incorrect password');
+      }
+  
+      return user;
     }
-    return user;
+    else {
+      throw new ApiError(httpStatus.NOT_FOUND, 'Incorrect email');
+    }
   };
 
   /**

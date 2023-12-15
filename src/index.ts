@@ -16,6 +16,7 @@ import ApiError from "./utils/ApiError";
 import httpStatus from "http-status";
 import { errorConverter, errorHandler } from "./middlewares/error";
 import routes from "./routes";
+import { auth } from "./middlewares/auth";
 
 export default class Server {
   constructor(app: Application) {
@@ -45,7 +46,8 @@ export default class Server {
       limits: { fileSize: 50 * 1024 * 1024 },
     }));
 
-    app.use('/files', express.static(path.join(__dirname, '../../storage')))
+    console.log(path.join(__dirname, '../../storage'))
+    app.use('/files', auth('private-files'), express.static(path.join(__dirname, '../../storage')))
 
     // gzip compression
     app.use(compression());

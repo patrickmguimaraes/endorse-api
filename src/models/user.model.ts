@@ -46,7 +46,7 @@ export default class User extends Model {
   email?: string;
 
   @Column({
-    type: DataType.STRING(255),
+    type: DataType.STRING(100),
     field: "password"
   })
   password?: string;
