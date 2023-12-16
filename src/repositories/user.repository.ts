@@ -38,15 +38,19 @@ class UserRepository implements IUserRepository {
 
       return await User.findOne({ where: condition, include: [{ model: Person, as: 'person' }, { model: Company, as: 'company', include: [{ model: Category, as: 'category' }] }] });
     } catch (error) {
-      throw new Error("Failed to existsEmail!");
+      throw new Error("Failed to looking for the email!");
     }
   }
 
   async save(user: User): Promise<User> {
     try {
+      user.followeds = [];
+      user.followers = [];
+      user.posts = [];
+      user.views = [];
       return await User.create({...user}, {include:[{ all: true }]});
-    } catch (err) {
-      throw new Error("Failed to create User!");
+    } catch (err: any) {
+      throw new Error(err.message);
     }
   }
 

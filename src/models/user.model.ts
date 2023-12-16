@@ -12,6 +12,8 @@ import Like from "./like.model";
 import Comment from "./comment.model";
 import Endorsement from "./endorsement.model";
 import Post from "./post.model";
+import Follower from "./follower.model";
+import View from "./view.model";
 
 @Table({
   tableName: "users",
@@ -30,12 +32,6 @@ export default class User extends Model {
     field: "role"
   })
   role?: string;
-
-  @Column({
-    type: DataType.STRING(100),
-    field: "authId"
-  })
-  authId?: string;
 
   @Column({
     type: DataType.STRING(100),
@@ -224,4 +220,13 @@ export default class User extends Model {
 
   @HasMany(() => Post, { foreignKey: 'userId', sourceKey: 'id' })
   posts?: Post[];
+
+  @HasMany(() => Follower, { foreignKey: 'followerId', sourceKey: 'id' })
+  followers?: Follower[];
+  
+  @HasMany(() => Follower, { foreignKey: 'followedId', sourceKey: 'id' })
+  followeds?: Follower[];
+
+  @HasMany(() => View, { foreignKey: 'userId', sourceKey: 'id' })
+  views?: View[];
 }

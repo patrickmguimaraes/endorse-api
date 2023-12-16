@@ -6,7 +6,6 @@ export default class AuthValidation {
     body: Joi.object().keys({
       email: Joi.string().required().email(),
       password: Joi.string().required().custom(password),
-      authId: Joi.string(),
       username: Joi.string(),
       type: Joi.string().required(),
       phone: Joi.string().required(),
@@ -37,7 +36,11 @@ export default class AuthValidation {
       endorseHistory: Joi.array().allow(null),
       userTermsAndConditions: Joi.array().required(),
       isEmailVerified: Joi.boolean().required(),
-      status: Joi.string().required()
+      status: Joi.string().required(),
+      views: Joi.array().allow(null),
+      followers: Joi.array().allow(null),
+      followeds: Joi.array().allow(null),
+      posts: Joi.array().allow(null),
     }),
   };
   

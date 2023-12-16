@@ -1,6 +1,4 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
-import Endorse from "./endorse.model";
-import ActivationDate from "./activation-date.model";
 import User from "./user.model";
 import Post from "./post.model";
 

@@ -30,12 +30,14 @@ import Like from "../models/like.model";
 import Comment from "../models/comment.model";
 import Post from "../models/post.model";
 import Endorsement from "../models/endorsement.model";
+import Follower from "../models/follower.model";
+import View from "../models/view.model";
 
 class Database {
   public sequelize: Sequelize | undefined;
 
   constructor() {
-    this.connectToDatabase();
+    this.connectToDatabase()
   }
 
   private async connectToDatabase() {
@@ -78,10 +80,12 @@ class Database {
         UserTermAndCondition,
         TermAndCondition,
         Token,
+        Post,
         Like,
         Comment,
-        Post,
-        Endorsement
+        Endorsement,
+        Follower,
+        View
       ]
     });
 
@@ -89,13 +93,14 @@ class Database {
       .authenticate()
       .then(() => {
         logger.info("Connection has been established successfully.");
+        this.sync();
       })
       .catch((err) => {
         logger.error("Unable to connect to the Database:", err);
       });
   }
 
-  public sync() {
+  public async sync() {
     User.hasMany(Endorse, { foreignKey: 'userId' });
     Endorse.belongsTo(User, { foreignKey: 'userId' });
 
@@ -165,7 +170,46 @@ class Database {
     User.hasMany(EndorseHistory, { foreignKey: 'userId' });
     EndorseHistory.belongsTo(User, { foreignKey: 'userId' });
 
-    this.sequelize?.sync({ force: true, alter: true }).then((value) => {
+    User.hasMany(Post, { foreignKey: 'userId' });
+    Post.belongsTo(User, { foreignKey: 'userId' });
+
+    User.hasMany(Endorsement, { foreignKey: 'userId' });
+    Endorsement.belongsTo(User, { foreignKey: 'userId' });
+
+    User.hasMany(Like, { foreignKey: 'userId' });
+    Like.belongsTo(User, { foreignKey: 'userId' });
+
+    User.hasMany(Comment, { foreignKey: 'userId' });
+    Comment.belongsTo(User, { foreignKey: 'userId' });
+
+    Endorsement.hasMany(Endorsement, { foreignKey: 'endorsementId' });
+    Endorsement.belongsTo(Endorsement, { foreignKey: 'endorsementId' });
+
+    Comment.hasMany(Comment, { foreignKey: 'commentId' });
+    Comment.belongsTo(Comment, { foreignKey: 'commentId' });
+
+    Post.hasMany(Endorsement, { foreignKey: 'postId' });
+    Endorsement.belongsTo(Post, { foreignKey: 'postId' });
+
+    Post.hasMany(Comment, { foreignKey: 'postId' });
+    Comment.belongsTo(Post, { foreignKey: 'postId' });
+
+    Post.hasMany(Like, { foreignKey: 'postId' });
+    Like.belongsTo(Post, { foreignKey: 'postId' });
+
+    User.hasMany(Follower, { foreignKey: 'followerId' });
+    Follower.belongsTo(User, { foreignKey: 'followerId' });
+
+    User.hasMany(Follower, { foreignKey: 'followedId' });
+    Follower.belongsTo(User, { foreignKey: 'followedId' });
+
+    User.hasMany(View, { foreignKey: 'userId' });
+    View.belongsTo(User, { foreignKey: 'userId' });
+
+    Post.hasMany(View, { foreignKey: 'postId' });
+    View.belongsTo(Post, { foreignKey: 'postId' });
+
+    this.sequelize?.sync({ force: false, alter: true }).then((value) => {
       this.insertInitialTermsAndConditions();
       this.insertInitialValuesCategory();
       this.insertInitialValuesActivationDate()
@@ -174,24 +218,25 @@ class Database {
       this.insertInitialValuesGeografic();
       this.insertInitialValuesMediaChannel();
       this.insertInitialValuesMetrics();
+      this.insertInitialValuesUsers();
       //this.insertInitialValuesCopyright();
     })
   }
 
   insertInitialValuesCategory() {
     Category.sync().then(() => {
-      Category.findAll().then(value => {
+      Category.findAll().then(async value => {
         if (!value || value.length == 0) {
-          Category.create({
+          await Category.create({
             name: 'Information Technology'
           });
-          Category.create({
+          await Category.create({
             name: 'Consulting'
           });
-          Category.create({
+          await Category.create({
             name: 'Marketing'
           });
-          Category.create({
+          await Category.create({
             name: 'Entertainment'
           });
         }
@@ -342,6 +387,315 @@ class Database {
             name: 'Terms and Conditions - 14/12/2023',
             text: 'Terms',
             date: new Date()
+          });
+        }
+      })
+
+    });
+  }
+
+  insertInitialValuesUsers() {
+    User.sync().then(() => {
+      User.findAll().then(async value => {
+        if (!value || value.length == 0) {
+          var p = await Person.create({
+            name: 'João',
+            surname: 'Dias Guimarães',
+            birth: new Date().toISOString().substring(0, 10),
+            gender: 'Male',
+            profession: 'Farmer',
+          });
+
+          await User.create({
+            role: 'user',
+            username: new Date().valueOf().toString(36),
+            email: "user1@outlook.com",
+            password: "YjVmMTQ0NjQ1YmUyYWRjODEwNjlkYWRhYTUxYzFkNmU=",
+            type: "Person",
+            phone: "+55 (77) 9 8135-0987",
+            streetLine1: "Rua Ayrton Senna, 18",
+            streetLine2: "Casa",
+            country: "Brazil",
+            state: "Bahia",
+            city: "Pindaí",
+            postalCode: "46360-000",
+            contractId: 1,
+            personId: p.id,
+            isEmailVerified: true,
+            language: 'pt-BR',
+            location: 'Brazil',
+            date: new Date(),
+            status: 'Active'
+          });
+
+          var p = await Person.create({
+            name: 'Leonidia',
+            surname: 'Mendes Guimarães',
+            birth: new Date().toISOString().substring(0, 10),
+            gender: 'Female',
+            profession: 'Farmer',
+          });
+
+          await User.create({
+            role: 'user',
+            username: new Date().valueOf().toString(36),
+            email: "user2@outlook.com",
+            password: "YjVmMTQ0NjQ1YmUyYWRjODEwNjlkYWRhYTUxYzFkNmU=",
+            type: "Person",
+            phone: "+55 (77) 9 8135-0987",
+            streetLine1: "Rua Ayrton Senna, 18",
+            streetLine2: "Casa",
+            country: "Brazil",
+            state: "Bahia",
+            city: "Pindaí",
+            postalCode: "46360-000",
+            contractId: 1,
+            personId: p.id,
+            isEmailVerified: true,
+            language: 'pt-BR',
+            location: 'Brazil',
+            date: new Date(),
+            status: 'Active'
+          });
+
+          var p = await Person.create({
+            name: 'Maria',
+            surname: 'Mendes Trindade',
+            birth: new Date().toISOString().substring(0, 10),
+            gender: 'Female',
+            profession: 'Farmer',
+          });
+
+          await User.create({
+            role: 'user',
+            username: new Date().valueOf().toString(36),
+            email: "user3@outlook.com",
+            password: "YjVmMTQ0NjQ1YmUyYWRjODEwNjlkYWRhYTUxYzFkNmU=",
+            type: "Person",
+            phone: "+55 (77) 9 8135-0987",
+            streetLine1: "Rua Ayrton Senna, 18",
+            streetLine2: "Casa",
+            country: "Brazil",
+            state: "Bahia",
+            city: "Pindaí",
+            postalCode: "46360-000",
+            contractId: 1,
+            personId: p.id,
+            isEmailVerified: true,
+            language: 'pt-BR',
+            location: 'Brazil',
+            date: new Date(),
+            status: 'Active'
+          });
+
+          var p = await Person.create({
+            name: 'Paloma',
+            surname: 'Mendes Guimarães',
+            birth: new Date().toISOString().substring(0, 10),
+            gender: 'Female',
+            profession: 'Social Service',
+          });
+
+          await User.create({
+            role: 'user',
+            username: new Date().valueOf().toString(36),
+            email: "user4@outlook.com",
+            password: "YjVmMTQ0NjQ1YmUyYWRjODEwNjlkYWRhYTUxYzFkNmU=",
+            type: "Person",
+            phone: "+55 (77) 9 8135-0987",
+            streetLine1: "Rua Ayrton Senna, 18",
+            streetLine2: "Casa",
+            country: "Brazil",
+            state: "Bahia",
+            city: "Pindaí",
+            postalCode: "46360-000",
+            contractId: 1,
+            personId: p.id,
+            isEmailVerified: true,
+            language: 'pt-BR',
+            location: 'Brazil',
+            date: new Date(),
+            status: 'Active'
+          });
+
+          var p = await Person.create({
+            name: 'Willian',
+            surname: 'Moraes',
+            birth: new Date().toISOString().substring(0, 10),
+            gender: 'Male',
+            profession: 'Investor',
+          });
+
+          await User.create({
+            role: 'user',
+            username: new Date().valueOf().toString(36),
+            email: "user5@outlook.com",
+            password: "YjVmMTQ0NjQ1YmUyYWRjODEwNjlkYWRhYTUxYzFkNmU=",
+            type: "Person",
+            phone: "+55 (77) 9 8135-0987",
+            streetLine1: "Rua Ayrton Senna, 18",
+            streetLine2: "Casa",
+            country: "Brazil",
+            state: "Bahia",
+            city: "Pindaí",
+            postalCode: "46360-000",
+            contractId: 1,
+            personId: p.id,
+            isEmailVerified: true,
+            language: 'pt-BR',
+            location: 'Brazil',
+            date: new Date(),
+            status: 'Active'
+          });
+
+          var p = await Person.create({
+            name: 'José',
+            surname: 'Trindade',
+            birth: new Date().toISOString().substring(0, 10),
+            gender: 'Male',
+            profession: 'Farmer',
+          });
+
+          await User.create({
+            role: 'user',
+            username: new Date().valueOf().toString(36),
+            email: "user6@outlook.com",
+            password: "YjVmMTQ0NjQ1YmUyYWRjODEwNjlkYWRhYTUxYzFkNmU=",
+            type: "Person",
+            phone: "+55 (77) 9 8135-0987",
+            streetLine1: "Rua Ayrton Senna, 18",
+            streetLine2: "Casa",
+            country: "Brazil",
+            state: "Bahia",
+            city: "Pindaí",
+            postalCode: "46360-000",
+            contractId: 1,
+            personId: p.id,
+            isEmailVerified: true,
+            language: 'pt-BR',
+            location: 'Brazil',
+            date: new Date(),
+            status: 'Active'
+          });
+
+          var c = await Company.create({
+            name: 'Disney',
+            businessLocation: 'Miami, Florida',
+            businessWebsite: "www.disney.com",
+            businessSize: 'Large',
+            categoryId: 4,
+          });
+
+          await User.create({
+            role: 'user',
+            username: new Date().valueOf().toString(36),
+            email: "user7@outlook.com",
+            password: "YjVmMTQ0NjQ1YmUyYWRjODEwNjlkYWRhYTUxYzFkNmU=",
+            type: "Person",
+            phone: "+55 (77) 9 8135-0987",
+            streetLine1: "Rua Ayrton Senna, 18",
+            streetLine2: "Casa",
+            country: "Brazil",
+            state: "Bahia",
+            city: "Pindaí",
+            postalCode: "46360-000",
+            contractId: 1,
+            companyId: c.id,
+            isEmailVerified: true,
+            language: 'pt-BR',
+            location: 'Brazil',
+            date: new Date(),
+            status: 'Active'
+          });
+
+          var c = await Company.create({
+            name: 'PMG Systems',
+            businessLocation: 'Pindaí, Bahia',
+            businessWebsite: "www.pmgsystems.com.br",
+            businessSize: 'Small',
+            categoryId: 1,
+          });
+
+          await User.create({
+            role: 'user',
+            username: new Date().valueOf().toString(36),
+            email: "user8@outlook.com",
+            password: "YjVmMTQ0NjQ1YmUyYWRjODEwNjlkYWRhYTUxYzFkNmU=",
+            type: "Person",
+            phone: "+55 (77) 9 8135-0987",
+            streetLine1: "Rua Ayrton Senna, 18",
+            streetLine2: "Casa",
+            country: "Brazil",
+            state: "Bahia",
+            city: "Pindaí",
+            postalCode: "46360-000",
+            contractId: 1,
+            companyId: c.id,
+            isEmailVerified: true,
+            language: 'pt-BR',
+            location: 'Brazil',
+            date: new Date(),
+            status: 'Active'
+          });
+
+          var c = await Company.create({
+            name: 'DC Pictures',
+            businessLocation: 'Hollywood, California',
+            businessWebsite: "www.dcpictures.com",
+            businessSize: 'Large',
+            categoryId: 4,
+          });
+
+          await User.create({
+            role: 'user',
+            username: new Date().valueOf().toString(36),
+            email: "user9@outlook.com",
+            password: "YjVmMTQ0NjQ1YmUyYWRjODEwNjlkYWRhYTUxYzFkNmU=",
+            type: "Person",
+            phone: "+55 (77) 9 8135-0987",
+            streetLine1: "Rua Ayrton Senna, 18",
+            streetLine2: "Casa",
+            country: "Brazil",
+            state: "Bahia",
+            city: "Pindaí",
+            postalCode: "46360-000",
+            contractId: 1,
+            companyId: c.id,
+            isEmailVerified: true,
+            language: 'pt-BR',
+            location: 'Brazil',
+            date: new Date(),
+            status: 'Active'
+          });
+
+          var c = await Company.create({
+            name: 'Capigemini',
+            businessLocation: 'Salvador, Bahia',
+            businessWebsite: "www.capgemini.com",
+            businessSize: 'Large',
+            categoryId: 2,
+          });
+
+          await User.create({
+            role: 'user',
+            username: new Date().valueOf().toString(36),
+            email: "user10@outlook.com",
+            password: "YjVmMTQ0NjQ1YmUyYWRjODEwNjlkYWRhYTUxYzFkNmU=",
+            type: "Person",
+            phone: "+55 (77) 9 8135-0987",
+            streetLine1: "Rua Ayrton Senna, 18",
+            streetLine2: "Casa",
+            country: "Brazil",
+            state: "Bahia",
+            city: "Pindaí",
+            postalCode: "46360-000",
+            contractId: 1,
+            companyId: c.id,
+            isEmailVerified: true,
+            language: 'pt-BR',
+            location: 'Brazil',
+            date: new Date(),
+            status: 'Active'
           });
         }
       })

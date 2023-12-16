@@ -81,9 +81,7 @@ export default class Server {
     app.use(errorHandler);
   }
 
-  private syncDatabase(): void {
+  private async syncDatabase() {
     const db = new Database();
-    
-    db.sync();
   }
 }

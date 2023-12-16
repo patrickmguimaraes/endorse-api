@@ -3,6 +3,7 @@ import User from "./user.model";
 import Like from "./like.model";
 import Endorsement from "./endorsement.model";
 import Comment from "./comment.model";
+import View from "./view.model";
 
 @Table({
   tableName: "posts",
@@ -24,12 +25,12 @@ export default class Post extends Model {
 
   @Column({
     type: DataType.STRING(10),
-    field: "types"
+    field: "type"
   })
   type?: string;
 
   @Column({
-    type: DataType.TEXT,
+    type: DataType.TEXT('long'),
     field: "text"
   })
   text?: string;
@@ -47,19 +48,19 @@ export default class Post extends Model {
   video?: string;
 
   @Column({
-    type: DataType.NUMBER,
+    type: DataType.INTEGER,
     field: "likes"
   })
   likes?: number;
 
   @Column({
-    type: DataType.NUMBER,
+    type: DataType.INTEGER,
     field: "comments"
   })
   comments?: number;
 
   @Column({
-    type: DataType.NUMBER,
+    type: DataType.INTEGER,
     field: "endorsements"
   })
   endorsements?: number;
@@ -94,4 +95,7 @@ export default class Post extends Model {
 
   @HasMany(() => Like, { foreignKey: 'postId', sourceKey: 'id' })
   likesObject?: Like[];
+
+  @HasMany(() => View, { foreignKey: 'postId', sourceKey: 'id' })
+  views?: View[];
 }
