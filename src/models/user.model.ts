@@ -8,6 +8,10 @@ import File from "./file.model";
 import EndorseHistory from "./endorse-history.model";
 import UserTermAndCondition from "./user-term-and-condition.model";
 import Token from "./token.model";
+import Like from "./like.model";
+import Comment from "./comment.model";
+import Endorsement from "./endorsement.model";
+import Post from "./post.model";
 
 @Table({
   tableName: "users",
@@ -192,7 +196,7 @@ export default class User extends Model {
   company?: Company;
   
   @HasMany(() => Endorse, { foreignKey: 'userId', sourceKey: 'id' })
-  endorsements?: Endorse[];
+  endorses?: Endorse[];
 
   @HasMany(() => EndorseAssignment, { foreignKey: 'userId', sourceKey: 'id' })
   endorseAssignments?: EndorseAssignment[];
@@ -208,4 +212,16 @@ export default class User extends Model {
 
   @HasMany(() => Token, { foreignKey: 'userId', sourceKey: 'id' })
   tokens?: Token[];
+
+  @HasMany(() => Like, { foreignKey: 'userId', sourceKey: 'id' })
+  likes?: Like[];
+
+  @HasMany(() => Comment, { foreignKey: 'userId', sourceKey: 'id' })
+  comments?: Comment[];
+
+  @HasMany(() => Endorsement, { foreignKey: 'userId', sourceKey: 'id' })
+  endorsements?: Endorsement[];
+
+  @HasMany(() => Post, { foreignKey: 'userId', sourceKey: 'id' })
+  posts?: Post[];
 }

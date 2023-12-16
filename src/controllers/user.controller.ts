@@ -167,7 +167,8 @@ export default class UserController {
       }
 
       sampleFile = req.files.sampleFile as fileUpload.UploadedFile;
-      uploadPath = path.join(__dirname, '../../../storage/users/' + parseInt(req.params.id) + "/profile.png");
+      name = parseInt(req.params.id) + "/profile.png";
+      uploadPath = path.join(__dirname, '../../../storage/users/' + name);
 
       sampleFile.mv(uploadPath, function (err) {
         if (err) {

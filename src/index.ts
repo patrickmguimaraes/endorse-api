@@ -48,6 +48,7 @@ export default class Server {
 
     console.log(path.join(__dirname, '../../storage'))
     app.use('/files', auth('private-files'), express.static(path.join(__dirname, '../../storage')))
+    app.use('/storage', express.static(path.join(__dirname, '../../storage-public')))
 
     // gzip compression
     app.use(compression());

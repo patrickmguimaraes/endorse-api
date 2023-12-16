@@ -31,7 +31,7 @@ export default class AuthValidation {
       companyId: Joi.number().allow(null),
       person: Joi.object().allow(null),
       company: Joi.object().allow(null),
-      endorsements: Joi.array().allow(null),
+      endorses: Joi.array().allow(null),
       endorseAssignments: Joi.array().allow(null),
       files: Joi.array().allow(null),
       endorseHistory: Joi.array().allow(null),

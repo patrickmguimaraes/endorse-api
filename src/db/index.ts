@@ -26,6 +26,10 @@ import UserTermAndCondition from "../models/user-term-and-condition.model";
 import TermAndCondition from "../models/term-and-condition.model";
 import Token from "../models/token.model";
 import { logger } from "../config/logger";
+import Like from "../models/like.model";
+import Comment from "../models/comment.model";
+import Post from "../models/post.model";
+import Endorsement from "../models/endorsement.model";
 
 class Database {
   public sequelize: Sequelize | undefined;
@@ -73,7 +77,11 @@ class Database {
         EndorseHistory,
         UserTermAndCondition,
         TermAndCondition,
-        Token
+        Token,
+        Like,
+        Comment,
+        Post,
+        Endorsement
       ]
     });
 
@@ -157,7 +165,7 @@ class Database {
     User.hasMany(EndorseHistory, { foreignKey: 'userId' });
     EndorseHistory.belongsTo(User, { foreignKey: 'userId' });
 
-    this.sequelize?.sync({ force: false, alter: true }).then((value) => {
+    this.sequelize?.sync({ force: true, alter: true }).then((value) => {
       this.insertInitialTermsAndConditions();
       this.insertInitialValuesCategory();
       this.insertInitialValuesActivationDate()

@@ -15,6 +15,7 @@ import endorseHistoryRoutes from "./endorse-history.routes";
 import express from "express";
 import authRoute from "./auth.route";
 import termAndConditionRoute from "./term-and-condition.route";
+import storageRoute from "./storage.route";
 
 class Routes {
   public router = express.Router();
@@ -75,6 +76,10 @@ class Routes {
     { 
       path: '/termsAndConditions',
       route: termAndConditionRoute,
+    },
+    { 
+      path: '/storage',
+      route: storageRoute,
     },
   ];
 

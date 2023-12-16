@@ -13,7 +13,7 @@ import File from "./file.model";
 import EndorseHistory from "./endorse-history.model";
 
 @Table({
-  tableName: "endorsements",
+  tableName: "endorses",
 })
 export default class Endorse extends Model {
   @Column({
