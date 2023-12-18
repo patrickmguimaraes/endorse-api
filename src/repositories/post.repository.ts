@@ -6,6 +6,8 @@ import Post from '../models/post.model';
 import Follower from '../models/follower.model';
 import { Op } from 'sequelize';
 import View from '../models/view.model';
+import Person from '../models/person.model';
+import Company from '../models/company.model';
 
 class PostRepository {
   async post(post: Post) {
@@ -53,7 +55,7 @@ class PostRepository {
         include: [
           {
             model: User,
-            attributes: ['id', 'username'], 
+            include: [{ model: Person, as: 'person' }, { model: Company, as: 'company'}]
           },
         ],
         order: [['createdAt', 'DESC']],

@@ -50,6 +50,8 @@ export const config = {
   },
 
   OPEN_AI_API_KEY: "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",
+  NEW_YORK_TIMES_API: "c611f91c-524b-4dd3-85b1-1b30ec1c686c",
+  NEW_YORK_TIMES_API_KEY: "4Xh2wRxTSHEggosAVT4w31SNhiBQCWFw",
 
   env: envVars.NODE_ENV,
   port: envVars.PORT,

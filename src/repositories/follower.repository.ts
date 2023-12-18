@@ -18,6 +18,17 @@ class FollowerRepository {
     return result;
   };
 
+  async unfollow(follower: Follower) {
+
+    const result = await Follower.destroy({ where: { followedId: follower.followedId, followerId: follower.followerId } });
+
+    if (!result) {
+      throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'An error ocurred while unfollowing. Try later.');
+    }
+
+    return result>0;
+  };
+
   async suggests(userId: number, limit: number = 5) {
     try {
       const currentFollowings = await Follower.findAll({

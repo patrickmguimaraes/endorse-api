@@ -10,6 +10,15 @@ export default class FollowerValidation {
     }),
   };
 
+  unfollow = {
+    body: Joi.object().keys({
+      followerId: Joi.number().required(),
+      follower: Joi.object(),
+      followedId: Joi.number().required(),
+      followed: Joi.object()
+    }),
+  };
+
   suggests = {
     body: Joi.object().keys({
       userId: Joi.number().required(),

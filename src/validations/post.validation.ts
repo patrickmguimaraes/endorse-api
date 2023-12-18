@@ -23,7 +23,7 @@ export default class PostValidation {
 
   newsFeed = {
     body: Joi.object().keys({
-      usedId: Joi.number().required(),
+      userId: Joi.number().required(),
       page: Joi.number().required(),
       pageSize: Joi.number().required(),
     }),

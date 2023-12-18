@@ -30,7 +30,7 @@ export default class Server {
     app.use(helmet());
 
     const corsOptions: CorsOptions = {
-      origin: ["https://endorseanidea.com", "http://localhost:8100"]
+      origin: ["https://endorseanidea.com", "http://localhost:4200"]
     };
 
     app.use(cors(corsOptions));
