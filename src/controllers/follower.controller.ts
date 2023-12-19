@@ -17,4 +17,9 @@ export default class FollowerController {
     const suggests = await followerRepository.suggests(req.body.userId, req.body.limit);
     res.status(httpStatus.OK).send(suggests);
   }); 
+
+  isFollowing = catchAsync(async (req: any, res: any) => {
+    const follower = await followerRepository.isFollowing(req.body.followerId, req.body.followedId);
+    res.status(httpStatus.OK).send(follower);
+  }); 
 }

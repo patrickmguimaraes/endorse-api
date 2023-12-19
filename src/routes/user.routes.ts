@@ -1,5 +1,7 @@
 import { Router } from "express";
 import UserController from "../controllers/user.controller";
+import { validate } from "../middlewares/validate";
+import { userValidation } from "../validations";
 
 class UserRoutes {
   router = Router();
@@ -10,6 +12,9 @@ class UserRoutes {
   }
 
   intializeRoutes() {
+    this.router.post('/search', validate(userValidation.search), this.controller.search);
+    this.router.post('/username', validate(userValidation.findByUsername), this.controller.findByUsername);
+
     this.router.get("/login/:id", this.controller.login);
 
     this.router.get("/exists/:id", this.controller.existsEmail);

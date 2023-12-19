@@ -1,3 +1,5 @@
+import Joi from "joi";
+
 export const objectId = (value: any, helpers: any) => {
   if (!value.match(/^[0-9a-fA-F]{24}$/)) {
     return helpers.message('"{{#label}}" must be a valid mongo id');
@@ -14,3 +16,18 @@ export const password = (value: any, helpers: any) => {
   }
   return value;
 };
+
+export default class UserValidation {
+  
+  search = {
+    body: Joi.object().keys({
+      searchText: Joi.string().required(),
+    }),
+  };
+
+  findByUsername = {
+    body: Joi.object().keys({
+      username: Joi.string().required(),
+    }),
+  };
+}

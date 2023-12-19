@@ -15,7 +15,7 @@ class AuthRepository {
  * @returns {Promise<Usuario>}
  */
   async loginUserWithEmailAndPassword(email: string, password: string) {
-    const user = await userRepository.existsEmail({email});
+    const user = await userRepository.existsEmail(email);
 
     if(user) {
       const passwordDec = decryptData(user?.password!);
@@ -24,7 +24,7 @@ class AuthRepository {
         throw new ApiError(httpStatus.NOT_FOUND, 'Incorrect password');
       }
   
-      return user;
+      return userRepository.retrieveById(user.id!, true);
     }
     else {
       throw new ApiError(httpStatus.NOT_FOUND, 'Incorrect email');
@@ -99,7 +99,11 @@ class AuthRepository {
    */
   async verifyEmail(verifyEmailToken: string) {
     try {
-      const verifyEmailTokenDoc = await tokenRepository.verifyToken(verifyEmailToken, tokenTypes.VERIFY_EMAIL);
+      var tokenModified = verifyEmailToken;
+      while(tokenModified.includes("-_-")) {
+        tokenModified = tokenModified.replace("-_-", ".");
+      }
+      const verifyEmailTokenDoc = await tokenRepository.verifyToken(tokenModified, tokenTypes.VERIFY_EMAIL);
       
       if(!verifyEmailTokenDoc) {
         throw new ApiError(httpStatus.UNAUTHORIZED, 'Token expired!');

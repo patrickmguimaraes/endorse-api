@@ -54,7 +54,19 @@ class FollowerRepository {
     } catch (error) {
       throw new ApiError(httpStatus.NOT_ACCEPTABLE, 'An error ocurred while getting your news feed. Try later.');
     }
-  };
+  }
+
+  async isFollowing(followerId: number, followedId: number) {
+    try {
+      const follower = await Follower.findOne({
+        where: { followerId: followerId, followedId: followedId }
+      });
+  
+      return follower;
+    } catch (error) {
+      throw new ApiError(httpStatus.NOT_ACCEPTABLE, 'An error ocurred while getting the follower. Try later.');
+    }
+  }
 }
 
 export default new FollowerRepository()

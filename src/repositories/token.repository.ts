@@ -99,7 +99,7 @@ class TokenRepository {
    * @returns {Promise<string>}
    */
   async generateResetPasswordToken(email: string) {
-    const user = await userRepository.existsEmail({ email });
+    const user = await userRepository.existsEmail(email);
     if (!user) {
       throw new ApiError(httpStatus.NOT_FOUND, 'No users found with this email');
     }

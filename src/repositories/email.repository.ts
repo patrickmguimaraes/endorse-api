@@ -48,13 +48,24 @@ class EmailRepository {
    * @param {string} token
    * @returns {Promise}
    */
-  async sendVerificationEmail(to: string, token: string) {
+  async sendVerificationEmail(name: string, to: string, token: string) {
+    var tokenModified = token;
+    while(tokenModified.includes(".")) {
+      tokenModified = tokenModified.replace(".", "-_-");
+    }
+
     const subject = 'Email Verification';
     // replace this url with the link to the email verification page of your front-end app
-    const verificationEmailUrl = config.env === 'development' ? `http://localhost:4200/verify-email/${token}` : `https://endorseanidea.com/verify-email/${token}`;
-    const text = `Dear user,
+    var verificationEmailUrl = config.env === 'development' ? `http://localhost:4200/verify-email/${tokenModified}` : `https://endorseanidea.com/verify-email/${tokenModified}`;
+    
+    const text = `  Dear ${name},
+
       To verify your email, click on this link: ${verificationEmailUrl}
-      If you did not create an account, then ignore this email.`;
+      
+      If you did not create an account, then ignore this email.
+      
+      Thank you,
+      Endorse Team`;
     await this.sendEmail(to, subject, text);
   };
 }

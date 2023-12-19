@@ -4,6 +4,8 @@ import userRepository from "../repositories/user.repository";
 import fileUpload from "express-fileupload";
 import path from "path";
 import fs from "fs";
+import ApiError from "../utils/ApiError";
+import httpStatus from "http-status";
 
 export default class UserController {
   async login(req: Request, res: Response) {
@@ -20,7 +22,7 @@ export default class UserController {
 
   async existsEmail(req: Request, res: Response) {
     try {
-      const user = await userRepository.existsEmail({ email: req.params.id});
+      const user = await userRepository.existsEmail(req.params.id);
 
       res.status(200).send(user!=null);
     } catch (err) {
@@ -181,6 +183,28 @@ export default class UserController {
       res.status(500).send({
         message: "Some error occurred while attaching a file."
       });
+    }
+  }
+
+  async search(req: Request, res: Response) {
+    try {
+      const users = await userRepository.search(req.body.searchText);
+      
+      res.status(200).send(users);
+    } catch (err) {
+      console.log(err)
+      throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'The search has a problem. Try later...');
+    }
+  }
+
+  async findByUsername(req: Request, res: Response) {
+    try {
+      const user = await userRepository.findByUsername(req.body.username);
+      
+      res.status(200).send(user);
+    } catch (err) {
+      console.log(err)
+      throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'We had a problem looking for this user. Try later...');
     }
   }
 }

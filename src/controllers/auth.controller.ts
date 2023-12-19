@@ -18,7 +18,7 @@ export default class AuthController {
     //const tokens = await tokenRepository.generateAuthTokens(user);
 
     const verifyEmailToken = await tokenRepository.generateVerifyEmailToken(user);
-    await emailRepository.sendVerificationEmail(user.email!, verifyEmailToken);
+    await emailRepository.sendVerificationEmail(user.type=='Company' ? user.company?.name! : user.person?.name!, user.email!, verifyEmailToken);
 
     res.status(httpStatus.CREATED).send(user);
   }); 
@@ -38,7 +38,7 @@ export default class AuthController {
     if(user && !user.isEmailVerified) {
       authRepository.deleteOldVerifyTokens(user.id!);
       const verifyEmailToken = await tokenRepository.generateVerifyEmailToken(user);
-      await emailRepository.sendVerificationEmail(user.email!, verifyEmailToken);
+      await emailRepository.sendVerificationEmail(user.type=='Company' ? user.company?.name! : user.person?.name!, user.email!, verifyEmailToken);
     }
 
     //res.send({ user, tokens, chats });
@@ -57,7 +57,7 @@ export default class AuthController {
 
   getUserByToken = catchAsync(async (req: any, res: any) => {
     if (req.user) {
-      const fullUser = await userRepository.retrieveById(req.user.id)
+      const fullUser = await userRepository.retrieveById(req.user.id, true)
       //const chats = await conversaService.getChats(req.user);
       //res.send({ user: req.user, chats });
       res.send({ user: fullUser });
@@ -80,7 +80,7 @@ export default class AuthController {
 
   sendVerificationEmail = catchAsync(async (req: any, res: any) => {
     const verifyEmailToken = await tokenRepository.generateVerifyEmailToken(req.user);
-    await emailRepository.sendVerificationEmail(req.user.email, verifyEmailToken);
+    await emailRepository.sendVerificationEmail(req.user.type=='Company' ? req.user.company?.name! : req.user.person?.name!, req.user.email, verifyEmailToken);
     res.status(httpStatus.NO_CONTENT).send();
   });
 
