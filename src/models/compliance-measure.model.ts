@@ -1,5 +1,5 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
-import EndorseComplianceMeasure from "./endorse-compliance-measure.model";
+import RequestComplianceMeasure from "./request-compliance-measure.model";
 
 @Table({
   tableName: "complianceMeasures",
@@ -19,6 +19,6 @@ export default class ComplianceMeasure extends Model {
   })
   name?: string;
 
-  @HasMany(() => EndorseComplianceMeasure, { foreignKey: 'complianceMeasureId', sourceKey: 'id' })
-  endorseComplianceMeasures?: EndorseComplianceMeasure[];
+  @HasMany(() => RequestComplianceMeasure, { foreignKey: 'complianceMeasureId', sourceKey: 'id' })
+  requestComplianceMeasures?: RequestComplianceMeasure[];
 }

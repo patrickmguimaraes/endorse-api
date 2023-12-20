@@ -1,5 +1,5 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
-import EndorseContentElement from "./endorse-content-element.model";
+import RequestContentElement from "./request-content-element.model";
 
 @Table({
   tableName: "contentElements",
@@ -19,6 +19,6 @@ export default class ContentElement extends Model {
   })
   name?: string;
 
-  @HasMany(() => EndorseContentElement, { foreignKey: 'contentElementId', sourceKey: 'id' })
-  endorseContentElements?: EndorseContentElement[];
+  @HasMany(() => RequestContentElement, { foreignKey: 'contentElementId', sourceKey: 'id' })
+  requestContentElements?: RequestContentElement[];
 }

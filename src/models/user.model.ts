@@ -2,15 +2,15 @@ import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo 
 import Contract from "./contract.model";
 import Person from "./person.model";
 import Company from "./company.model";
-import Endorse from "./endorse.model";
-import EndorseAssignment from "./endorse-assignment.model";
+import Request from "./request.model";
+import RequestAssignment from "./request-assignment.model";
 import File from "./file.model";
-import EndorseHistory from "./endorse-history.model";
+import RequestHistory from "./request-history.model";
 import UserTermAndCondition from "./user-term-and-condition.model";
 import Token from "./token.model";
-import Like from "./like.model";
+import Like from "./power.model";
 import Comment from "./comment.model";
-import Endorsement from "./endorsement.model";
+import Requestment from "./request.model";
 import Post from "./post.model";
 import Follower from "./follower.model";
 import View from "./view.model";
@@ -191,17 +191,17 @@ export default class User extends Model {
   @BelongsTo(() => Company)
   company?: Company;
   
-  @HasMany(() => Endorse, { foreignKey: 'userId', sourceKey: 'id' })
-  endorses?: Endorse[];
+  @HasMany(() => Request, { foreignKey: 'userId', sourceKey: 'id' })
+  requests?: Request[];
 
-  @HasMany(() => EndorseAssignment, { foreignKey: 'userId', sourceKey: 'id' })
-  endorseAssignments?: EndorseAssignment[];
+  @HasMany(() => RequestAssignment, { foreignKey: 'userId', sourceKey: 'id' })
+  requestAssignments?: RequestAssignment[];
 
   @HasMany(() => File, { foreignKey: 'userId', sourceKey: 'id' })
   files?: File[];
 
-  @HasMany(() => EndorseHistory, { foreignKey: 'userId', sourceKey: 'id' })
-  endorseHistory?: EndorseHistory[];
+  @HasMany(() => RequestHistory, { foreignKey: 'userId', sourceKey: 'id' })
+  requestHistory?: RequestHistory[];
 
   @HasMany(() => UserTermAndCondition, { foreignKey: 'userId', sourceKey: 'id' })
   userTermsAndConditions?: UserTermAndCondition[];
@@ -215,8 +215,8 @@ export default class User extends Model {
   @HasMany(() => Comment, { foreignKey: 'userId', sourceKey: 'id' })
   comments?: Comment[];
 
-  @HasMany(() => Endorsement, { foreignKey: 'userId', sourceKey: 'id' })
-  endorsements?: Endorsement[];
+  @HasMany(() => Requestment, { foreignKey: 'userId', sourceKey: 'id' })
+  requestments?: Requestment[];
 
   @HasMany(() => Post, { foreignKey: 'userId', sourceKey: 'id' })
   posts?: Post[];

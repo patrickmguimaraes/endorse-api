@@ -1,11 +1,11 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
-import Endorse from "./endorse.model";
+import Request from "./request.model";
 import ContentElement from "./content-element.model";
 
 @Table({
-  tableName: "endorseContentElements",
+  tableName: "requestContentElements",
 })
-export default class EndorseContentElement extends Model {
+export default class RequestContentElement extends Model {
   @Column({
     type: DataType.INTEGER,
     primaryKey: true,
@@ -14,15 +14,15 @@ export default class EndorseContentElement extends Model {
   })
   id?: number;
 
-  @ForeignKey(() => Endorse)
+  @ForeignKey(() => Request)
   @Column({
     type: DataType.INTEGER,
-    field: "endorseId",
+    field: "requestId",
   })
-  endorseId!: number;
+  requestId!: number;
 
-  @BelongsTo(() => Endorse)
-  endorse?: Endorse;
+  @BelongsTo(() => Request)
+  request?: Request;
 
   @ForeignKey(() => ContentElement)
   @Column({

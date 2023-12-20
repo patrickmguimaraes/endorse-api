@@ -6,7 +6,7 @@ class OpenAIApi {
     constructor(app: Application) {
         const openai = new OpenAI({ apiKey: config.OPEN_AI_API_KEY });
 
-        app.post('/api/openAI/generateRequestEndorsement', async (req: Request, res: Response) => {
+        app.post('/api/openAI/generateRequest', async (req: Request, res: Response) => {
             try {
                 console.log('Received request:', req.body);
 

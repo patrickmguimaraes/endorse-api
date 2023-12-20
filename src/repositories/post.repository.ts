@@ -8,6 +8,9 @@ import { Op } from 'sequelize';
 import View from '../models/view.model';
 import Person from '../models/person.model';
 import Company from '../models/company.model';
+import Article from '../models/article.model';
+import Idea from '../models/idea.model';
+import File from '../models/file.model';
 
 class PostRepository {
   async post(post: Post) {
@@ -15,8 +18,6 @@ class PostRepository {
     const result = await Post.create({...post}, {include:[{ all: true }]});
 
     result.link = new Date().valueOf().toString(36);
-
-    console.log(result.link);
 
     await Post.update(
       { link: result.link },
@@ -57,6 +58,9 @@ class PostRepository {
             model: User,
             include: [{ model: Person, as: 'person' }, { model: Company, as: 'company'}]
           },
+          { model: Article, as: 'article' },
+          { model: Idea, as: 'idea' },
+          { model: File, as: 'files' }
         ],
         order: [['createdAt', 'DESC']],
         limit: pageSize,

@@ -9,29 +9,31 @@ import Category from "../models/category.model";
 import ComplianceMeasure from "../models/compliance-measure.model";
 import ContentElement from "../models/content-element.model";
 import Copyright from "../models/copyright.model";
-import Endorse from "../models/endorse.model";
-import EndorseActivationDate from "../models/endorse-activation-date.model";
-import EndorseComplianceMeasure from "../models/endorse-compliance-measure.model";
-import EndorseContentElement from "../models/endorse-content-element.model";
-import EndorseGeograficScope from "../models/endorse-geografic-scope.model";
-import EndorseMediaChannel from "../models/endorse-media-channel.model";
-import EndorseMetric from "../models/endorse-metric.model";
+import Request from "../models/request.model";
+import RequestActivationDate from "../models/request-activation-date.model";
+import RequestComplianceMeasure from "../models/request-compliance-measure.model";
+import RequestContentElement from "../models/request-content-element.model";
+import RequestGeograficScope from "../models/request-geografic-scope.model";
+import RequestMediaChannel from "../models/request-media-channel.model";
+import RequestMetric from "../models/request-metric.model";
 import GeograficScope from "../models/geografic-scope.model";
 import MediaChannel from "../models/media-channel.model";
 import Metric from "../models/metric.model";
-import EndorseAssignment from "../models/endorse-assignment.model";
+import RequestAssignment from "../models/request-assignment.model";
 import File from "../models/file.model";
-import EndorseHistory from "../models/endorse-history.model";
+import RequestHistory from "../models/request-history.model";
 import UserTermAndCondition from "../models/user-term-and-condition.model";
 import TermAndCondition from "../models/term-and-condition.model";
 import Token from "../models/token.model";
 import { logger } from "../config/logger";
-import Like from "../models/like.model";
+import Power from "../models/power.model";
 import Comment from "../models/comment.model";
 import Post from "../models/post.model";
-import Endorsement from "../models/endorsement.model";
 import Follower from "../models/follower.model";
 import View from "../models/view.model";
+import Endorse from "../models/endorse.model";
+import Article from "../models/article.model";
+import Idea from "../models/idea.model";
 
 class Database {
   public sequelize: Sequelize | undefined;
@@ -64,26 +66,28 @@ class Database {
         ComplianceMeasure,
         ContentElement,
         Copyright,
-        Endorse,
-        EndorseActivationDate,
-        EndorseComplianceMeasure,
-        EndorseContentElement,
-        EndorseGeograficScope,
-        EndorseMediaChannel,
-        EndorseMetric,
+        Request,
+        RequestActivationDate,
+        RequestComplianceMeasure,
+        RequestContentElement,
+        RequestGeograficScope,
+        RequestMediaChannel,
+        RequestMetric,
         GeograficScope,
         MediaChannel,
         Metric,
-        EndorseAssignment,
+        RequestAssignment,
         File,
-        EndorseHistory,
+        RequestHistory,
         UserTermAndCondition,
         TermAndCondition,
         Token,
         Post,
-        Like,
+        Power,
+        Article,
+        Idea,
         Comment,
-        Endorsement,
+        Endorse,
         Follower,
         View
       ]
@@ -101,8 +105,8 @@ class Database {
   }
 
   public async sync() {
-    User.hasMany(Endorse, { foreignKey: 'userId' });
-    Endorse.belongsTo(User, { foreignKey: 'userId' });
+    User.hasMany(Request, { foreignKey: 'userId' });
+    Request.belongsTo(User, { foreignKey: 'userId' });
 
     Person.hasOne(User, { foreignKey: 'personId' });
     User.belongsTo(Person, { foreignKey: 'personId' });
@@ -113,89 +117,95 @@ class Database {
     Category.hasMany(Company, { foreignKey: 'categoryId' });
     Company.belongsTo(Category, { foreignKey: 'categoryId' });
 
-    Category.hasMany(Endorse, { foreignKey: 'categoryId' });
-    Endorse.belongsTo(Category, { foreignKey: 'categoryId' });
+    Category.hasMany(Request, { foreignKey: 'categoryId' });
+    Request.belongsTo(Category, { foreignKey: 'categoryId' });
 
     Company.hasMany(Copyright, { foreignKey: 'companyId' });
     Copyright.belongsTo(Company, { foreignKey: 'companyId' });
 
-    Endorse.hasMany(EndorseActivationDate, { foreignKey: 'endorseId' });
-    EndorseActivationDate.belongsTo(Endorse, { foreignKey: 'endorseId' });
+    Request.hasMany(RequestActivationDate, { foreignKey: 'requestId' });
+    RequestActivationDate.belongsTo(Request, { foreignKey: 'requestId' });
 
-    Endorse.hasMany(EndorseComplianceMeasure, { foreignKey: 'endorseId' });
-    EndorseComplianceMeasure.belongsTo(Endorse, { foreignKey: 'endorseId' });
+    Request.hasMany(RequestComplianceMeasure, { foreignKey: 'requestId' });
+    RequestComplianceMeasure.belongsTo(Request, { foreignKey: 'requestId' });
 
-    Endorse.hasMany(EndorseContentElement, { foreignKey: 'endorseId' });
-    EndorseContentElement.belongsTo(Endorse, { foreignKey: 'endorseId' });
+    Request.hasMany(RequestContentElement, { foreignKey: 'requestId' });
+    RequestContentElement.belongsTo(Request, { foreignKey: 'requestId' });
 
-    Endorse.hasMany(EndorseGeograficScope, { foreignKey: 'endorseId' });
-    EndorseGeograficScope.belongsTo(Endorse, { foreignKey: 'endorseId' });
+    Request.hasMany(RequestGeograficScope, { foreignKey: 'requestId' });
+    RequestGeograficScope.belongsTo(Request, { foreignKey: 'requestId' });
 
-    Endorse.hasMany(EndorseMediaChannel, { foreignKey: 'endorseId' });
-    EndorseMediaChannel.belongsTo(Endorse, { foreignKey: 'endorseId' });
+    Request.hasMany(RequestMediaChannel, { foreignKey: 'requestId' });
+    RequestMediaChannel.belongsTo(Request, { foreignKey: 'requestId' });
 
-    Endorse.hasMany(EndorseMetric, { foreignKey: 'endorseId' });
-    EndorseMetric.belongsTo(Endorse, { foreignKey: 'endorseId' });
+    Request.hasMany(RequestMetric, { foreignKey: 'requestId' });
+    RequestMetric.belongsTo(Request, { foreignKey: 'requestId' });
 
-    ActivationDate.hasMany(EndorseActivationDate, { foreignKey: 'activationDateId' });
-    EndorseActivationDate.belongsTo(ActivationDate, { foreignKey: 'activationDateId' });
+    ActivationDate.hasMany(RequestActivationDate, { foreignKey: 'activationDateId' });
+    RequestActivationDate.belongsTo(ActivationDate, { foreignKey: 'activationDateId' });
 
-    ComplianceMeasure.hasMany(EndorseComplianceMeasure, { foreignKey: 'complianceMeasureId' });
-    EndorseComplianceMeasure.belongsTo(ComplianceMeasure, { foreignKey: 'complianceMeasureId' });
+    ComplianceMeasure.hasMany(RequestComplianceMeasure, { foreignKey: 'complianceMeasureId' });
+    RequestComplianceMeasure.belongsTo(ComplianceMeasure, { foreignKey: 'complianceMeasureId' });
 
-    ContentElement.hasMany(EndorseContentElement, { foreignKey: 'contentElementId' });
-    EndorseContentElement.belongsTo(ContentElement, { foreignKey: 'contentElementId' });
+    ContentElement.hasMany(RequestContentElement, { foreignKey: 'contentElementId' });
+    RequestContentElement.belongsTo(ContentElement, { foreignKey: 'contentElementId' });
 
-    GeograficScope.hasMany(EndorseGeograficScope, { foreignKey: 'geograficScopeId' });
-    EndorseGeograficScope.belongsTo(GeograficScope, { foreignKey: 'geograficScopeId' });
+    GeograficScope.hasMany(RequestGeograficScope, { foreignKey: 'geograficScopeId' });
+    RequestGeograficScope.belongsTo(GeograficScope, { foreignKey: 'geograficScopeId' });
 
-    MediaChannel.hasMany(EndorseMediaChannel, { foreignKey: 'mediaChannelId' });
-    EndorseMediaChannel.belongsTo(MediaChannel, { foreignKey: 'mediaChannelId' });
+    MediaChannel.hasMany(RequestMediaChannel, { foreignKey: 'mediaChannelId' });
+    RequestMediaChannel.belongsTo(MediaChannel, { foreignKey: 'mediaChannelId' });
 
-    Metric.hasMany(EndorseMetric, { foreignKey: 'metricId' });
-    EndorseMetric.belongsTo(Metric, { foreignKey: 'metricId' });
+    Metric.hasMany(RequestMetric, { foreignKey: 'metricId' });
+    RequestMetric.belongsTo(Metric, { foreignKey: 'metricId' });
 
-    Endorse.hasMany(EndorseAssignment, { foreignKey: 'endorseId' });
-    EndorseAssignment.belongsTo(Endorse, { foreignKey: 'endorseId' });
+    Request.hasMany(RequestAssignment, { foreignKey: 'requestId' });
+    RequestAssignment.belongsTo(Request, { foreignKey: 'requestId' });
 
-    Endorse.hasMany(File, { foreignKey: 'endorseId' });
-    File.belongsTo(Endorse, { foreignKey: 'endorseId' });
+    Request.hasMany(File, { foreignKey: 'requestId' });
+    File.belongsTo(Request, { foreignKey: 'requestId' });
 
     User.hasMany(File, { foreignKey: 'userId' });
     File.belongsTo(User, { foreignKey: 'userId' });
 
-    Endorse.hasMany(EndorseHistory, { foreignKey: 'endorseId' });
-    EndorseHistory.belongsTo(Endorse, { foreignKey: 'endorseId' });
+    Request.hasMany(RequestHistory, { foreignKey: 'requestId' });
+    RequestHistory.belongsTo(Request, { foreignKey: 'requestId' });
 
-    User.hasMany(EndorseHistory, { foreignKey: 'userId' });
-    EndorseHistory.belongsTo(User, { foreignKey: 'userId' });
+    User.hasMany(RequestHistory, { foreignKey: 'userId' });
+    RequestHistory.belongsTo(User, { foreignKey: 'userId' });
 
     User.hasMany(Post, { foreignKey: 'userId' });
     Post.belongsTo(User, { foreignKey: 'userId' });
 
-    User.hasMany(Endorsement, { foreignKey: 'userId' });
-    Endorsement.belongsTo(User, { foreignKey: 'userId' });
+    User.hasMany(Endorse, { foreignKey: 'userId' });
+    Endorse.belongsTo(User, { foreignKey: 'userId' });
 
-    User.hasMany(Like, { foreignKey: 'userId' });
-    Like.belongsTo(User, { foreignKey: 'userId' });
+    User.hasMany(Power, { foreignKey: 'userId' });
+    Power.belongsTo(User, { foreignKey: 'userId' });
 
     User.hasMany(Comment, { foreignKey: 'userId' });
     Comment.belongsTo(User, { foreignKey: 'userId' });
 
-    Endorsement.hasMany(Endorsement, { foreignKey: 'endorsementId' });
-    Endorsement.belongsTo(Endorsement, { foreignKey: 'endorsementId' });
+    Endorse.hasMany(Endorse, { foreignKey: 'requestmentId' });
+    Endorse.belongsTo(Endorse, { foreignKey: 'requestmentId' });
 
     Comment.hasMany(Comment, { foreignKey: 'commentId' });
     Comment.belongsTo(Comment, { foreignKey: 'commentId' });
 
-    Post.hasMany(Endorsement, { foreignKey: 'postId' });
-    Endorsement.belongsTo(Post, { foreignKey: 'postId' });
+    Post.hasMany(Endorse, { foreignKey: 'postId' });
+    Endorse.belongsTo(Post, { foreignKey: 'postId' });
 
-    Post.hasMany(Comment, { foreignKey: 'postId' });
-    Comment.belongsTo(Post, { foreignKey: 'postId' });
+    Article.hasOne(Post, { foreignKey: 'articleId' });
+    Post.belongsTo(Article, { foreignKey: 'articleId' });
 
-    Post.hasMany(Like, { foreignKey: 'postId' });
-    Like.belongsTo(Post, { foreignKey: 'postId' });
+    Idea.hasOne(Post, { foreignKey: 'ideaId' });
+    Post.belongsTo(Idea, { foreignKey: 'ideaId' });
+
+    Post.hasMany(File, { foreignKey: 'postId' });
+    File.belongsTo(Post, { foreignKey: 'postId' });
+
+    Post.hasMany(Power, { foreignKey: 'postId' });
+    Power.belongsTo(Post, { foreignKey: 'postId' });
 
     User.hasMany(Follower, { foreignKey: 'followerId' });
     Follower.belongsTo(User, { foreignKey: 'followerId' });

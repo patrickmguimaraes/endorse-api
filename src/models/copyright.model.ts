@@ -1,5 +1,6 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
 import Company from "./company.model";
+import Request from "./request.model";
 
 @Table({
   tableName: "copyrights",
@@ -34,4 +35,7 @@ export default class Copyright extends Model {
 
   @BelongsTo(() => Company)
   company?: Company;
+
+  @HasMany(() => Request, { foreignKey: 'copyrightId', sourceKey: 'id' })
+  requests?: Request[];
 }

@@ -1,5 +1,5 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
-import EndorseMetric from "./endorse-metric.model";
+import RequestMetric from "./request-metric.model";
 
 @Table({
   tableName: "metrics",
@@ -19,6 +19,6 @@ export default class Metric extends Model {
   })
   name?: string;
 
-  @HasMany(() => EndorseMetric, { foreignKey: 'metricId', sourceKey: 'id' })
-  endorseMetrics?: EndorseMetric[];
+  @HasMany(() => RequestMetric, { foreignKey: 'metricId', sourceKey: 'id' })
+  requestMetrics?: RequestMetric[];
 }

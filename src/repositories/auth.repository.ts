@@ -53,8 +53,6 @@ class AuthRepository {
     const refreshTokenDoc = await tokenRepository.verifyToken(refreshToken, tokenTypes.REFRESH);
     const user = await userRepository.retrieveById(refreshTokenDoc.userId);
     
-    console.log(user)
-    
     if (!user) {
       throw new Error();
     }

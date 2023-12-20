@@ -1,30 +1,30 @@
 
 import { Router } from "express";
-import EndorseController from "../controllers/endorse.controller";
+import RequestController from "../controllers/request.controller";
 
-class EndorseRoutes {
+class RequestRoutes {
   router = Router();
-  controller = new EndorseController();
+  controller = new RequestController();
 
   constructor() {
     this.intializeRoutes();
   }
 
   intializeRoutes() {
-    // Create a new Endorse
+    // Create a new Request
     this.router.post("/", this.controller.create);
 
-    // Retrieve all Endorses
+    // Retrieve all Requests
     this.router.get("/", this.controller.findAll);
 
-    // Update a Endorse with id
+    // Update a Request with id
     this.router.put("/:id", this.controller.update);
 
-    // Delete a Endorse with id
+    // Delete a Request with id
     this.router.delete("/:id", this.controller.delete);
 
     this.router.post("/attachFile", this.controller.attachFile);
   }
 }
 
-export default new EndorseRoutes().router;
+export default new RequestRoutes().router;

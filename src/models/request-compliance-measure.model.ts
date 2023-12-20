@@ -1,11 +1,11 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
-import Endorse from "./endorse.model";
+import Request from "./request.model";
 import ComplianceMeasure from "./compliance-measure.model";
 
 @Table({
-  tableName: "endorseComplianceMeasures",
+  tableName: "requestComplianceMeasures",
 })
-export default class EndorseComplianceMeasure extends Model {
+export default class RequestComplianceMeasure extends Model {
   @Column({
     type: DataType.INTEGER,
     primaryKey: true,
@@ -14,15 +14,15 @@ export default class EndorseComplianceMeasure extends Model {
   })
   id?: number;
 
-  @ForeignKey(() => Endorse)
+  @ForeignKey(() => Request)
   @Column({
     type: DataType.INTEGER,
-    field: "endorseId",
+    field: "requestId",
   })
-  endorseId!: number;
+  requestId!: number;
 
-  @BelongsTo(() => Endorse)
-  endorse?: Endorse;
+  @BelongsTo(() => Request)
+  request?: Request;
 
   @ForeignKey(() => ComplianceMeasure)
   @Column({

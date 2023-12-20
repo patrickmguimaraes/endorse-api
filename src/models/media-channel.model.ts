@@ -1,5 +1,5 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
-import EndorseMediaChannel from "./endorse-media-channel.model";
+import RequestMediaChannel from "./request-media-channel.model";
 
 @Table({
   tableName: "mediaChannels",
@@ -19,6 +19,6 @@ export default class MediaChannel extends Model {
   })
   name?: string;
 
-  @HasMany(() => EndorseMediaChannel, { foreignKey: 'mediaChannelId', sourceKey: 'id' })
-  endorseMediaChannels?: EndorseMediaChannel[];
+  @HasMany(() => RequestMediaChannel, { foreignKey: 'mediaChannelId', sourceKey: 'id' })
+  requestMediaChannels?: RequestMediaChannel[];
 }

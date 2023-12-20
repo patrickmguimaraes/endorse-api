@@ -1,7 +1,7 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
-import Endorse from "./endorse.model";
-import ActivationDate from "./activation-date.model";
+import Request from "./request.model";
 import User from "./user.model";
+import Post from "./post.model";
 
 @Table({
   tableName: "files",
@@ -16,26 +16,32 @@ export default class File extends Model {
   id?: number;
 
   @Column({
-    type: DataType.STRING,
+    type: DataType.STRING(50),
     field: "name"
   })
   name?: string;
 
   @Column({
-    type: DataType.STRING,
+    type: DataType.STRING(10),
+    field: "type"
+  })
+  type?: string;
+
+  @Column({
+    type: DataType.STRING(100),
     field: "path"
   })
   path?: string;
 
-  @ForeignKey(() => Endorse)
+  @ForeignKey(() => Request)
   @Column({
     type: DataType.INTEGER,
-    field: "endorseId",
+    field: "requestId",
   })
-  endorseId!: number;
+  requestId!: number;
 
-  @BelongsTo(() => Endorse)
-  endorse?: Endorse;
+  @BelongsTo(() => Request)
+  request?: Request;
 
   @ForeignKey(() => User)
   @Column({
@@ -46,4 +52,14 @@ export default class File extends Model {
 
   @BelongsTo(() => User)
   user?: User;
+  
+  @ForeignKey(() => Post)
+  @Column({
+    type: DataType.INTEGER,
+    field: "postId",
+  })
+  postId!: number;
+
+  @BelongsTo(() => Post)
+  post?: Post;
 }

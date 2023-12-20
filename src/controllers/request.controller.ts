@@ -1,12 +1,12 @@
-import { Request, Response } from "express";
-import Endorse from "../models/endorse.model";
-import endorseRepository from "../repositories/endorse.repository";
+import { Response } from "express";
+import Request from "../models/request.model";
+import requestRepository from "../repositories/request.repository";
 import fileUpload from "express-fileupload";
 import path from "path";
 import fs from "fs";
 
-export default class EndorseController {
-  async create(req: Request, res: Response) {
+export default class RequestController {
+  async create(req: any, res: Response) {
     if (!req.body.name) {
       res.status(400).send({
         message: "Content can not be empty!"
@@ -15,11 +15,11 @@ export default class EndorseController {
     }
 
     try {
-      const endorse: Endorse = req.body;
+      const request: Request = req.body;
 
-      const savedEndorse = await endorseRepository.save(endorse);
+      const savedRequest = await requestRepository.save(request);
 
-      res.status(201).send(savedEndorse);
+      res.status(201).send(savedRequest);
     } catch (err) {
       console.log(err)
 
@@ -29,9 +29,9 @@ export default class EndorseController {
     }
   }
 
-  async findAll(req: Request, res: Response) {
+  async findAll(req: any, res: Response) {
     try {
-      const people = await endorseRepository.getAll();
+      const people = await requestRepository.getAll();
 
       res.status(200).send(people);
     } catch (err) {
@@ -41,52 +41,52 @@ export default class EndorseController {
     }
   }
 
-  async update(req: Request, res: Response) {
-    let endorse: Endorse = req.body;
-    endorse.id = parseInt(req.params.id);
+  async update(req: any, res: Response) {
+    let request: Request = req.body;
+    request.id = parseInt(req.params.id);
 
     try {
-      const num = await endorseRepository.update(endorse);
+      const num = await requestRepository.update(request);
 
       if (num == 1) {
         res.send({
-          message: "Endorse was updated successfully."
+          message: "Request was updated successfully."
         });
       } else {
         res.send({
-          message: `Cannot update Endorse with id=${endorse.id}. Maybe Endorse was not found or req.body is empty!`
+          message: `Cannot update Request with id=${request.id}. Maybe Request was not found or req.body is empty!`
         });
       }
     } catch (err) {
       res.status(500).send({
-        message: `Error updating Endorse with id=${endorse.id}.`
+        message: `Error updating Request with id=${request.id}.`
       });
     }
   }
 
-  async delete(req: Request, res: Response) {
+  async delete(req: any, res: Response) {
     const id: number = parseInt(req.params.id);
 
     try {
-      const num = await endorseRepository.delete(id);
+      const num = await requestRepository.delete(id);
 
       if (num == 1) {
         res.send({
-          message: "Endorse was deleted successfully!"
+          message: "Request was deleted successfully!"
         });
       } else {
         res.send({
-          message: `Cannot delete Endorse with id=${id}. Maybe Endorse was not found!`,
+          message: `Cannot delete Request with id=${id}. Maybe Request was not found!`,
         });
       }
     } catch (err) {
       res.status(500).send({
-        message: `Could not delete Endorse with id==${id}.`
+        message: `Could not delete Request with id==${id}.`
       });
     }
   }
 
-  async attachFile(req: Request, res: Response) {
+  async attachFile(req: any, res: Response) {
     try {
       let sampleFile: fileUpload.UploadedFile;
       let uploadPath: string;
@@ -96,13 +96,13 @@ export default class EndorseController {
         return res.status(400).send('No files were uploaded.');
       }
 
-      if (!fs.existsSync(path.join(__dirname, '../../../storage/endorse/'))) {
-        fs.mkdirSync(path.join(__dirname, '../../../storage/endorse/'), { recursive: true });
+      if (!fs.existsSync(path.join(__dirname, '../../../storage/request/'))) {
+        fs.mkdirSync(path.join(__dirname, '../../../storage/request/'), { recursive: true });
       }
 
       sampleFile = req.files.sampleFile as fileUpload.UploadedFile;
       name = new Date().getTime() + sampleFile.mimetype.replace("image/", ".").replace("application/", ".");
-      uploadPath = path.join(__dirname, '../../../storage/endorse/' + name);
+      uploadPath = path.join(__dirname, '../../../storage/request/' + name);
 
       sampleFile.mv(uploadPath, function (err) {
         if (err) {

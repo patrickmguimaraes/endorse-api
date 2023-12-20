@@ -1,11 +1,11 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
-import Endorse from "./endorse.model";
+import Request from "./request.model";
 import ActivationDate from "./activation-date.model";
 
 @Table({
-  tableName: "endorseActivationDates",
+  tableName: "requestActivationDates",
 })
-export default class EndorseActivationDate extends Model {
+export default class RequestActivationDate extends Model {
   @Column({
     type: DataType.INTEGER,
     primaryKey: true,
@@ -20,15 +20,15 @@ export default class EndorseActivationDate extends Model {
   })
   date?: Date;
 
-  @ForeignKey(() => Endorse)
+  @ForeignKey(() => Request)
   @Column({
     type: DataType.INTEGER,
-    field: "endorseId",
+    field: "requestId",
   })
-  endorseId!: number;
+  requestId!: number;
 
-  @BelongsTo(() => Endorse)
-  endorse?: Endorse;
+  @BelongsTo(() => Request)
+  request?: Request;
 
   @ForeignKey(() => ActivationDate)
   @Column({

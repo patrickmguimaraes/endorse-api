@@ -1,5 +1,5 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
-import EndorseActivationDate from "./endorse-activation-date.model";
+import RequestActivationDate from "./request-activation-date.model";
 
 @Table({
   tableName: "activationDates",
@@ -19,6 +19,6 @@ export default class ActivationDate extends Model {
   })
   name?: string;
 
-  @HasMany(() => EndorseActivationDate, { foreignKey: 'activationDateId', sourceKey: 'id' })
-  endorseActivationDates?: EndorseActivationDate[];
+  @HasMany(() => RequestActivationDate, { foreignKey: 'activationDateId', sourceKey: 'id' })
+  requestActivationDates?: RequestActivationDate[];
 }

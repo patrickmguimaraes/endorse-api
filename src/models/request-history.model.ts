@@ -1,11 +1,11 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
+import Request from "./request.model";
 import User from "./user.model";
-import Post from "./post.model";
 
 @Table({
-  tableName: "likes",
+  tableName: "requestHistory",
 })
-export default class Like extends Model {
+export default class RequestHistory extends Model {
   @Column({
     type: DataType.INTEGER,
     primaryKey: true,
@@ -14,15 +14,27 @@ export default class Like extends Model {
   })
   id?: number;
 
-  @ForeignKey(() => Post)
+  @Column({
+    type: DataType.DATE,
+    field: "date"
+  })
+  date?: string;
+
+  @Column({
+    type: DataType.STRING(10),
+    field: "action"
+  })
+  action?: string;
+
+  @ForeignKey(() => Request)
   @Column({
     type: DataType.INTEGER,
-    field: "postId",
+    field: "requestId",
   })
-  postId!: number;
+  requestId!: number;
 
-  @BelongsTo(() => Post)
-  post?: Post;
+  @BelongsTo(() => Request)
+  request?: Request;
 
   @ForeignKey(() => User)
   @Column({

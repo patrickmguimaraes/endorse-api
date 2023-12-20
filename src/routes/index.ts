@@ -10,8 +10,8 @@ import mediaChannelRoutes from "./media-channel.routes";
 import contentElementRoutes from "./content-element.routes";
 import complianceMeasureRoute from "./compliance-measure.route";
 import metricRoutes from "./metric.routes";
-import endorseRoutes from "./endorse.routes";
-import endorseHistoryRoutes from "./endorse-history.routes";
+import requestRoutes from "./request.routes";
+import requestHistoryRoutes from "./request-history.routes";
 import express from "express";
 import authRoute from "./auth.route";
 import termAndConditionRoute from "./term-and-condition.route";
@@ -68,12 +68,12 @@ class Routes {
       route: metricRoutes,
     },
     { 
-      path: '/endorsements',
-      route: endorseRoutes,
+      path: '/requests',
+      route: requestRoutes,
     },
     { 
-      path: '/endorseHistory',
-      route: endorseHistoryRoutes,
+      path: '/requestHistory',
+      route: requestHistoryRoutes,
     },
     { 
       path: '/termsAndConditions',
