@@ -3,7 +3,7 @@ import Request from "./request.model";
 import User from "./user.model";
 import Post from "./post.model";
 
-@Table({
+@Table({timestamps: false,
   tableName: "files",
 })
 export default class File extends Model {
@@ -28,8 +28,9 @@ export default class File extends Model {
   type?: string;
 
   @Column({
-    type: DataType.STRING(100),
-    field: "path"
+    type: DataType.STRING,
+    field: "path",
+    allowNull: true
   })
   path?: string;
 

@@ -2,7 +2,7 @@ import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo 
 import Request from "./request.model";
 import ComplianceMeasure from "./compliance-measure.model";
 
-@Table({
+@Table({timestamps: false,
   tableName: "requestComplianceMeasures",
 })
 export default class RequestComplianceMeasure extends Model {

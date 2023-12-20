@@ -1,7 +1,7 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
 import Post from "./post.model";
 
-@Table({
+@Table({timestamps: false,
   tableName: "ideas",
 })
 export default class Idea extends Model {

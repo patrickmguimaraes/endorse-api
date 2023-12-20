@@ -2,7 +2,7 @@ import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo 
 import Request from "./request.model";
 import GeograficScope from "./geografic-scope.model";
 
-@Table({
+@Table({timestamps: false,
   tableName: "requestGeograficScopes",
 })
 export default class RequestGeograficScope extends Model {

@@ -15,7 +15,7 @@ import Post from "./post.model";
 import Follower from "./follower.model";
 import View from "./view.model";
 
-@Table({
+@Table({timestamps: false,
   tableName: "users",
 })
 export default class User extends Model {

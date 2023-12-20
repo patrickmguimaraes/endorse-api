@@ -1,7 +1,7 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
 import RequestMetric from "./request-metric.model";
 
-@Table({
+@Table({timestamps: false,
   tableName: "metrics",
 })
 export default class Metric extends Model {

@@ -2,7 +2,7 @@ import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo 
 import User from "./user.model";
 import TermAndCondition from "./term-and-condition.model";
 
-@Table({
+@Table({timestamps: false,
   tableName: "userTermsAndConditions",
 })
 export default class UserTermAndCondition extends Model {

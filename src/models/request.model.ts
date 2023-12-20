@@ -12,7 +12,7 @@ import File from "./file.model";
 import RequestHistory from "./request-history.model";
 import Copyright from "./copyright.model";
 
-@Table({
+@Table({timestamps: false,
   tableName: "requests",
 })
 export default class Request extends Model {

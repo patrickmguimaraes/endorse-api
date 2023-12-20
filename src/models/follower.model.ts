@@ -1,7 +1,7 @@
 import { Model, Table, Column, DataType, ForeignKey, BelongsTo } from "sequelize-typescript";
 import User from "./user.model";
 
-@Table({
+@Table({timestamps: false,
   tableName: "followers",
 })
 export default class Follower extends Model {

@@ -2,7 +2,7 @@ import { Model, Table, Column, DataType, ForeignKey, BelongsTo } from "sequelize
 import User from "./user.model";
 import Post from "./post.model";
 
-@Table({
+@Table({timestamps: false,
   tableName: "views",
 })
 export default class View extends Model {

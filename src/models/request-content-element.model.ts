@@ -2,7 +2,7 @@ import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo 
 import Request from "./request.model";
 import ContentElement from "./content-element.model";
 
-@Table({
+@Table({timestamps: false,
   tableName: "requestContentElements",
 })
 export default class RequestContentElement extends Model {

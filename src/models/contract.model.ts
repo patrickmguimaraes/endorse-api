@@ -1,6 +1,6 @@
 import { Model, Table, Column, DataType, HasMany, BelongsTo, HasOne } from "sequelize-typescript";
 
-@Table({
+@Table({timestamps: false,
   tableName: "contracts",
 })
 export default class Contract extends Model {

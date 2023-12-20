@@ -2,7 +2,7 @@ import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo 
 import Company from "./company.model";
 import Request from "./request.model";
 
-@Table({
+@Table({timestamps: false,
   tableName: "copyrights",
 })
 export default class Copyright extends Model {

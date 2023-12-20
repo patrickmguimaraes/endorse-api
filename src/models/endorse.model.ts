@@ -2,7 +2,7 @@ import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo 
 import User from "./user.model";
 import Post from "./post.model";
 
-@Table({
+@Table({timestamps: false,
   tableName: "endorsements",
 })
 export default class Endorse extends Model {

@@ -1,7 +1,7 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
 import RequestActivationDate from "./request-activation-date.model";
 
-@Table({
+@Table({timestamps: false,
   tableName: "activationDates",
 })
 export default class ActivationDate extends Model {

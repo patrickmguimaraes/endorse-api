@@ -9,7 +9,7 @@ import Endorse from "./endorse.model";
 import Power from "./power.model";
 import File from "./file.model";
 
-@Table({
+@Table({timestamps: false,
   tableName: "posts",
 })
 export default class Post extends Model {
@@ -40,8 +40,9 @@ export default class Post extends Model {
   endorsements?: number;
 
   @Column({
-    type: DataType.STRING(100),
-    field: "link"
+    type: DataType.STRING(300),
+    field: "link",
+    allowNull: true
   })
   link?: string;
 

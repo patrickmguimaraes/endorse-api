@@ -148,7 +148,7 @@ class UserRepository {
           { model: Person, as: 'person' }, 
           { model: Company, as: 'company'}
         ],
-        order: [['createdAt', 'DESC']],
+        order: [['date', 'DESC']],
         limit: 10
       });
   

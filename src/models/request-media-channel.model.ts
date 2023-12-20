@@ -2,7 +2,7 @@ import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo 
 import Request from "./request.model";
 import MediaChannel from "./media-channel.model";
 
-@Table({
+@Table({timestamps: false,
   tableName: "requestMediaChannels",
 })
 export default class RequestMediaChannel extends Model {

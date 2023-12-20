@@ -26,4 +26,25 @@ export default class PostValidation {
       pageSize: Joi.number().required(),
     }),
   };
+
+  viewed = {
+    body: Joi.object().keys({
+      userId: Joi.number().required(),
+      postId: Joi.number().required(),
+    }),
+  }
+
+  power = {
+    body: Joi.object().keys({
+      userId: Joi.number().required(),
+      postId: Joi.number().required(),
+    }),
+  }
+
+  unpower = {
+    body: Joi.object().keys({
+      userId: Joi.number().required(),
+      postId: Joi.number().required(),
+    }),
+  }
 }

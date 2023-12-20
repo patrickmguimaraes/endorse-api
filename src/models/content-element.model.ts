@@ -1,7 +1,7 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
 import RequestContentElement from "./request-content-element.model";
 
-@Table({
+@Table({timestamps: false,
   tableName: "contentElements",
 })
 export default class ContentElement extends Model {

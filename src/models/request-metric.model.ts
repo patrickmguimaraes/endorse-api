@@ -2,7 +2,7 @@ import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo 
 import Request from "./request.model";
 import Metric from "./metric.model";
 
-@Table({
+@Table({timestamps: false,
   tableName: "requestMetrics",
 })
 export default class RequestMetric extends Model {

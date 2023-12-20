@@ -1,7 +1,7 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
 import RequestMediaChannel from "./request-media-channel.model";
 
-@Table({
+@Table({timestamps: false,
   tableName: "mediaChannels",
 })
 export default class MediaChannel extends Model {

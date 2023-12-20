@@ -1,7 +1,7 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
 import UserTermAndCondition from "./user-term-and-condition.model";
 
-@Table({
+@Table({timestamps: false,
   tableName: "termsAndConditions",
 })
 export default class TermAndCondition extends Model {

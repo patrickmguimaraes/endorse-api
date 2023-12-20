@@ -1,7 +1,7 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
 import RequestGeograficScope from "./request-geografic-scope.model";
 
-@Table({
+@Table({timestamps: false,
   tableName: "geograficScopes",
 })
 export default class GeograficScope extends Model {

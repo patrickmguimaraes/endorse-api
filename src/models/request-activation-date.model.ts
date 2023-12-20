@@ -2,7 +2,7 @@ import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo 
 import Request from "./request.model";
 import ActivationDate from "./activation-date.model";
 
-@Table({
+@Table({timestamps: false,
   tableName: "requestActivationDates",
 })
 export default class RequestActivationDate extends Model {

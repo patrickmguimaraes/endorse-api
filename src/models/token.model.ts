@@ -1,7 +1,7 @@
 import { Model, Table, Column, DataType, HasMany, BelongsTo, HasOne, ForeignKey } from "sequelize-typescript";
 import User from "./user.model";
 
-@Table({
+@Table({timestamps: false,
   tableName: "tokens",
 })
 export default class Token extends Model {

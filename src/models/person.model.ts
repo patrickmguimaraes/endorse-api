@@ -2,7 +2,7 @@ import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo 
 import Contract from "./contract.model";
 import User from "./user.model";
 
-@Table({
+@Table({timestamps: false,
   tableName: "people",
 })
 export default class Person extends Model {

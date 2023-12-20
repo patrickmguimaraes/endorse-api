@@ -2,7 +2,7 @@ import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo 
 import Request from "./request.model";
 import User from "./user.model";
 
-@Table({
+@Table({timestamps: false,
   tableName: "requestAssignments",
 })
 export default class RequestAssignment extends Model {

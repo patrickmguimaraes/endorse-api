@@ -1,7 +1,7 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
 import RequestComplianceMeasure from "./request-compliance-measure.model";
 
-@Table({
+@Table({timestamps: false,
   tableName: "complianceMeasures",
 })
 export default class ComplianceMeasure extends Model {

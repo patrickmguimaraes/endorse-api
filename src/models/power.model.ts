@@ -2,22 +2,15 @@ import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo 
 import User from "./user.model";
 import Post from "./post.model";
 
-@Table({
+@Table({timestamps: false,
   tableName: "powers",
 })
 export default class Power extends Model {
-  @Column({
-    type: DataType.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-    field: "id"
-  })
-  id?: number;
-
   @ForeignKey(() => Post)
   @Column({
     type: DataType.INTEGER,
     field: "postId",
+    primaryKey: true,
   })
   postId!: number;
 
@@ -28,6 +21,7 @@ export default class Power extends Model {
   @Column({
     type: DataType.INTEGER,
     field: "userId",
+    primaryKey: true,
   })
   userId!: number;
 

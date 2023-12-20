@@ -34,6 +34,7 @@ import View from "../models/view.model";
 import Endorse from "../models/endorse.model";
 import Article from "../models/article.model";
 import Idea from "../models/idea.model";
+import NewsFeed from "../newsFeed";
 
 class Database {
   public sequelize: Sequelize | undefined;
@@ -95,9 +96,10 @@ class Database {
 
     await this.sequelize
       .authenticate()
-      .then(() => {
+      .then(async () => {
         logger.info("Connection has been established successfully.");
-        this.sync();
+        await this.sync();
+        new NewsFeed();
       })
       .catch((err) => {
         logger.error("Unable to connect to the Database:", err);

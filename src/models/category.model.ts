@@ -1,7 +1,7 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
 import Company from "./company.model";
 
-@Table({
+@Table({timestamps: false,
   tableName: "categories",
 })
 export default class Category extends Model {

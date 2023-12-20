@@ -4,7 +4,7 @@ import User from "./user.model";
 import Category from "./category.model";
 import Copyright from "./copyright.model";
 
-@Table({
+@Table({timestamps: false,
   tableName: "companies",
 })
 export default class Company extends Model {
