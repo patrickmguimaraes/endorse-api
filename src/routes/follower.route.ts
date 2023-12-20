@@ -13,6 +13,7 @@ class FollowerRoute {
         this.router.post('/unfollow', auth('follow'), validate(followerValidation.unfollow), this.followerController.unfollow);
         this.router.post('/suggests', auth('follow'), validate(followerValidation.suggests), this.followerController.suggests);
         this.router.post('/isFollowing', auth('follow'), validate(followerValidation.isFollowing), this.followerController.isFollowing);
+        this.router.post('/followingNumber', auth('follow'), validate(followerValidation.followingNumber), this.followerController.followingNumber);
     }
 }
 

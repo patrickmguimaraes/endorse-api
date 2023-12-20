@@ -24,12 +24,6 @@ export default class Post extends Model {
   date?: Date;
 
   @Column({
-    type: DataType.STRING(10),
-    field: "type"
-  })
-  type?: string;
-
-  @Column({
     type: DataType.TEXT('long'),
     field: "text"
   })
@@ -40,6 +34,30 @@ export default class Post extends Model {
     field: "image"
   })
   image?: string;
+
+  @Column({
+    type: DataType.BOOLEAN,
+    field: "isArticle"
+  })
+  isArticle?: boolean;
+
+  @Column({
+    type: DataType.STRING(100),
+    field: "title"
+  })
+  title?: string;
+
+  @Column({
+    type: DataType.STRING(200),
+    field: "subject"
+  })
+  subject?: string;
+
+  @Column({
+    type: DataType.STRING(100),
+    field: "author"
+  })
+  author?: string;
 
   @Column({
     type: DataType.STRING(100),

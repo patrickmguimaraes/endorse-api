@@ -22,4 +22,9 @@ export default class FollowerController {
     const follower = await followerRepository.isFollowing(req.body.followerId, req.body.followedId);
     res.status(httpStatus.OK).send(follower);
   }); 
+
+  followingNumber = catchAsync(async (req: any, res: any) => {
+    const count = await followerRepository.followingNumber(req.body.followerId, req.body.followedId);
+    res.status(httpStatus.OK).send(count);
+  }); 
 }

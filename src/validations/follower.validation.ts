@@ -32,4 +32,11 @@ export default class FollowerValidation {
       followedId: Joi.number().required()
     }),
   };
+
+  followingNumber = {
+    body: Joi.object().keys({
+      followerId: Joi.number().required(),
+      followedId: Joi.number().required()
+    }),
+  };
 }

@@ -67,6 +67,22 @@ class FollowerRepository {
       throw new ApiError(httpStatus.NOT_ACCEPTABLE, 'An error ocurred while getting the follower. Try later.');
     }
   }
+
+  async followingNumber(followerId: number, followedId: number) {
+    try {
+      const followers = await Follower.count({
+        where: { followerId: followerId }
+      });
+  
+      const followeds = await Follower.count({
+        where: { followedId: followedId }
+      });
+
+      return {followers, followeds};
+    } catch (error) {
+      throw new ApiError(httpStatus.NOT_ACCEPTABLE, 'An error ocurred while counting the follower. Try later.');
+    }
+  }
 }
 
 export default new FollowerRepository()
