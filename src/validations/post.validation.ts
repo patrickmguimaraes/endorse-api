@@ -22,8 +22,6 @@ export default class PostValidation {
   newsFeed = {
     body: Joi.object().keys({
       userId: Joi.number().required(),
-      page: Joi.number().required(),
-      pageSize: Joi.number().required(),
     }),
   };
 
@@ -42,6 +40,28 @@ export default class PostValidation {
   }
 
   unpower = {
+    body: Joi.object().keys({
+      userId: Joi.number().required(),
+      postId: Joi.number().required(),
+    }),
+  }
+
+  endorse = {
+    body: Joi.object().keys({
+      text: Joi.string(),
+      date: Joi.date().required(),
+      status: Joi.string().required(),
+      postId: Joi.number().required(),
+      userId: Joi.number().required(),
+      fatherId: Joi.number().allow(null),
+      post: Joi.object(),
+      user: Joi.object(),
+      father: Joi.object(),
+      children: Joi.array()
+    }),
+  }
+
+  poweredAndEndorsed = {
     body: Joi.object().keys({
       userId: Joi.number().required(),
       postId: Joi.number().required(),

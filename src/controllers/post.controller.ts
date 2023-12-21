@@ -9,7 +9,7 @@ export default class AuthController {
   }); 
 
   newsFeed = catchAsync(async (req: any, res: any) => {
-    const neewsFeed = await postRepository.newsFeed(req.body.userId, req.body.page, req.body.pageSize);
+    const neewsFeed = await postRepository.newsFeed(req.body.userId);
     res.status(httpStatus.OK).send(neewsFeed);
   }); 
 
@@ -26,5 +26,15 @@ export default class AuthController {
   unpower = catchAsync(async (req: any, res: any) => {
     const unpowered = await postRepository.unpower(req.body.userId, req.body.postId);
     res.status(httpStatus.OK).send(unpowered);
+  }); 
+
+  endorse = catchAsync(async (req: any, res: any) => {
+    const endorsed = await postRepository.endorse(req.body);
+    res.status(httpStatus.OK).send(endorsed);
+  }); 
+
+  poweredAndEndorsed = catchAsync(async (req: any, res: any) => {
+    const poweredAndEndorsed = await postRepository.poweredAndEndorsed(req.body.userId, req.body.postId);
+    res.status(httpStatus.OK).send(poweredAndEndorsed);
   }); 
 }

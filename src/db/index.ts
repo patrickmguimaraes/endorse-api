@@ -188,8 +188,8 @@ class Database {
     User.hasMany(Comment, { foreignKey: 'userId' });
     Comment.belongsTo(User, { foreignKey: 'userId' });
 
-    Endorse.hasMany(Endorse, { foreignKey: 'requestmentId' });
-    Endorse.belongsTo(Endorse, { foreignKey: 'requestmentId' });
+    Endorse.hasMany(Endorse, { foreignKey: 'fatherId' });
+    Endorse.belongsTo(Endorse, { foreignKey: 'fatherId' });
 
     Comment.hasMany(Comment, { foreignKey: 'commentId' });
     Comment.belongsTo(Comment, { foreignKey: 'commentId' });

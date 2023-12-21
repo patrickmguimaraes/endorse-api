@@ -15,10 +15,22 @@ export default class Endorse extends Model {
   id?: number;
 
   @Column({
+    type: DataType.STRING(500),
+    field: "text"
+  })
+  text?: string;
+
+  @Column({
     type: DataType.STRING(7),
     field: "status"
   })
   status?: string;
+
+  @Column({
+    type: DataType.DATE,
+    field: "date"
+  })
+  date?: Date;
 
   @ForeignKey(() => Post)
   @Column({
@@ -43,13 +55,14 @@ export default class Endorse extends Model {
   @ForeignKey(() => Endorse)
   @Column({
     type: DataType.INTEGER,
-    field: "endorseId",
+    field: "fatherId",
+    allowNull: true
   })
-  endorsementId!: number;
+  fatherId!: number;
 
   @BelongsTo(() => Endorse)
-  endorsement?: Endorse;
+  father?: Endorse;
 
-  @HasMany(() => Endorse, { foreignKey: 'endorseId', sourceKey: 'id' })
-  endorsements?: Endorse[];
+  @HasMany(() => Endorse, { foreignKey: 'fatherId', sourceKey: 'id' })
+  children?: Endorse[];
 }
