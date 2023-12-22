@@ -9,6 +9,7 @@ class PostRoute {
     postController = new PostController();
 
     constructor() {
+        this.router.post('/getPost', auth('post'), validate(postValidation.getPost), this.postController.getPost);
         this.router.post('/post', auth('post'), validate(postValidation.post), this.postController.post);
         this.router.post('/newsFeed', auth('post'), validate(postValidation.newsFeed), this.postController.newsFeed);
         this.router.post('/viewed', auth('post'), validate(postValidation.viewed), this.postController.viewed);

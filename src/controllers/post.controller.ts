@@ -3,6 +3,11 @@ import { catchAsync } from '../utils/catchAsync';
 import postRepository from '../repositories/post.repository';
 
 export default class AuthController {
+  getPost = catchAsync(async (req: any, res: any) => {
+    const post = await postRepository.getPost(req.body.code);
+    res.status(httpStatus.OK).send(post);
+  }); 
+
   post = catchAsync(async (req: any, res: any) => {
     const post = await postRepository.post(req.body);
     res.status(httpStatus.CREATED).send(post);

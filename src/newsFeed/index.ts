@@ -18,6 +18,8 @@ class NewsFeed {
                             var check = await Article.findOne({ where: { title: article.title } });
 
                             if (!check) {
+
+                                console.log(article.title, "checked")
                                 var newArticle = await Article.create({
                                     date: new Date(article.publishedAt),
                                     text: article.content,
@@ -31,7 +33,7 @@ class NewsFeed {
                                     date: new Date(article.publishedAt),
                                     powers: 0,
                                     endorsements: 0,
-                                    link: article.url,
+                                    link: new Date().valueOf().toString(36),
                                     status: 'Posted',
                                     userId: 13
                                 });
@@ -50,12 +52,13 @@ class NewsFeed {
             }
         });
 
-        /*  newsapi.v2.everything({
+          newsapi.v2.everything({
             sources: 'the-american-conservative,the-irish-times,the-wall-street-journal,cnn,espn,bbc-news,abc-news,axios,bbc-sport,bloomberg,business-insider,cbc-news,cbs-news',
           }).then((response: any) => {
             if(response.articles.length>0) {
                 response.articles.forEach(async (article: any) => {
                     if(article.title!="[Removed]") {
+                        try {
                         var check = await Article.findOne({where: {title: article.title}});
                     
                         if(!check) {
@@ -72,7 +75,7 @@ class NewsFeed {
                                 date: new Date(article.publishedAt),
                                 powers: 0,
                                 endorsements: 0,
-                                link: article.url,
+                                link: new Date().valueOf().toString(36),
                                 status: 'Posted',
                                 userId: 13
                             });
@@ -83,10 +86,13 @@ class NewsFeed {
                                 postId: post.id
                             })
                         }
+                        } catch (error) {
+
+                        }
                     }
                 });
             }
-          });*/
+          });
     }
 }
 

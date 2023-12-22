@@ -15,6 +15,28 @@ import Power from '../models/power.model';
 import Endorse from '../models/endorse.model';
 
 class PostRepository {
+  async getPost(code: string) {
+    const post = await Post.findOne({
+      where: {
+        link: code,
+        status: "Posted"
+      },
+      include: [
+        {
+          model: User,
+          include: [{ model: Person, as: 'person' }, { model: Company, as: 'company'}]
+        },
+        { model: Article, as: 'article' },
+        { model: Idea, as: 'idea' },
+        { model: File, as: 'files' },
+        { model: Power, as: 'powersObject' },
+        { model: Endorse, as: 'endorsementsObject' }
+      ]
+    })
+
+    return post;
+  };
+
   async post(post: Post) {
 
     const result = await Post.create({...post}, {include:[{ all: true }]});
@@ -165,6 +187,15 @@ class PostRepository {
 
   async endorse(endorse: Endorse) {
     const result = await Endorse.create({...endorse});
+    const post = await Post.findOne({where: { id: endorse.postId}});
+
+    if(result) {
+      await Post.update(
+        { endorsements: post?.endorsements! + 1 },
+        { where: { id: post?.id } }
+      );
+    }
+
     return result
   };
 

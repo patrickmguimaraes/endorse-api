@@ -1,6 +1,12 @@
 import Joi from 'joi';
 
 export default class PostValidation {
+  getPost = {
+    body: Joi.object().keys({
+      code: Joi.string().required(),
+    }),
+  }
+
   post = {
     body: Joi.object().keys({
       date: Joi.date().required(),
