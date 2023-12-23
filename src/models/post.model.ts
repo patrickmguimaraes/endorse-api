@@ -40,7 +40,7 @@ export default class Post extends Model {
   endorsements?: number;
 
   @Column({
-    type: DataType.STRING(300),
+    type: DataType.STRING(200),
     field: "link",
     allowNull: true
   })

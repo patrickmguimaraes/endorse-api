@@ -33,7 +33,7 @@ class NewsFeed {
                                     date: new Date(article.publishedAt),
                                     powers: 0,
                                     endorsements: 0,
-                                    link: new Date().valueOf().toString(36),
+                                    link: this.decode(article.title),
                                     status: 'Posted',
                                     userId: 13
                                 });
@@ -75,7 +75,7 @@ class NewsFeed {
                                 date: new Date(article.publishedAt),
                                 powers: 0,
                                 endorsements: 0,
-                                link: new Date().valueOf().toString(36),
+                                link: this.decode(article.title),
                                 status: 'Posted',
                                 userId: 13
                             });
@@ -93,6 +93,24 @@ class NewsFeed {
                 });
             }
           });
+    }
+
+    decode(title: string) {
+        if(!title) {
+            return new Date().valueOf().toString(36);
+        }
+
+        var dec = decodeURI(title);
+        while(dec.includes(".")) {
+            dec = dec.replace(".", "-");
+        }
+
+        if(dec.length > 200) {
+            return dec.substring(0, 199);
+        }
+        else {
+            return dec;
+        }
     }
 }
 

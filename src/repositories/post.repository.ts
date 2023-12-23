@@ -74,7 +74,7 @@ class PostRepository {
       const endorsements = await Endorse.findAndCountAll({
         where: {
           userId: {
-            [Op.or]: [...followingIds]
+            [Op.or]: [userId, ...followingIds]
           },
           status: 'Posted',
           postId: {
