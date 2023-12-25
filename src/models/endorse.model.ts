@@ -1,6 +1,8 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
 import User from "./user.model";
 import Post from "./post.model";
+import View from "./view.model";
+import EndorseView from "./endorse-view.model";
 
 @Table({timestamps: false,
   tableName: "endorsements",
@@ -65,4 +67,7 @@ export default class Endorse extends Model {
 
   @HasMany(() => Endorse, { foreignKey: 'fatherId', sourceKey: 'id' })
   children?: Endorse[];
+
+  @HasMany(() => EndorseView, { foreignKey: 'endorseId', sourceKey: 'id' })
+  views?: EndorseView[];
 }

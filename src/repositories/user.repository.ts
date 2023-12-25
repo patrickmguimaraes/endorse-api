@@ -33,10 +33,33 @@ class UserRepository {
 
   async save(user: User): Promise<User> {
     try {
+      var check: User | null = new User();
+      var username: string = (user.type=="Person" ? user.person?.name + "-" + user.person?.surname : user.company?.name) as string;
+      
+      username = username.toLowerCase();
+      username = username.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+
+      while(username.includes(".")) {
+        username = username.replace(".", "-");
+      }
+
+      while(username.includes(" ")) {
+        username = username.replace(" ", "-");
+      }
+
+      while(check!=null) {
+        check = await User.findOne({where: { username: username }});
+
+        if(check) {
+          username = username + Math.floor(Math.random() * 6) + 1;
+        }
+      }
+
       user.followeds = [];
       user.followers = [];
       user.posts = [];
       user.views = [];
+      user.username = username;
       return await User.create({...user}, {include:[{ all: true }]});
     } catch (err: any) {
       throw new Error(err.message);
@@ -160,7 +183,7 @@ class UserRepository {
 
   async findByUsername(username: string): Promise<User | null> {
     try {
-      return User.findOne({ where: {username: username}, include:[{ all: true }]});
+      return User.findOne({ where: {username: username}, include: [{ model: Person, as: 'person' }, { model: Company, as: 'company', include: [{ model: Category, as: 'category' }] }] });
     } catch (error: any) {
       throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'A problem happened when getting the user... Try later.');
     }

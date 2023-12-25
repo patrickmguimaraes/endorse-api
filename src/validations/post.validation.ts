@@ -28,6 +28,8 @@ export default class PostValidation {
   newsFeed = {
     body: Joi.object().keys({
       userId: Joi.number().required(),
+      page: Joi.number().required(),
+      feedOnlyThisUser: Joi.boolean().required()
     }),
   };
 
@@ -35,6 +37,7 @@ export default class PostValidation {
     body: Joi.object().keys({
       userId: Joi.number().required(),
       postId: Joi.number().required(),
+      endorseId: Joi.number().allow(null)
     }),
   }
 
@@ -71,6 +74,12 @@ export default class PostValidation {
     body: Joi.object().keys({
       userId: Joi.number().required(),
       postId: Joi.number().required(),
+    }),
+  }
+
+  getPostName = {
+    body: Joi.object().keys({
+      userId: Joi.number().required(),
     }),
   }
 }

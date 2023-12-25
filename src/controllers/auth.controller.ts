@@ -12,7 +12,6 @@ export default class AuthController {
     req.body.isEmailVerified = false;
     req.body.status = "Pending";
     req.body.password = encryptData(req.body.password as string);
-    req.body.username = new Date().valueOf().toString(36);
 
     const user = await userRepository.save(req.body);
     //const tokens = await tokenRepository.generateAuthTokens(user);

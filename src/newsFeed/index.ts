@@ -30,12 +30,12 @@ class NewsFeed {
 
                                 var post = await Post.create({
                                     articleId: newArticle.id,
-                                    date: new Date(article.publishedAt),
+                                    date: new Date(),
                                     powers: 0,
                                     endorsements: 0,
                                     link: this.decode(article.title),
                                     status: 'Posted',
-                                    userId: 13
+                                    userId: 11
                                 });
 
                                 await File.create({
@@ -72,12 +72,12 @@ class NewsFeed {
     
                             var post = await Post.create({
                                 articleId: newArticle.id,
-                                date: new Date(article.publishedAt),
+                                date: new Date(),
                                 powers: 0,
                                 endorsements: 0,
                                 link: this.decode(article.title),
                                 status: 'Posted',
-                                userId: 13
+                                userId: 11
                             });
     
                             await File.create({
@@ -97,19 +97,22 @@ class NewsFeed {
 
     decode(title: string) {
         if(!title) {
-            return new Date().valueOf().toString(36);
+            return new Date().valueOf().toString(36).toLowerCase();
         }
 
-        var dec = decodeURI(title);
-        while(dec.includes(".")) {
-            dec = dec.replace(".", "-");
+        while(title.includes(" ")) {
+            title = title.replace(" ", "-");
         }
 
-        if(dec.length > 200) {
-            return dec.substring(0, 199);
+        while(title.includes(".")) {
+            title = title.replace(".", "-");
+        }
+
+        if(title.length > 50) {
+            return title.substring(0, 49).toLowerCase();
         }
         else {
-            return dec;
+            return title.toLowerCase();
         }
     }
 }

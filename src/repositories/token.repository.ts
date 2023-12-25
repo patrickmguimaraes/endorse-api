@@ -55,10 +55,17 @@ class TokenRepository {
    * @param {string} type
    * @returns {Promise<Token>}
    */
-  async verifyToken (token: string, type: string) {
-    const payload = jwt.verify(token, config.jwt.secret);
+  async verifyToken (token: string, type: string, doPayload: boolean = true) {
+    var tokenDoc;
+    
+    if(doPayload) {
+      const payload = jwt.verify(token, config.jwt.secret);
 
-    const tokenDoc = await Token.findOne({ where: { token: token, type: type, userId: Number.parseInt(payload.sub as string), blacklisted: false } });
+      tokenDoc = await Token.findOne({ where: { token: token, type: type, userId: Number.parseInt(payload.sub as string), blacklisted: false } });
+    }
+    else {
+      tokenDoc = await Token.findOne({ where: { token: token, type: type, blacklisted: false } });
+    }
 
     if (!tokenDoc) {
       throw new Error('Token not found');

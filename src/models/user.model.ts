@@ -14,6 +14,7 @@ import Requestment from "./request.model";
 import Post from "./post.model";
 import Follower from "./follower.model";
 import View from "./view.model";
+import EndorseView from "./endorse-view.model";
 
 @Table({timestamps: false,
   tableName: "users",
@@ -229,4 +230,7 @@ export default class User extends Model {
 
   @HasMany(() => View, { foreignKey: 'userId', sourceKey: 'id' })
   views?: View[];
+
+  @HasMany(() => EndorseView, { foreignKey: 'userId', sourceKey: 'id' })
+  endorseViews?: EndorseView[];
 }

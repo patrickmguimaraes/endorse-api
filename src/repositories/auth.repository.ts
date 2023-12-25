@@ -50,7 +50,7 @@ class AuthRepository {
    * @returns {Promise<Object>}
    */
   async refreshAuth(token: string, refreshToken: string) {
-    const accessTokenDoc = await tokenRepository.verifyToken(token, tokenTypes.ACCESS);
+    const accessTokenDoc = await tokenRepository.verifyToken(token, tokenTypes.ACCESS, false);
     const refreshTokenDoc = await tokenRepository.verifyToken(refreshToken, tokenTypes.REFRESH);
     
     const user = await userRepository.retrieveById(refreshTokenDoc.userId);

@@ -14,12 +14,12 @@ export default class AuthController {
   }); 
 
   newsFeed = catchAsync(async (req: any, res: any) => {
-    const neewsFeed = await postRepository.newsFeed(req.body.userId);
+    const neewsFeed = await postRepository.newsFeed(req.body.userId, req.body.page, req.body.feedOnlyThisUser);
     res.status(httpStatus.OK).send(neewsFeed);
   }); 
 
   viewed = catchAsync(async (req: any, res: any) => {
-    const viewed = await postRepository.viewed(req.body.userId, req.body.postId);
+    const viewed = await postRepository.viewed(req.body.userId, req.body.postId, req.body.endorseId);
     res.status(httpStatus.OK).send(viewed);
   }); 
 
@@ -40,6 +40,11 @@ export default class AuthController {
 
   poweredAndEndorsed = catchAsync(async (req: any, res: any) => {
     const poweredAndEndorsed = await postRepository.poweredAndEndorsed(req.body.userId, req.body.postId);
+    res.status(httpStatus.OK).send(poweredAndEndorsed);
+  }); 
+
+  getPostName = catchAsync(async (req: any, res: any) => {
+    const poweredAndEndorsed = await postRepository.getPostName(req.body.userId);
     res.status(httpStatus.OK).send(poweredAndEndorsed);
   }); 
 }

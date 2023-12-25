@@ -13,6 +13,8 @@ import Idea from '../models/idea.model';
 import File from '../models/file.model';
 import Power from '../models/power.model';
 import Endorse from '../models/endorse.model';
+import Converter from 'number-to-words';
+import EndorseView from '../models/endorse-view.model';
 
 class PostRepository {
   async getPost(code: string) {
@@ -24,7 +26,7 @@ class PostRepository {
       include: [
         {
           model: User,
-          include: [{ model: Person, as: 'person' }, { model: Company, as: 'company'}]
+          include: [{ model: Person, as: 'person' }, { model: Company, as: 'company' }]
         },
         { model: Article, as: 'article' },
         { model: Idea, as: 'idea' },
@@ -38,158 +40,199 @@ class PostRepository {
   };
 
   async post(post: Post) {
+    post.date = new Date();
 
-    const result = await Post.create({...post}, {include:[{ all: true }]});
+    const exists = await Post.findOne({ where: { link: post.link, userId: post.userId, status: "Posted" } });
 
-    result.link = new Date().valueOf().toString(36);
+    if (!exists) {
+      const result = await Post.create({ ...post }, { include: [{ all: true }] });
 
-    await Post.update(
-      { link: result.link },
-      { where: { id: result.id } }
-    );
+      await Post.update(
+        { link: result.link },
+        { where: { id: result.id } }
+      );
 
-    if (!result) {
-      throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'An error ocurred while saving your post. Try later.');
+      if (!result) {
+        throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'An error ocurred while saving your post. Try later.');
+      }
+
+      return result;
     }
-
-    return result;
+    else {
+      throw new ApiError(httpStatus.NOT_ACCEPTABLE, 'You have an active idea with this name.');
+    }
   };
 
-  async newsFeed(userId: number) {
+  async newsFeed(userId: number, page: number, feedOnlyThisUser: boolean) {
     try {
-      const following = await Follower.findAll({
-        where: { followerId: userId },
-        attributes: ['followedId'],
-      });
+      var following = [];
+      var followingIds: any[] = [];
+      var views = [];
+      var viewsIds: any[] = [];
+      var viewsEndorse = [];
+      var viewsEndorseIds: any[] = [];
+
+      if (!feedOnlyThisUser) {
+        following = await Follower.findAll({
+          where: { followerId: userId },
+          attributes: ['followedId'],
+        });
+
+        followingIds = following.map((user) => user.followedId);
+
+        views = await View.findAll({
+          where: { userId },
+          attributes: ['postId'],
+        });
   
-      const followingIds = following.map((user) => user.followedId);
+        viewsIds = views.map((view) => view.postId);
 
-      const views = await View.findAll({
-        where: { userId },
-        attributes: ['postId'],
-      });
+        viewsEndorse = await EndorseView.findAll({
+          where: { userId },
+          attributes: ['endorseId'],
+        });
+  
+        viewsEndorseIds = viewsEndorse.map((view) => view.endorseId);
+      }
 
-      const viewsIds = views.map((view) => view.postId);
-
-      const endorsements = await Endorse.findAndCountAll({
+      const endorsements = await Endorse.findAll({
         where: {
           userId: {
             [Op.or]: [userId, ...followingIds]
           },
-          status: 'Posted',
-          postId: {
-            [Op.notIn]:  [...viewsIds]
-          },
-        },
-        include: [
-          {
-            model: Post, as: 'post', include: [
-              {
-                model: User,
-                include: [{ model: Person, as: 'person' }, { model: Company, as: 'company'}]
-              },
-              { model: Article, as: 'article' },
-              { model: Idea, as: 'idea' },
-              { model: File, as: 'files' }
-            ]
-          },
-          {
-            model: User,
-            include: [{ model: Person, as: 'person' }, { model: Company, as: 'company'}]
-          },
-        ],
-        order: [['date', 'DESC']],
-        limit: 5,
-      });
-
-      const postsAlredyColectedIds = endorsements.rows.map((endorse) => endorse.postId);
-
-      const posts = await Post.findAndCountAll({
-        where: {
-          userId: {
-            [Op.or]: [userId, ...followingIds]
-          },
-          status: 'Posted',
           id: {
-            [Op.notIn]:  [...viewsIds, ...postsAlredyColectedIds]
+            [Op.notIn]: [...viewsEndorseIds],
           },
+          status: 'Posted'
+        }
+      });
+
+      const postsAlredyColectedIds = endorsements.map((endorse) => endorse.postId);
+      
+      const posts = await Post.findAll({
+        subQuery: false,
+        where: {
+          [Op.or]: {
+            [Op.and]: {
+              status: 'Posted',
+              id: {
+                [Op.notIn]: [...viewsIds],
+              },
+              userId: {
+                [Op.or]: [userId, ...followingIds]
+              },
+            },
+            id: {
+              [Op.in]: [...postsAlredyColectedIds]
+            }
+          }
         },
         include: [
           {
             model: User,
-            include: [{ model: Person, as: 'person' }, { model: Company, as: 'company'}]
+            include: [{ model: Person, as: 'person' }, { model: Company, as: 'company' }]
           },
           { model: Article, as: 'article' },
           { model: Idea, as: 'idea' },
-          { model: File, as: 'files' }
+          { model: File, as: 'files' },
+           {
+             required: false,
+             model: Endorse,
+             include: [
+               {
+                 model: User,
+                 include: [{ model: Person, as: 'person' }, { model: Company, as: 'company' }]
+               },
+             ],
+          },
         ],
-        order: [['date', 'DESC']],
-        limit: 5
+        order: [
+          [Sequelize.cast(Sequelize.literal('COALESCE(endorsementsObject.date, `Post`.date)'), 'char'), 'DESC']
+        ],
+        limit: 5,
+        offset: (page - 1) * 5,
+        logging: console.log
       });
 
-      return { endorsements, posts };
+      return posts;
     } catch (error: any) {
       console.log(error.message)
       throw new ApiError(httpStatus.NOT_ACCEPTABLE, 'An error ocurred while getting your news feed. Try later.');
     }
   };
 
-  async viewed(userId: number, postId: number) {
-    const [view, created] = await View.findOrCreate({
-      where: {userId: userId, postId: postId}
-    });
-
-    if(created) {
-      return view;
+  async viewed(userId: number, postId: number, endorseId: number | null) {
+    if(!endorseId) {
+      const [view, created] = await View.findOrCreate({
+        where: { userId: userId, postId: postId }
+      });
+  
+      if (created) {
+        return view;
+      }
+      else {
+        return null;
+      }
     }
     else {
-      return null;
+      const [view, created] = await EndorseView.findOrCreate({
+        where: { userId: userId, endorseId: endorseId }
+      });
+  
+      if (created) {
+        return view;
+      }
+      else {
+        return null;
+      }
     }
   };
 
   async power(userId: number, postId: number) {
-    const check = await Power.findOne({where: {userId: userId, postId: postId}});
-    const post = await Post.findOne({where: { id: postId}});
+    const check = await Power.findOne({ where: { userId: userId, postId: postId } });
+    const post = await Post.findOne({ where: { id: postId } });
 
-    if(!check) {
-      const result = await Power.create({userId: userId, postId: postId});
+    if (!check) {
+      const result = await Power.create({ userId: userId, postId: postId });
 
       await Post.update(
         { powers: post?.powers! + 1 },
         { where: { id: post?.id } }
       );
-  
-      return {power: result, powers: post?.powers! + 1};
+
+      return { power: result, powers: post?.powers! + 1 };
     }
     else {
-      return {power: check, powers: post?.powers!};
+      return { power: check, powers: post?.powers! };
     }
   };
 
   async unpower(userId: number, postId: number) {
-    const result = await Power.findOne({where: {userId, postId}});
-    const post = await Post.findOne({where: { id: postId}});
+    const result = await Power.findOne({ where: { userId, postId } });
+    const post = await Post.findOne({ where: { id: postId } });
 
-    if(result) {
+    if (result) {
       await Post.update(
         { powers: post?.powers! - 1 },
         { where: { id: post?.id } }
       );
-  
+
       result?.destroy();
-  
-      return {unpower: result, powers: post?.powers! - 1};
+
+      return { unpower: result, powers: post?.powers! - 1 };
     }
     else {
-      return {unpower: result, powers: post?.powers!};
+      return { unpower: result, powers: post?.powers! };
     }
   };
 
   async endorse(endorse: Endorse) {
-    const result = await Endorse.create({...endorse});
-    const post = await Post.findOne({where: { id: endorse.postId}});
+    endorse.date = new Date();
+    
+    const result = await Endorse.create({ ...endorse });
+    const post = await Post.findOne({ where: { id: endorse.postId } });
 
-    if(result) {
+    if (result) {
       await Post.update(
         { endorsements: post?.endorsements! + 1 },
         { where: { id: post?.id } }
@@ -200,10 +243,17 @@ class PostRepository {
   };
 
   async poweredAndEndorsed(userId: number, postId: number) {
-    const power = await Power.findOne({where: {userId: userId, postId: postId}});
-    const endorse = await Endorse.findOne({where: {userId: userId, postId: postId}});
+    const power = await Power.findOne({ where: { userId: userId, postId: postId } });
+    const endorse = await Endorse.findOne({ where: { userId: userId, postId: postId } });
 
-    return {power: power, endorse: endorse}
+    return { power: power, endorse: endorse }
+  };
+
+  async getPostName(userId: number) {
+    const num: number = await Post.count({ where: { userId: userId } });
+    const word: string = Converter.toWordsOrdinal(num + 1);
+
+    return { word: word + "-idea" };
   };
 }
 

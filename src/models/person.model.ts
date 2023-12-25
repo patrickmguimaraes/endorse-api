@@ -15,7 +15,7 @@ export default class Person extends Model {
   id?: number;
 
   @Column({
-    type: DataType.STRING(20),
+    type: DataType.STRING(30),
     field: "name"
   })
   name?: string;
@@ -27,13 +27,13 @@ export default class Person extends Model {
   surname?: string;
 
   @Column({
-    type: DataType.STRING(10),
+    type: DataType.DATE,
     field: "birth"
   })
-  birth?: string;
+  birth?: Date;
   
   @Column({
-    type: DataType.STRING(30),
+    type: DataType.STRING(20),
     field: "gender"
   })
   gender?: string;

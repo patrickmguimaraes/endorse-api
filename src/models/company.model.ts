@@ -23,7 +23,7 @@ export default class Company extends Model {
   name?: string;
 
   @Column({
-    type: DataType.STRING(100),
+    type: DataType.STRING(60),
     field: "businessLocation"
   })
   businessLocation?: string;

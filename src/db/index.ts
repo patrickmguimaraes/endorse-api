@@ -35,6 +35,7 @@ import Endorse from "../models/endorse.model";
 import Article from "../models/article.model";
 import Idea from "../models/idea.model";
 import NewsFeed from "../newsFeed";
+import EndorseView from "../models/endorse-view.model";
 
 class Database {
   public sequelize: Sequelize | undefined;
@@ -90,7 +91,8 @@ class Database {
         Comment,
         Endorse,
         Follower,
-        View
+        View,
+        EndorseView
       ]
     });
 
@@ -218,9 +220,15 @@ class Database {
     User.hasMany(View, { foreignKey: 'userId' });
     View.belongsTo(User, { foreignKey: 'userId' });
 
+    User.hasMany(EndorseView, { foreignKey: 'userId' });
+    EndorseView.belongsTo(User, { foreignKey: 'userId' });
+
     Post.hasMany(View, { foreignKey: 'postId' });
     View.belongsTo(Post, { foreignKey: 'postId' });
 
+    Endorse.hasMany(EndorseView, { foreignKey: 'endorseId' });
+    EndorseView.belongsTo(Endorse, { foreignKey: 'endorseId' });
+    
     this.sequelize?.sync({ force: false, alter: true }).then((value) => {
       this.insertInitialTermsAndConditions();
       this.insertInitialValuesCategory();
@@ -250,6 +258,9 @@ class Database {
           });
           await Category.create({
             name: 'Entertainment'
+          });
+          await Category.create({
+            name: 'Journalism'
           });
         }
       })
@@ -420,7 +431,7 @@ class Database {
 
           await User.create({
             role: 'user',
-            username: new Date().valueOf().toString(36),
+            username: "joao",
             email: "user1@outlook.com",
             password: "YjVmMTQ0NjQ1YmUyYWRjODEwNjlkYWRhYTUxYzFkNmU=",
             type: "Person",
@@ -450,7 +461,7 @@ class Database {
 
           await User.create({
             role: 'user',
-            username: new Date().valueOf().toString(36),
+            username: "leonidia",
             email: "user2@outlook.com",
             password: "YjVmMTQ0NjQ1YmUyYWRjODEwNjlkYWRhYTUxYzFkNmU=",
             type: "Person",
@@ -480,7 +491,7 @@ class Database {
 
           await User.create({
             role: 'user',
-            username: new Date().valueOf().toString(36),
+            username: "maria-mendes",
             email: "user3@outlook.com",
             password: "YjVmMTQ0NjQ1YmUyYWRjODEwNjlkYWRhYTUxYzFkNmU=",
             type: "Person",
@@ -510,7 +521,7 @@ class Database {
 
           await User.create({
             role: 'user',
-            username: new Date().valueOf().toString(36),
+            username: "paloma",
             email: "user4@outlook.com",
             password: "YjVmMTQ0NjQ1YmUyYWRjODEwNjlkYWRhYTUxYzFkNmU=",
             type: "Person",
@@ -531,7 +542,7 @@ class Database {
           });
 
           var p = await Person.create({
-            name: 'Willian',
+            name: 'Wilian',
             surname: 'Moraes',
             birth: new Date().toISOString().substring(0, 10),
             gender: 'Male',
@@ -540,7 +551,7 @@ class Database {
 
           await User.create({
             role: 'user',
-            username: new Date().valueOf().toString(36),
+            username: "wilianmoraes",
             email: "user5@outlook.com",
             password: "YjVmMTQ0NjQ1YmUyYWRjODEwNjlkYWRhYTUxYzFkNmU=",
             type: "Person",
@@ -570,7 +581,7 @@ class Database {
 
           await User.create({
             role: 'user',
-            username: new Date().valueOf().toString(36),
+            username: "josetrindade",
             email: "user6@outlook.com",
             password: "YjVmMTQ0NjQ1YmUyYWRjODEwNjlkYWRhYTUxYzFkNmU=",
             type: "Person",
@@ -600,7 +611,7 @@ class Database {
 
           await User.create({
             role: 'user',
-            username: new Date().valueOf().toString(36),
+            username: "disney",
             email: "user7@outlook.com",
             password: "YjVmMTQ0NjQ1YmUyYWRjODEwNjlkYWRhYTUxYzFkNmU=",
             type: "Company",
@@ -630,7 +641,7 @@ class Database {
 
           await User.create({
             role: 'user',
-            username: new Date().valueOf().toString(36),
+            username: "pmgsystems",
             email: "user8@outlook.com",
             password: "YjVmMTQ0NjQ1YmUyYWRjODEwNjlkYWRhYTUxYzFkNmU=",
             type: "Company",
@@ -660,7 +671,7 @@ class Database {
 
           await User.create({
             role: 'user',
-            username: new Date().valueOf().toString(36),
+            username: "dc",
             email: "user9@outlook.com",
             password: "YjVmMTQ0NjQ1YmUyYWRjODEwNjlkYWRhYTUxYzFkNmU=",
             type: "Company",
@@ -690,8 +701,38 @@ class Database {
 
           await User.create({
             role: 'user',
-            username: new Date().valueOf().toString(36),
+            username: "capigemini",
             email: "user10@outlook.com",
+            password: "YjVmMTQ0NjQ1YmUyYWRjODEwNjlkYWRhYTUxYzFkNmU=",
+            type: "Company",
+            phone: "+55 (77) 9 8135-0987",
+            streetLine1: "Rua Ayrton Senna, 18",
+            streetLine2: "Casa",
+            country: "Brazil",
+            state: "Bahia",
+            city: "Pindaí",
+            postalCode: "46360-000",
+            contractId: 1,
+            companyId: c.id,
+            isEmailVerified: true,
+            language: 'pt-BR',
+            location: 'Brazil',
+            date: new Date(),
+            status: 'Active'
+          });
+
+          var c = await Company.create({
+            name: 'Endorse',
+            businessLocation: 'San Francisco, California',
+            businessWebsite: "www.endorseanidea.com",
+            businessSize: 'Small',
+            categoryId: 1,
+          });
+
+          await User.create({
+            role: 'user',
+            username: "endorseanidea",
+            email: "contact@endorseanidea.com",
             password: "YjVmMTQ0NjQ1YmUyYWRjODEwNjlkYWRhYTUxYzFkNmU=",
             type: "Company",
             phone: "+55 (77) 9 8135-0987",
@@ -711,7 +752,6 @@ class Database {
           });
         }
       })
-
     });
   }
 }

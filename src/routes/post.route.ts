@@ -17,6 +17,7 @@ class PostRoute {
         this.router.post('/unpower', auth('post'), validate(postValidation.unpower), this.postController.unpower);
         this.router.post('/endorse', auth('post'), validate(postValidation.endorse), this.postController.endorse);
         this.router.post('/poweredAndEndorsed', auth('post'), validate(postValidation.poweredAndEndorsed), this.postController.poweredAndEndorsed);
+        this.router.post('/getPostName', auth('post'), validate(postValidation.getPostName), this.postController.getPostName);
     }
 }
 
