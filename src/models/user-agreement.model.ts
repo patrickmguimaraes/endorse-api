@@ -1,11 +1,11 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
 import User from "./user.model";
-import TermAndCondition from "./term-and-condition.model";
+import Agreement from "./agreement.model";
 
 @Table({timestamps: false,
-  tableName: "userTermsAndConditions",
+  tableName: "userAgreements",
 })
-export default class UserTermAndCondition extends Model {
+export default class UserAgreement extends Model {
   @Column({
     type: DataType.INTEGER,
     primaryKey: true,
@@ -20,15 +20,15 @@ export default class UserTermAndCondition extends Model {
   })
   date?: Date;
 
-  @ForeignKey(() => TermAndCondition)
+  @ForeignKey(() => Agreement)
   @Column({
     type: DataType.INTEGER,
-    field: "termAndConditionId",
+    field: "agreementId",
   })
-  termAndConditionId!: number;
+  agreementId!: number;
 
-  @BelongsTo(() => TermAndCondition)
-  termAndCondition?: TermAndCondition;
+  @BelongsTo(() => Agreement)
+  agreement?: Agreement;
 
   @ForeignKey(() => User)
   @Column({

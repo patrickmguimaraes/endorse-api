@@ -34,13 +34,14 @@ export default class AuthValidation {
       requestAssignments: Joi.array().allow(null),
       files: Joi.array().allow(null),
       requestHistory: Joi.array().allow(null),
-      userTermsAndConditions: Joi.array().required(),
+      userAgreements: Joi.array().required(),
       isEmailVerified: Joi.boolean().required(),
       status: Joi.string().required(),
       views: Joi.array().allow(null),
       followers: Joi.array().allow(null),
       followeds: Joi.array().allow(null),
       posts: Joi.array().allow(null),
+      settings: Joi.object().required()
     }),
   };
   

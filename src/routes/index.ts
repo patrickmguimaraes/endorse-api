@@ -80,7 +80,7 @@ class Routes {
       route: termAndConditionRoute,
     },
     { 
-      path: '/storage',
+      path: '/files',
       route: storageRoute,
     },
     { 

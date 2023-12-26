@@ -1,6 +1,8 @@
 import nodemailer from 'nodemailer';
 import { config } from '../config/db.config';
 import { logger } from '../config/logger';
+import pug from "pug";
+import path from 'path';
 
 class EmailRepository {
   public transport = nodemailer.createTransport(config.email.smtp);
@@ -36,9 +38,7 @@ class EmailRepository {
     const subject = 'Reset password';
     // replace this url with the link to the reset password page of your front-end app
     const resetPasswordUrl = config.env === 'development' ? `http://localhost:4200/reset-password/${token}` : `https://endorseanidea.com/reset-password/${token}`;
-    const text = `Dear user,
-      To reset your password, click on this link: ${resetPasswordUrl}
-      If you did not request any password resets, then ignore this email.`;
+    const text = ``;
     await this.sendEmail(to, subject, text);
   };
 
@@ -50,23 +50,35 @@ class EmailRepository {
    */
   async sendVerificationEmail(name: string, to: string, token: string) {
     var tokenModified = token;
-    while(tokenModified.includes(".")) {
+    while (tokenModified.includes(".")) {
       tokenModified = tokenModified.replace(".", "-_-");
     }
 
     const subject = 'Email Verification';
-    // replace this url with the link to the email verification page of your front-end app
     var verificationEmailUrl = config.env === 'development' ? `http://localhost:4200/verify-email/${tokenModified}` : `https://endorseanidea.com/verify-email/${tokenModified}`;
+    const termsOfUseUrl = config.env === 'development' ? `http://localhost:4200/terms-conditions` : `https://endorseanidea.com/terms-conditions`;
+    const privacyPolicyUrl = config.env === 'development' ? `http://localhost:4200/privacy-policy` : `https://endorseanidea.com/privacy-policy`;
+    const website = config.env === 'development' ? `http://localhost:4200` : `https://endorseanidea.com`;
     
-    const text = `  Dear ${name},
+    const emailData = {
+      verificationEmailUrl,
+      website,
+      termsOfUseUrl,
+      privacyPolicyUrl
+    };
+    
+    const compiledFunction = pug.compileFile(path.join(__dirname, '../../../src/email-templates/confirm-email.pug'));
+    
+    const emailHTML = compiledFunction(emailData);
 
-      To verify your email, click on this link: ${verificationEmailUrl}
-      
-      If you did not create an account, then ignore this email.
-      
-      Thank you,
-      Endorse Team`;
-    await this.sendEmail(to, subject, text);
+    let info = await this.transport.sendMail({
+      from: config.email.from,
+      to: to,
+      subject: subject,
+      html: emailHTML,
+    });
+
+    return info;
   };
 }
 

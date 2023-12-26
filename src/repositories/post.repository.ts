@@ -15,13 +15,26 @@ import Power from '../models/power.model';
 import Endorse from '../models/endorse.model';
 import Converter from 'number-to-words';
 import EndorseView from '../models/endorse-view.model';
+import Showcase from '../models/showcase.model';
+import Tag from '../models/tag.model';
 
 class PostRepository {
-  async getPost(code: string) {
+  async getPostById(id: number) {
+    const post = await Post.findOne({
+      where: {
+        id: id
+      }
+    })
+
+    return post;
+  };
+
+  async getPost(userId: number, code: string) {
     const post = await Post.findOne({
       where: {
         link: code,
-        status: "Posted"
+        status: "Posted",
+        userId
       },
       include: [
         {
@@ -32,12 +45,21 @@ class PostRepository {
         { model: Idea, as: 'idea' },
         { model: File, as: 'files' },
         { model: Power, as: 'powersObject' },
-        { model: Endorse, as: 'endorsementsObject' }
+        { model: Endorse, as: 'endorsementsObject' },
+        { 
+          model: Showcase, 
+          as: 'showcase',
+          include: [
+            { model: File },
+            { model: Tag }
+          ]
+        }
       ]
     })
 
     return post;
   };
+
 
   async post(post: Post) {
     post.date = new Date();
@@ -63,7 +85,7 @@ class PostRepository {
     }
   };
 
-  async newsFeed(userId: number, page: number, feedOnlyThisUser: boolean) {
+  async newsFeed(userId: number, meId: number, page: number, feedOnlyThisUser: boolean) {
     try {
       var following = [];
       var followingIds: any[] = [];
@@ -84,14 +106,14 @@ class PostRepository {
           where: { userId },
           attributes: ['postId'],
         });
-  
+
         viewsIds = views.map((view) => view.postId);
 
         viewsEndorse = await EndorseView.findAll({
           where: { userId },
           attributes: ['endorseId'],
         });
-  
+
         viewsEndorseIds = viewsEndorse.map((view) => view.endorseId);
       }
 
@@ -108,7 +130,7 @@ class PostRepository {
       });
 
       const postsAlredyColectedIds = endorsements.map((endorse) => endorse.postId);
-      
+
       const posts = await Post.findAll({
         subQuery: false,
         where: {
@@ -135,15 +157,26 @@ class PostRepository {
           { model: Article, as: 'article' },
           { model: Idea, as: 'idea' },
           { model: File, as: 'files' },
-           {
-             required: false,
-             model: Endorse,
-             include: [
-               {
-                 model: User,
-                 include: [{ model: Person, as: 'person' }, { model: Company, as: 'company' }]
-               },
-             ],
+          {
+            required: false,
+            model: Power,
+            as: "powersObject",
+            where: {
+              userId: meId
+            },
+          },
+          {
+            required: false,
+            model: Endorse,
+            where: {
+              userId: meId
+            },
+            include: [
+              {
+                model: User,
+                include: [{ model: Person, as: 'person' }, { model: Company, as: 'company' }]
+              },
+            ],
           },
         ],
         order: [
@@ -151,7 +184,7 @@ class PostRepository {
         ],
         limit: 5,
         offset: (page - 1) * 5,
-        logging: console.log
+        //logging: console.log
       });
 
       return posts;
@@ -162,11 +195,11 @@ class PostRepository {
   };
 
   async viewed(userId: number, postId: number, endorseId: number | null) {
-    if(!endorseId) {
+    if (!endorseId) {
       const [view, created] = await View.findOrCreate({
         where: { userId: userId, postId: postId }
       });
-  
+
       if (created) {
         return view;
       }
@@ -178,7 +211,7 @@ class PostRepository {
       const [view, created] = await EndorseView.findOrCreate({
         where: { userId: userId, endorseId: endorseId }
       });
-  
+
       if (created) {
         return view;
       }
@@ -228,7 +261,7 @@ class PostRepository {
 
   async endorse(endorse: Endorse) {
     endorse.date = new Date();
-    
+
     const result = await Endorse.create({ ...endorse });
     const post = await Post.findOne({ where: { id: endorse.postId } });
 
@@ -255,6 +288,37 @@ class PostRepository {
 
     return { word: word + "-idea" };
   };
+
+  async saveShowcase(showcase: any) {
+    const show = await Showcase.create({ ...showcase }, { include: [{ all: true }] });
+    return show;
+  };
+
+  async update(postId: number, fields: any): Promise<number> {
+    try {
+      const affectedRows = await Post.update(
+        { ...fields },
+        { where: { id: postId } }
+      );
+
+      return affectedRows[0];
+    } catch (error) {
+      throw new Error("Failed to update Post!");
+    }
+  }
+
+  async updateShowcase(showcaseId: number, fields: any): Promise<number> {
+    try {
+      const affectedRows = await Showcase.update(
+        { ...fields },
+        { where: { id: showcaseId } }
+      );
+
+      return affectedRows[0];
+    } catch (error) {
+      throw new Error("Failed to update Showcase!");
+    }
+  }
 }
 
 export default new PostRepository()

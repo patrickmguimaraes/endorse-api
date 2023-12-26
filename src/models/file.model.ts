@@ -2,6 +2,7 @@ import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo 
 import Request from "./request.model";
 import User from "./user.model";
 import Post from "./post.model";
+import Showcase from "./showcase.model";
 
 @Table({timestamps: false,
   tableName: "files",
@@ -63,4 +64,14 @@ export default class File extends Model {
 
   @BelongsTo(() => Post)
   post?: Post;
+
+  @ForeignKey(() => Showcase)
+  @Column({
+    type: DataType.INTEGER,
+    field: "showcaseId",
+  })
+  showcaseId!: number;
+
+  @BelongsTo(() => Showcase)
+  showcase?: Showcase;
 }

@@ -3,7 +3,8 @@ import Joi from 'joi';
 export default class PostValidation {
   getPost = {
     body: Joi.object().keys({
-      code: Joi.string().required(),
+      userId: Joi.number().required(),
+      code: Joi.string().required()
     }),
   }
 
@@ -80,6 +81,20 @@ export default class PostValidation {
   getPostName = {
     body: Joi.object().keys({
       userId: Joi.number().required(),
+    }),
+  }
+
+  showcase = {
+    body: Joi.object().keys({
+      id: Joi.number(),
+      title: Joi.string().allow(null).allow(""),
+      description: Joi.string().allow(null).allow(""),
+      implementationPlan: Joi.string().allow(null).allow(""),
+      challenges: Joi.string().allow(null).allow(""),
+      postId: Joi.number().required(),
+      categoryId: Joi.number().allow(null),
+      tags: Joi.array(),
+      files: Joi.array(),
     }),
   }
 }

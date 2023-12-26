@@ -1,11 +1,10 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
-import Company from "./company.model";
 import Showcase from "./showcase.model";
 
 @Table({timestamps: false,
-  tableName: "categories",
+  tableName: "tags",
 })
-export default class Category extends Model {
+export default class Tag extends Model {
   @Column({
     type: DataType.INTEGER,
     primaryKey: true,
@@ -15,14 +14,18 @@ export default class Category extends Model {
   id?: number;
 
   @Column({
-    type: DataType.STRING(50),
+    type: DataType.STRING,
     field: "name"
   })
   name?: string;
 
-  @HasMany(() => Company, { foreignKey: 'categoryId', sourceKey: 'id' })
-  companies?: Company[];
+  @ForeignKey(() => Showcase)
+  @Column({
+    type: DataType.INTEGER,
+    field: "showcaseId",
+  })
+  showcaseId!: number;
 
-  @HasMany(() => Showcase, { foreignKey: 'categoryId', sourceKey: 'id' })
-  showcases?: Showcase[];
+  @BelongsTo(() => Showcase)
+  showcase?: Showcase;
 }

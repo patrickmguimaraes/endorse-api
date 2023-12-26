@@ -8,6 +8,7 @@ import Idea from "./idea.model";
 import Endorse from "./endorse.model";
 import Power from "./power.model";
 import File from "./file.model";
+import Showcase from "./showcase.model";
 
 @Table({timestamps: false,
   tableName: "posts",
@@ -93,4 +94,7 @@ export default class Post extends Model {
 
   @HasMany(() => File, { foreignKey: 'postId', sourceKey: 'id' })
   files?: File[];
+
+  @HasOne(() => Showcase, { foreignKey: 'postId', sourceKey: 'id' })
+  showcase?: Showcase;
 }

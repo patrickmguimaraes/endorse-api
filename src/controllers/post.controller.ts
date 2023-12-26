@@ -1,20 +1,28 @@
 import httpStatus from 'http-status';
 import { catchAsync } from '../utils/catchAsync';
 import postRepository from '../repositories/post.repository';
+import Showcase from '../models/showcase.model';
+import ApiError from '../utils/ApiError';
+import fileRepository from '../repositories/file.repository';
 
 export default class AuthController {
   getPost = catchAsync(async (req: any, res: any) => {
-    const post = await postRepository.getPost(req.body.code);
+    const post = await postRepository.getPost(req.body.userId, req.body.code);
     res.status(httpStatus.OK).send(post);
   }); 
 
   post = catchAsync(async (req: any, res: any) => {
     const post = await postRepository.post(req.body);
+
+    req.body.files?.forEach(async (file: any) => {
+      await fileRepository.moveLocationPost(file.path!, req.user.id, post.id!);
+    })
+    
     res.status(httpStatus.CREATED).send(post);
   }); 
 
   newsFeed = catchAsync(async (req: any, res: any) => {
-    const neewsFeed = await postRepository.newsFeed(req.body.userId, req.body.page, req.body.feedOnlyThisUser);
+    const neewsFeed = await postRepository.newsFeed(req.body.userId, req.user.id, req.body.page, req.body.feedOnlyThisUser);
     res.status(httpStatus.OK).send(neewsFeed);
   }); 
 
@@ -46,5 +54,25 @@ export default class AuthController {
   getPostName = catchAsync(async (req: any, res: any) => {
     const poweredAndEndorsed = await postRepository.getPostName(req.body.userId);
     res.status(httpStatus.OK).send(poweredAndEndorsed);
+  }); 
+
+  showcase = catchAsync(async (req: any, res: any) => {
+    const showcase = req.body;
+    const post = await postRepository.getPostById(showcase.postId);
+
+    if(!post || post.userId!=req.user.id) {
+      throw new ApiError(httpStatus.LOCKED, 'The post you want to update is from another user!');
+    }
+
+    var show;
+
+    if(!showcase.id) {
+      show = await postRepository.saveShowcase(showcase);
+      res.status(httpStatus.CREATED).send(show);
+    }
+    else {
+      show = await postRepository.updateShowcase(showcase.id, showcase);
+      res.status(httpStatus.OK).send(showcase);
+    }
   }); 
 }

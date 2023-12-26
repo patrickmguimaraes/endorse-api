@@ -1,10 +1,10 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
-import UserTermAndCondition from "./user-term-and-condition.model";
+import UserAgreement from "./user-agreement.model";
 
 @Table({timestamps: false,
-  tableName: "termsAndConditions",
+  tableName: "agreements",
 })
-export default class TermAndCondition extends Model {
+export default class Agreement extends Model {
   @Column({
     type: DataType.INTEGER,
     primaryKey: true,
@@ -31,6 +31,18 @@ export default class TermAndCondition extends Model {
   })
   date?: Date;
 
-  @HasMany(() => UserTermAndCondition, { foreignKey: 'termAndConditionId', sourceKey: 'id' })
-  userTermsAndConditions?: UserTermAndCondition[];
+  @Column({
+    type: DataType.STRING(20),
+    field: "type"
+  })
+  type?: string;
+
+  @Column({
+    type: DataType.STRING(10),
+    field: "status"
+  })
+  status?: string;
+
+  @HasMany(() => UserAgreement, { foreignKey: 'agreementId', sourceKey: 'id' })
+  userTermsAndConditions?: UserAgreement[];
 }

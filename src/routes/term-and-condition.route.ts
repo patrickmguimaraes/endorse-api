@@ -6,7 +6,7 @@ class TermAndConditionRoute {
     controller = new TermAndConditionController();
 
     constructor() {
-        this.router.get('/getLast', this.controller.getLast);
+        this.router.get('/getAll', this.controller.getAll);
     }
 }
 

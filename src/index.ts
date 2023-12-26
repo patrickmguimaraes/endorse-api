@@ -46,7 +46,6 @@ export default class Server {
       limits: { fileSize: 50 * 1024 * 1024 },
     }));
 
-    console.log(path.join(__dirname, '../../storage'))
     app.use('/files', auth('private-files'), express.static(path.join(__dirname, '../../storage')))
     app.use('/storage', express.static(path.join(__dirname, '../../storage-public')))
 

@@ -6,7 +6,6 @@ import Request from "./request.model";
 import RequestAssignment from "./request-assignment.model";
 import File from "./file.model";
 import RequestHistory from "./request-history.model";
-import UserTermAndCondition from "./user-term-and-condition.model";
 import Token from "./token.model";
 import Like from "./power.model";
 import Comment from "./comment.model";
@@ -15,6 +14,8 @@ import Post from "./post.model";
 import Follower from "./follower.model";
 import View from "./view.model";
 import EndorseView from "./endorse-view.model";
+import UserAgreement from "./user-agreement.model";
+import UserSettings from "./user-settings.model";
 
 @Table({timestamps: false,
   tableName: "users",
@@ -198,14 +199,17 @@ export default class User extends Model {
   @HasMany(() => RequestAssignment, { foreignKey: 'userId', sourceKey: 'id' })
   requestAssignments?: RequestAssignment[];
 
+  @HasOne(() => UserSettings, { foreignKey: 'userId', sourceKey: 'id' })
+  settings?: UserSettings;
+  
   @HasMany(() => File, { foreignKey: 'userId', sourceKey: 'id' })
   files?: File[];
 
   @HasMany(() => RequestHistory, { foreignKey: 'userId', sourceKey: 'id' })
   requestHistory?: RequestHistory[];
 
-  @HasMany(() => UserTermAndCondition, { foreignKey: 'userId', sourceKey: 'id' })
-  userTermsAndConditions?: UserTermAndCondition[];
+  @HasMany(() => UserAgreement, { foreignKey: 'userId', sourceKey: 'id' })
+  userAgreements?: UserAgreement[];
 
   @HasMany(() => Token, { foreignKey: 'userId', sourceKey: 'id' })
   tokens?: Token[];

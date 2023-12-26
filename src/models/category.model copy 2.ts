@@ -1,6 +1,5 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
 import Company from "./company.model";
-import Showcase from "./showcase.model";
 
 @Table({timestamps: false,
   tableName: "categories",
@@ -22,7 +21,4 @@ export default class Category extends Model {
 
   @HasMany(() => Company, { foreignKey: 'categoryId', sourceKey: 'id' })
   companies?: Company[];
-
-  @HasMany(() => Showcase, { foreignKey: 'categoryId', sourceKey: 'id' })
-  showcases?: Showcase[];
 }

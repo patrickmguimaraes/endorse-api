@@ -1,40 +1,40 @@
-import TermAndCondition from '../models/term-and-condition.model';
+import Agreement from '../models/agreement.model';
 
-class TermAndConditionRepository {
-  async save(termAndCondition: TermAndCondition): Promise<TermAndCondition> {
+class AgreementRepository {
+  async save(termAndCondition: Agreement): Promise<Agreement> {
     try {
-      return await TermAndCondition.create({...termAndCondition}, {include:[{ all: true }]});
+      return await Agreement.create({...termAndCondition}, {include:[{ all: true }]});
     } catch (err) {
       throw err;
     }
   }
 
-  async update(termAndCondition: TermAndCondition): Promise<number> {
+  async update(termAndCondition: Agreement): Promise<number> {
     try {
-      const affectedRows = await TermAndCondition.update(
+      const affectedRows = await Agreement.update(
         { ...termAndCondition },
         { where: { id: termAndCondition.id } }
       );
 
       return affectedRows[0];
     } catch (error) {
-      throw new Error("Failed to update TermAndCondition!");
+      throw new Error("Failed to update Agreement!");
     }
   }
 
   async delete(termAndConditionId: number): Promise<number> {
     try {
-      const affectedRows = await TermAndCondition.destroy({ where: { id: termAndConditionId } });
+      const affectedRows = await Agreement.destroy({ where: { id: termAndConditionId } });
 
       return affectedRows;
     } catch (error) {
-      throw new Error("Failed to delete TermAndCondition!");
+      throw new Error("Failed to delete Agreement!");
     }
   }
 
-  async getAll(): Promise<TermAndCondition[]> {
+  async getAll(): Promise<Agreement[]> {
     try {
-      const rows = await TermAndCondition.findAll();
+      const rows = await Agreement.findAll();
 
       return rows;
     } catch (error) {
@@ -42,9 +42,9 @@ class TermAndConditionRepository {
     }
   }
 
-  async getLast(): Promise<TermAndCondition> {
+  async getLast(): Promise<Agreement> {
     try {
-      const rows = await TermAndCondition.findAll({order: [['id', 'DESC']], limit: 1});
+      const rows = await Agreement.findAll({order: [['id', 'DESC']], limit: 1});
 
       return rows[0];
     } catch (error) {
@@ -53,4 +53,4 @@ class TermAndConditionRepository {
   }
 }
 
-export default new TermAndConditionRepository();
+export default new AgreementRepository();
