@@ -1,6 +1,6 @@
 const allRoles = {
   public: ['public-files'],
-  user: ['post', 'follow', 'endorse', 'autoManagement', 'private-files'],
+  user: ['post', 'tag', 'follow', 'endorse', 'autoManagement', 'private-files'],
   admin: ['getUsers', 'manageUsers', 'private-files'],
 };
 

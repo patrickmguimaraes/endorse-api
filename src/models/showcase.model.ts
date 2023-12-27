@@ -4,6 +4,7 @@ import Post from "./post.model";
 import Category from "./category.model";
 import File from "./file.model";
 import Tag from "./tag.model";
+import ShowcaseTag from "./showcase-tag.model";
 
 @Table({timestamps: false,
   tableName: "showcases",
@@ -64,6 +65,6 @@ export default class Showcase extends Model {
   @HasMany(() => File, { foreignKey: 'showcaseId', sourceKey: 'id' })
   files?: File[];
 
-  @HasMany(() => Tag, { foreignKey: 'showcaseId', sourceKey: 'id' })
-  tags?: Tag[];
+  @HasMany(() => ShowcaseTag, { foreignKey: 'showcaseId', sourceKey: 'id' })
+  tags?: ShowcaseTag[];
 }

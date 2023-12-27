@@ -18,8 +18,11 @@ class PostRoute {
         this.router.post('/endorse', auth('post'), validate(postValidation.endorse), this.postController.endorse);
         this.router.post('/poweredAndEndorsed', auth('post'), validate(postValidation.poweredAndEndorsed), this.postController.poweredAndEndorsed);
         this.router.post('/getPostName', auth('post'), validate(postValidation.getPostName), this.postController.getPostName);
+        this.router.post('/getNumbersPosts', auth('post'), validate(postValidation.getNumbersPosts), this.postController.getNumbersPosts);
 
         this.router.post('/showcase', auth('post'), validate(postValidation.showcase), this.postController.showcase);
+        this.router.post('/deleteShowcaseTag', auth('post'), validate(postValidation.deleteShowcaseTag), this.postController.deleteShowcaseTag);
+        this.router.post('/addTag', auth('post'), validate(postValidation.addTag), this.postController.addTag);
     }
 }
 

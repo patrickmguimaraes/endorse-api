@@ -84,6 +84,12 @@ export default class PostValidation {
     }),
   }
 
+  getNumbersPosts = {
+    body: Joi.object().keys({
+      userId: Joi.number().required(),
+    }),
+  }
+
   showcase = {
     body: Joi.object().keys({
       id: Joi.number(),
@@ -95,6 +101,19 @@ export default class PostValidation {
       categoryId: Joi.number().allow(null),
       tags: Joi.array(),
       files: Joi.array(),
+      category: Joi.object().allow(null)
+    }),
+  }
+
+  deleteShowcaseTag = {
+    body: Joi.object().keys({
+      tag: Joi.object().required(),
+    }),
+  }
+
+  addTag = {
+    body: Joi.object().keys({
+      tag: Joi.object().required(),
     }),
   }
 }

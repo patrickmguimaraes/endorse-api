@@ -39,6 +39,7 @@ import Agreement from "../models/agreement.model";
 import UserSettings from "../models/user-settings.model";
 import Showcase from "../models/showcase.model";
 import Tag from "../models/tag.model";
+import ShowcaseTag from "../models/showcase-tag.model";
 
 class Database {
   public sequelize: Sequelize | undefined;
@@ -98,7 +99,8 @@ class Database {
         View,
         EndorseView,
         Showcase,
-        Tag
+        Tag,
+        ShowcaseTag
       ]
     });
 

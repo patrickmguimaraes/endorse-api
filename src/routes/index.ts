@@ -18,6 +18,7 @@ import termAndConditionRoute from "./term-and-condition.route";
 import storageRoute from "./storage.route";
 import postRoute from "./post.route";
 import followerRoute from "./follower.route";
+import tagRoute from "./tag.route";
 
 class Routes {
   public router = express.Router();
@@ -90,6 +91,10 @@ class Routes {
     { 
       path: '/followers',
       route: followerRoute,
+    },
+    { 
+      path: '/tags',
+      route: tagRoute,
     },
   ];
 

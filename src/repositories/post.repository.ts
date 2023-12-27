@@ -17,6 +17,8 @@ import Converter from 'number-to-words';
 import EndorseView from '../models/endorse-view.model';
 import Showcase from '../models/showcase.model';
 import Tag from '../models/tag.model';
+import ShowcaseTag from '../models/showcase-tag.model';
+import Category from '../models/category.model';
 
 class PostRepository {
   async getPostById(id: number) {
@@ -50,8 +52,9 @@ class PostRepository {
           model: Showcase, 
           as: 'showcase',
           include: [
+            { model: Category },
             { model: File },
-            { model: Tag }
+            { model: ShowcaseTag, include: [ { model: Tag }] }
           ]
         }
       ]
@@ -289,6 +292,11 @@ class PostRepository {
     return { word: word + "-idea" };
   };
 
+  async getNumberPosts(userId: number) {
+    const num: number = await Post.count({ where: { userId: userId, status: "Posted" } });
+    return num;
+  };
+
   async saveShowcase(showcase: any) {
     const show = await Showcase.create({ ...showcase }, { include: [{ all: true }] });
     return show;
@@ -317,6 +325,27 @@ class PostRepository {
       return affectedRows[0];
     } catch (error) {
       throw new Error("Failed to update Showcase!");
+    }
+  }
+
+  async deleteShowcaseTag(tag: ShowcaseTag): Promise<number> {
+    try {
+      const affectedRows = await ShowcaseTag.destroy(
+        { where: { tagId: tag.tagId, showcaseId: tag.showcaseId } }
+      );
+
+      return affectedRows;
+    } catch (error) {
+      throw new Error("Failed to delete ShowcaseTag!");
+    }
+  }
+
+  async addTag(tag: ShowcaseTag): Promise<ShowcaseTag> {
+    try {
+      const newTag = await ShowcaseTag.create({...tag });
+      return newTag;
+    } catch (error) {
+      throw new Error("Failed to create ShowcaseTag!");
     }
   }
 }

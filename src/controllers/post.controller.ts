@@ -4,8 +4,9 @@ import postRepository from '../repositories/post.repository';
 import Showcase from '../models/showcase.model';
 import ApiError from '../utils/ApiError';
 import fileRepository from '../repositories/file.repository';
+import followerRepository from '../repositories/follower.repository';
 
-export default class AuthController {
+export default class PostController {
   getPost = catchAsync(async (req: any, res: any) => {
     const post = await postRepository.getPost(req.body.userId, req.body.code);
     res.status(httpStatus.OK).send(post);
@@ -56,6 +57,13 @@ export default class AuthController {
     res.status(httpStatus.OK).send(poweredAndEndorsed);
   }); 
 
+  getNumbersPosts = catchAsync(async (req: any, res: any) => {
+    const numIdeas = await postRepository.getNumberPosts(req.body.userId);
+    const followers = await followerRepository.followingNumber(req.body.userId, req.body.userId)
+
+    res.status(httpStatus.OK).send({ideas: numIdeas, followers: followers.followers, followeds: followers.followeds});
+  }); 
+
   showcase = catchAsync(async (req: any, res: any) => {
     const showcase = req.body;
     const post = await postRepository.getPostById(showcase.postId);
@@ -74,5 +82,15 @@ export default class AuthController {
       show = await postRepository.updateShowcase(showcase.id, showcase);
       res.status(httpStatus.OK).send(showcase);
     }
+  }); 
+
+  deleteShowcaseTag = catchAsync(async (req: any, res: any) => {
+    const num = await postRepository.deleteShowcaseTag(req.body.tag);
+    res.status(httpStatus.OK).send(num>0);
+  }); 
+
+  addTag = catchAsync(async (req: any, res: any) => {
+    const tag = await postRepository.addTag(req.body.tag);
+    res.status(httpStatus.OK).send(tag);
   }); 
 }

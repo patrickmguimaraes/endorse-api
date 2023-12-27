@@ -1,5 +1,6 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
 import Showcase from "./showcase.model";
+import ShowcaseTag from "./showcase-tag.model";
 
 @Table({timestamps: false,
   tableName: "tags",
@@ -19,13 +20,6 @@ export default class Tag extends Model {
   })
   name?: string;
 
-  @ForeignKey(() => Showcase)
-  @Column({
-    type: DataType.INTEGER,
-    field: "showcaseId",
-  })
-  showcaseId!: number;
-
-  @BelongsTo(() => Showcase)
-  showcase?: Showcase;
+  @HasMany(() => ShowcaseTag, { foreignKey: 'tagId', sourceKey: 'id' })
+  showcaseTags?: ShowcaseTag[];
 }
