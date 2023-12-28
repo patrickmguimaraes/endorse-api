@@ -134,4 +134,34 @@ export default class StorageController {
       res.send(false);
     }
   });
+
+  saveCurriculum = catchAsync(async (req: any, res: any) => {
+    try {
+      let sampleFile: fileUpload.UploadedFile;
+      let uploadPath: string;
+
+      if (!req.files || Object.keys(req.files).length === 0) {
+        throw new ApiError(httpStatus.BAD_REQUEST, 'No files were uploaded!');
+      }
+
+      if (!fs.existsSync(path.join(__dirname, '../../../storage-public/users/' + req.user.id + '/posts/' + req.params.postId + "/collaboration/" + req.params.collaborationId))) {
+        fs.mkdirSync(path.join(__dirname, '../../../storage-public/users/' + req.user.id + '/posts/' + req.params.postId + "/collaboration/" + req.params.collaborationId), { recursive: true });
+      }
+
+      sampleFile = req.files.file as fileUpload.UploadedFile;
+      var type = sampleFile.mimetype.substring(sampleFile.mimetype.search("/") + 1);
+      const name: string = new Date().getTime() + "." + type;
+      uploadPath = path.join(__dirname, '../../../storage-public/users/' + req.user.id + '/posts/' + req.params.postId + "/collaboration/" + req.params.collaborationId + "/" + name);
+
+      sampleFile.mv(uploadPath, async function (err) {
+        if (err) {
+          throw new ApiError(httpStatus.EXPECTATION_FAILED, err.message);
+        }
+        
+        res.send({path: name});
+      });
+    } catch (err: any) {
+      throw new ApiError(httpStatus.EXPECTATION_FAILED, err.message);
+    }
+  });
 }

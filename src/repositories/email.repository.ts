@@ -80,6 +80,60 @@ class EmailRepository {
 
     return info;
   };
+
+  async sendCollaborationApprovedEmail(name: string, to: string) {
+    const subject = 'You were approved!';
+    const termsOfUseUrl = config.env === 'development' ? `http://localhost:4200/terms-conditions` : `https://endorseanidea.com/terms-conditions`;
+    const privacyPolicyUrl = config.env === 'development' ? `http://localhost:4200/privacy-policy` : `https://endorseanidea.com/privacy-policy`;
+    const website = config.env === 'development' ? `http://localhost:4200` : `https://endorseanidea.com`;
+    
+    const emailData = {
+      user: name,
+      website,
+      termsOfUseUrl,
+      privacyPolicyUrl
+    };
+    
+    const compiledFunction = pug.compileFile(path.join(__dirname, '../../../src/email-templates/approved-collaboration.pug'));
+    
+    const emailHTML = compiledFunction(emailData);
+
+    let info = await this.transport.sendMail({
+      from: config.email.from,
+      to: to,
+      subject: subject,
+      html: emailHTML,
+    });
+
+    return info;
+  };
+
+  async sendCollaborationReprovedEmail(name: string, to: string) {
+    const subject = 'You were reproved';
+    const termsOfUseUrl = config.env === 'development' ? `http://localhost:4200/terms-conditions` : `https://endorseanidea.com/terms-conditions`;
+    const privacyPolicyUrl = config.env === 'development' ? `http://localhost:4200/privacy-policy` : `https://endorseanidea.com/privacy-policy`;
+    const website = config.env === 'development' ? `http://localhost:4200` : `https://endorseanidea.com`;
+    
+    const emailData = {
+      user: name,
+      website,
+      termsOfUseUrl,
+      privacyPolicyUrl
+    };
+    
+    const compiledFunction = pug.compileFile(path.join(__dirname, '../../../src/email-templates/rejected-collaboration.pug'));
+    
+    const emailHTML = compiledFunction(emailData);
+
+    let info = await this.transport.sendMail({
+      from: config.email.from,
+      to: to,
+      subject: subject,
+      html: emailHTML,
+    });
+
+    return info;
+  };
 }
 
 export default new EmailRepository();

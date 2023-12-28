@@ -3,6 +3,7 @@ import Request from "./request.model";
 import User from "./user.model";
 import Post from "./post.model";
 import Showcase from "./showcase.model";
+import CollaborationRequest from "./collaboration-request.model";
 
 @Table({timestamps: false,
   tableName: "files",
@@ -74,4 +75,14 @@ export default class File extends Model {
 
   @BelongsTo(() => Showcase)
   showcase?: Showcase;
+
+  @ForeignKey(() => CollaborationRequest)
+  @Column({
+    type: DataType.INTEGER,
+    field: "collaborationRequestId",
+  })
+  collaborationRequestId!: number;
+
+  @BelongsTo(() => CollaborationRequest)
+  collaborationRequest?: CollaborationRequest;
 }

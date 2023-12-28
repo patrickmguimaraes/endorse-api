@@ -39,8 +39,8 @@ export const ECNRYPTION_METHOD = "aes-256-cbc";
 
 export const config = {
   HOST: "127.0.0.1",
-  USER: "root",
-  PASSWORD: "Endorse@2MySQL",
+  USER: "postgres",
+  PASSWORD: "PMG@2Endorse",
   DB: "endorse",
   pool: {
     max: 5,
@@ -83,4 +83,4 @@ export const config = {
   },
 };
 
-export const dialect = "mysql";
+export const dialect = "postgres";

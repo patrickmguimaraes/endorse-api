@@ -20,6 +20,7 @@ export default class PostValidation {
       link: Joi.string().allow(null),
       status: Joi.string().required(),
       views: Joi.array().allow(null),
+      collaborations: Joi.array().allow(null),
       files: Joi.array().allow(null),
       article: Joi.object().allow(null),
       idea: Joi.object().allow(null),
@@ -114,6 +115,62 @@ export default class PostValidation {
   addTag = {
     body: Joi.object().keys({
       tag: Joi.object().required(),
+    }),
+  }
+
+  addCollaborationSkill = {
+    body: Joi.object().keys({
+      tag: Joi.object().required(),
+    }),
+  }
+
+  deleteCollaborationSkill = {
+    body: Joi.object().keys({
+      tag: Joi.object().required(),
+    }),
+  }
+
+  collaboration = {
+    body: Joi.object().keys({
+      id: Joi.number(),
+      title: Joi.string().required(),
+      description: Joi.string().required(),
+      workingExperience: Joi.string().required(),
+      vacacies: Joi.number().required(),
+      salary: Joi.string().required(),
+      deadline: Joi.date().required(),
+      post: Joi.object(),
+      postId: Joi.number().required(),
+      collaborationCategoryId: Joi.number().required(),
+      skills: Joi.array(),
+      requests: Joi.array(),
+      collaborationCategory: Joi.object().allow(null)
+    }),
+  }
+
+  deleteCollaboration = {
+    body: Joi.object().keys({
+      collaboration: Joi.object().required(),
+    }),
+  }
+
+  similarCollaborations = {
+    body: Joi.object().keys({
+      collaborationId: Joi.number().required(),
+      category: Joi.number().required(),
+    }),
+  }
+
+  applyCollaboration = {
+    body: Joi.object().keys({
+      application: Joi.object().required(),
+    }),
+  }
+
+  changeCollaborationRequestStatus = {
+    body: Joi.object().keys({
+      collaborationRequestId: Joi.number().required(),
+      status: Joi.string().required()
     }),
   }
 }

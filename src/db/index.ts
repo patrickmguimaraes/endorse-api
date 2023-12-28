@@ -40,6 +40,10 @@ import UserSettings from "../models/user-settings.model";
 import Showcase from "../models/showcase.model";
 import Tag from "../models/tag.model";
 import ShowcaseTag from "../models/showcase-tag.model";
+import Collaboration from "../models/collaboration.model";
+import CollaborationTag from "../models/collaboration-tag.model";
+import CollaborationCategory from "../models/collaboration-category.model";
+import CollaborationRequest from "../models/collaboration-request.model";
 
 class Database {
   public sequelize: Sequelize | undefined;
@@ -100,7 +104,11 @@ class Database {
         EndorseView,
         Showcase,
         Tag,
-        ShowcaseTag
+        ShowcaseTag,
+        Collaboration,
+        CollaborationTag,
+        CollaborationCategory,
+        CollaborationRequest
       ]
     });
 
@@ -117,129 +125,10 @@ class Database {
   }
 
   public async sync() {
-    User.hasMany(Request, { foreignKey: 'userId' });
-    Request.belongsTo(User, { foreignKey: 'userId' });
-
-    Person.hasOne(User, { foreignKey: 'personId' });
-    User.belongsTo(Person, { foreignKey: 'personId' });
-
-    Company.hasOne(User, { foreignKey: 'companyId' });
-    User.belongsTo(Company, { foreignKey: 'companyId' });
-
-    Category.hasMany(Company, { foreignKey: 'categoryId' });
-    Company.belongsTo(Category, { foreignKey: 'categoryId' });
-
-    Category.hasMany(Request, { foreignKey: 'categoryId' });
-    Request.belongsTo(Category, { foreignKey: 'categoryId' });
-
-    Company.hasMany(Copyright, { foreignKey: 'companyId' });
-    Copyright.belongsTo(Company, { foreignKey: 'companyId' });
-
-    Request.hasMany(RequestActivationDate, { foreignKey: 'requestId' });
-    RequestActivationDate.belongsTo(Request, { foreignKey: 'requestId' });
-
-    Request.hasMany(RequestComplianceMeasure, { foreignKey: 'requestId' });
-    RequestComplianceMeasure.belongsTo(Request, { foreignKey: 'requestId' });
-
-    Request.hasMany(RequestContentElement, { foreignKey: 'requestId' });
-    RequestContentElement.belongsTo(Request, { foreignKey: 'requestId' });
-
-    Request.hasMany(RequestGeograficScope, { foreignKey: 'requestId' });
-    RequestGeograficScope.belongsTo(Request, { foreignKey: 'requestId' });
-
-    Request.hasMany(RequestMediaChannel, { foreignKey: 'requestId' });
-    RequestMediaChannel.belongsTo(Request, { foreignKey: 'requestId' });
-
-    Request.hasMany(RequestMetric, { foreignKey: 'requestId' });
-    RequestMetric.belongsTo(Request, { foreignKey: 'requestId' });
-
-    ActivationDate.hasMany(RequestActivationDate, { foreignKey: 'activationDateId' });
-    RequestActivationDate.belongsTo(ActivationDate, { foreignKey: 'activationDateId' });
-
-    ComplianceMeasure.hasMany(RequestComplianceMeasure, { foreignKey: 'complianceMeasureId' });
-    RequestComplianceMeasure.belongsTo(ComplianceMeasure, { foreignKey: 'complianceMeasureId' });
-
-    ContentElement.hasMany(RequestContentElement, { foreignKey: 'contentElementId' });
-    RequestContentElement.belongsTo(ContentElement, { foreignKey: 'contentElementId' });
-
-    GeograficScope.hasMany(RequestGeograficScope, { foreignKey: 'geograficScopeId' });
-    RequestGeograficScope.belongsTo(GeograficScope, { foreignKey: 'geograficScopeId' });
-
-    MediaChannel.hasMany(RequestMediaChannel, { foreignKey: 'mediaChannelId' });
-    RequestMediaChannel.belongsTo(MediaChannel, { foreignKey: 'mediaChannelId' });
-
-    Metric.hasMany(RequestMetric, { foreignKey: 'metricId' });
-    RequestMetric.belongsTo(Metric, { foreignKey: 'metricId' });
-
-    Request.hasMany(RequestAssignment, { foreignKey: 'requestId' });
-    RequestAssignment.belongsTo(Request, { foreignKey: 'requestId' });
-
-    Request.hasMany(File, { foreignKey: 'requestId' });
-    File.belongsTo(Request, { foreignKey: 'requestId' });
-
-    User.hasMany(File, { foreignKey: 'userId' });
-    File.belongsTo(User, { foreignKey: 'userId' });
-
-    Request.hasMany(RequestHistory, { foreignKey: 'requestId' });
-    RequestHistory.belongsTo(Request, { foreignKey: 'requestId' });
-
-    User.hasMany(RequestHistory, { foreignKey: 'userId' });
-    RequestHistory.belongsTo(User, { foreignKey: 'userId' });
-
-    User.hasMany(Post, { foreignKey: 'userId' });
-    Post.belongsTo(User, { foreignKey: 'userId' });
-
-    User.hasMany(Endorse, { foreignKey: 'userId' });
-    Endorse.belongsTo(User, { foreignKey: 'userId' });
-
-    User.hasMany(Power, { foreignKey: 'userId' });
-    Power.belongsTo(User, { foreignKey: 'userId' });
-
-    User.hasMany(Comment, { foreignKey: 'userId' });
-    Comment.belongsTo(User, { foreignKey: 'userId' });
-
-    Endorse.hasMany(Endorse, { foreignKey: 'fatherId' });
-    Endorse.belongsTo(Endorse, { foreignKey: 'fatherId' });
-
-    Comment.hasMany(Comment, { foreignKey: 'commentId' });
-    Comment.belongsTo(Comment, { foreignKey: 'commentId' });
-
-    Post.hasMany(Endorse, { foreignKey: 'postId' });
-    Endorse.belongsTo(Post, { foreignKey: 'postId' });
-
-    Article.hasOne(Post, { foreignKey: 'articleId' });
-    Post.belongsTo(Article, { foreignKey: 'articleId' });
-
-    Idea.hasOne(Post, { foreignKey: 'ideaId' });
-    Post.belongsTo(Idea, { foreignKey: 'ideaId' });
-
-    Post.hasMany(File, { foreignKey: 'postId' });
-    File.belongsTo(Post, { foreignKey: 'postId' });
-
-    Post.hasMany(Power, { foreignKey: 'postId' });
-    Power.belongsTo(Post, { foreignKey: 'postId' });
-
-    User.hasMany(Follower, { foreignKey: 'followerId' });
-    Follower.belongsTo(User, { foreignKey: 'followerId' });
-
-    User.hasMany(Follower, { foreignKey: 'followedId' });
-    Follower.belongsTo(User, { foreignKey: 'followedId' });
-
-    User.hasMany(View, { foreignKey: 'userId' });
-    View.belongsTo(User, { foreignKey: 'userId' });
-
-    User.hasMany(EndorseView, { foreignKey: 'userId' });
-    EndorseView.belongsTo(User, { foreignKey: 'userId' });
-
-    Post.hasMany(View, { foreignKey: 'postId' });
-    View.belongsTo(Post, { foreignKey: 'postId' });
-
-    Endorse.hasMany(EndorseView, { foreignKey: 'endorseId' });
-    EndorseView.belongsTo(Endorse, { foreignKey: 'endorseId' });
-    
     this.sequelize?.sync({ force: false, alter: true }).then((value) => {
       this.insertInitialTermsAndConditions();
       this.insertInitialValuesCategory();
+      this.insertInitialValuesCollaborationCategory();
       this.insertInitialValuesActivationDate()
       this.insertInitialValuesCompliance();
       this.insertInitialValuesContentElement();
@@ -333,6 +222,404 @@ class Database {
         }
       })
     });
+  }
+
+  insertInitialValuesCollaborationCategory() {
+    try {
+      CollaborationCategory.sync().then(() => {
+        CollaborationCategory.findAll().then(async value => {
+          if (!value || value.length == 0) {
+            var father = await CollaborationCategory.create({
+              name: 'Developer'
+            });
+
+            await CollaborationCategory.create({
+              name: 'Backend Developer',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Frontend Developer',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Full-Stack Developer',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Mobile App Developer',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Software Engineer',
+              fatherId: father.id
+            });
+
+            father = await CollaborationCategory.create({
+              name: 'Designer'
+            });
+
+            await CollaborationCategory.create({
+              name: 'Graphic Designer',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'UI/UX Designer',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Web Designer',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Product Designer',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Animator',
+              fatherId: father.id
+            });
+
+            father = await CollaborationCategory.create({
+              name: 'Creative'
+            });
+
+            await CollaborationCategory.create({
+              name: 'Writer/Content Creator',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Copywriter',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Photographer',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Videographer',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Musician',
+              fatherId: father.id
+            });
+
+            father = await CollaborationCategory.create({
+              name: 'Business and Strategy'
+            });
+
+            await CollaborationCategory.create({
+              name: 'Business Analyst',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Marketing Specialist',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Project Manager',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Entrepreneur',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Strategist',
+              fatherId: father.id
+            });
+
+            father = await CollaborationCategory.create({
+              name: 'Tech Specialist'
+            });
+
+            await CollaborationCategory.create({
+              name: 'Data Scientist',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'AI/Machine Learning Expert',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Blockchain Developer',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Cybersecurity Specialist',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'IT Support',
+              fatherId: father.id
+            });
+
+            father = await CollaborationCategory.create({
+              name: 'Management'
+            });
+
+            await CollaborationCategory.create({
+              name: 'Team Lead',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Project Manager',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Product Manager',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Operations Manager',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Executive',
+              fatherId: father.id
+            });
+
+            father = await CollaborationCategory.create({
+              name: 'Legal and Compliance'
+            });
+
+            await CollaborationCategory.create({
+              name: 'Intellectual Property Lawyer',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Contract Specialist',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Compliance Officer',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Legal Advisor',
+              fatherId: father.id
+            });
+
+            father = await CollaborationCategory.create({
+              name: 'Finance'
+            });
+
+            await CollaborationCategory.create({
+              name: 'Financial Analyst',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Accountant',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Investment Advisor',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'CFO',
+              fatherId: father.id
+            });
+
+            father = await CollaborationCategory.create({
+              name: 'Marketing'
+            });
+
+            await CollaborationCategory.create({
+              name: 'Digital Marketer',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Social Media Manager',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'SEO Specialist',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Content Marketer',
+              fatherId: father.id
+            });
+
+            father = await CollaborationCategory.create({
+              name: 'Health and Science'
+            });
+
+            await CollaborationCategory.create({
+              name: 'Medical Researcher',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Biotechnologist',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Health Specialist',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Scientist',
+              fatherId: father.id
+            });
+
+            father = await CollaborationCategory.create({
+              name: 'Education'
+            });
+
+            await CollaborationCategory.create({
+              name: 'Education Specialist',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Instructional Designer',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'EdTech Developer',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Academic Researcher',
+              fatherId: father.id
+            });
+
+            father = await CollaborationCategory.create({
+              name: 'Community and Support'
+            });
+
+            await CollaborationCategory.create({
+              name: 'Community Manager',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Customer Support',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Moderator',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Evangelist',
+              fatherId: father.id
+            });
+
+            father = await CollaborationCategory.create({
+              name: 'Environment and Sustainability'
+            });
+
+            await CollaborationCategory.create({
+              name: 'Environmental Scientist',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Sustainability Specialist',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Conservationist',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Green Energy Expert',
+              fatherId: father.id
+            });
+
+            father = await CollaborationCategory.create({
+              name: 'Artisan and Crafts'
+            });
+
+            await CollaborationCategory.create({
+              name: 'Artisan',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Craftsman',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Sculptor',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Handmade Crafts Expert',
+              fatherId: father.id
+            });
+
+            father = await CollaborationCategory.create({
+              name: 'Human Resources'
+            });
+
+            await CollaborationCategory.create({
+              name: 'HR Specialist',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Recruiter',
+              fatherId: father.id
+            });
+
+            await CollaborationCategory.create({
+              name: 'Diversity and Inclusion Specialist',
+              fatherId: father.id
+            });
+          }
+
+        })
+      })
+    } catch (error: any) {
+      console.log(error.message)
+    }
   }
 
   insertInitialValuesActivationDate() {

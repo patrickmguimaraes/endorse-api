@@ -20,9 +20,20 @@ class PostRoute {
         this.router.post('/getPostName', auth('post'), validate(postValidation.getPostName), this.postController.getPostName);
         this.router.post('/getNumbersPosts', auth('post'), validate(postValidation.getNumbersPosts), this.postController.getNumbersPosts);
 
+        //Showcase
         this.router.post('/showcase', auth('post'), validate(postValidation.showcase), this.postController.showcase);
         this.router.post('/deleteShowcaseTag', auth('post'), validate(postValidation.deleteShowcaseTag), this.postController.deleteShowcaseTag);
         this.router.post('/addTag', auth('post'), validate(postValidation.addTag), this.postController.addTag);
+
+        //Collaboration
+        this.router.get('/getAllCollaborationCategories', auth('post'), this.postController.getAllCollaborationCategories);
+        this.router.post('/collaboration', auth('post'), validate(postValidation.collaboration), this.postController.collaboration);
+        this.router.post('/deleteCollaboration', auth('post'), validate(postValidation.deleteCollaboration), this.postController.deleteCollaboration);
+        this.router.post('/deleteCollaborationSkill', auth('post'), validate(postValidation.deleteCollaborationSkill), this.postController.deleteCollaborationSkill);
+        this.router.post('/addCollaborationSkill', auth('post'), validate(postValidation.addCollaborationSkill), this.postController.addCollaborationSkill);
+        this.router.post('/similarCollaborations', auth('post'), validate(postValidation.similarCollaborations), this.postController.similarCollaborations);
+        this.router.post('/applyCollaboration', auth('post'), validate(postValidation.applyCollaboration), this.postController.applyCollaboration);
+        this.router.post('/changeCollaborationRequestStatus', auth('post'), validate(postValidation.changeCollaborationRequestStatus), this.postController.changeCollaborationRequestStatus);
     }
 }
 

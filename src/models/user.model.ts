@@ -16,6 +16,7 @@ import View from "./view.model";
 import EndorseView from "./endorse-view.model";
 import UserAgreement from "./user-agreement.model";
 import UserSettings from "./user-settings.model";
+import CollaborationRequest from "./collaboration-request.model";
 
 @Table({timestamps: false,
   tableName: "users",
@@ -237,4 +238,7 @@ export default class User extends Model {
 
   @HasMany(() => EndorseView, { foreignKey: 'userId', sourceKey: 'id' })
   endorseViews?: EndorseView[];
+
+  @HasMany(() => CollaborationRequest, { foreignKey: 'userId', sourceKey: 'id' })
+  collaborationRequests?: CollaborationRequest[];
 }

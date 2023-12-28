@@ -9,6 +9,7 @@ import Endorse from "./endorse.model";
 import Power from "./power.model";
 import File from "./file.model";
 import Showcase from "./showcase.model";
+import Collaboration from "./collaboration.model";
 
 @Table({timestamps: false,
   tableName: "posts",
@@ -97,4 +98,7 @@ export default class Post extends Model {
 
   @HasOne(() => Showcase, { foreignKey: 'postId', sourceKey: 'id' })
   showcase?: Showcase;
+
+  @HasMany(() => Collaboration, { foreignKey: 'postId', sourceKey: 'id' })
+  collaborations?: Collaboration[];
 }

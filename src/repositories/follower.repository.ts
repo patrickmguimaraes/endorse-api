@@ -47,12 +47,12 @@ class FollowerRepository {
         },
         include: [{ model: Person, as: 'person' }, { model: Company, as: 'company' }],
         limit: limit,
-        order: Sequelize.literal('rand()'),
+        order: Sequelize.literal('random()'),
       });
   
       return suggestedFollowers;
     } catch (error) {
-      throw new ApiError(httpStatus.NOT_ACCEPTABLE, 'An error ocurred while getting your news feed. Try later.');
+      throw new ApiError(httpStatus.NOT_ACCEPTABLE, 'An error ocurred while getting your suggestions. Try later.');
     }
   }
 

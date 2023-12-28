@@ -4,7 +4,7 @@ import User from '../models/user.model';
 import ApiError from '../utils/ApiError';
 import Post from '../models/post.model';
 import Follower from '../models/follower.model';
-import { Op, Sequelize } from 'sequelize';
+import { Model, Op, Sequelize } from 'sequelize';
 import View from '../models/view.model';
 import Person from '../models/person.model';
 import Company from '../models/company.model';
@@ -19,6 +19,10 @@ import Showcase from '../models/showcase.model';
 import Tag from '../models/tag.model';
 import ShowcaseTag from '../models/showcase-tag.model';
 import Category from '../models/category.model';
+import CollaborationTag from '../models/collaboration-tag.model';
+import Collaboration from '../models/collaboration.model';
+import CollaborationCategory from '../models/collaboration-category.model';
+import CollaborationRequest from '../models/collaboration-request.model';
 
 class PostRepository {
   async getPostById(id: number) {
@@ -55,6 +59,14 @@ class PostRepository {
             { model: Category },
             { model: File },
             { model: ShowcaseTag, include: [ { model: Tag }] }
+          ]
+        },
+        { 
+          model: Collaboration,
+          include: [
+            { model: CollaborationRequest, include: [ { model: File }] },
+            { model: CollaborationTag },
+            { model: CollaborationCategory },
           ]
         }
       ]
@@ -171,6 +183,7 @@ class PostRepository {
           {
             required: false,
             model: Endorse,
+            as: "endorsementsObject",
             where: {
               userId: meId
             },
@@ -183,7 +196,7 @@ class PostRepository {
           },
         ],
         order: [
-          [Sequelize.cast(Sequelize.literal('COALESCE(endorsementsObject.date, `Post`.date)'), 'char'), 'DESC']
+          [Sequelize.literal('COALESCE("endorsementsObject"."date", "Post"."date")'), 'DESC']
         ],
         limit: 5,
         offset: (page - 1) * 5,
@@ -348,6 +361,95 @@ class PostRepository {
       throw new Error("Failed to create ShowcaseTag!");
     }
   }
+
+  async deleteCollaborationSkill(tag: CollaborationTag): Promise<number> {
+    try {
+      const affectedRows = await CollaborationTag.destroy(
+        { where: { tagId: tag.tagId, collaborationId: tag.collaborationId } }
+      );
+
+      return affectedRows;
+    } catch (error) {
+      throw new Error("Failed to delete CollaborationTag!");
+    }
+  }
+
+  async addCollaborationSkill(tag: CollaborationTag): Promise<CollaborationTag> {
+    try {
+      const newTag = await CollaborationTag.create({...tag });
+      return newTag;
+    } catch (error) {
+      throw new Error("Failed to create CollaborationTag!");
+    }
+  }
+
+  async saveCollaboration(collaboration: any) {
+    const collab = await Collaboration.create({ ...collaboration }, { include: [{ all: true }] });
+    return collab;
+  };
+
+  async updateCollaboration(collaborationId: number, fields: any): Promise<number> {
+    try {
+      const affectedRows = await Collaboration.update(
+        { ...fields },
+        { where: { id: collaborationId } }
+      );
+
+      return affectedRows[0];
+    } catch (error) {
+      throw new Error("Failed to update Collaboration!");
+    }
+  }
+
+  async getAllCollaborationCategories() {
+    const categories = await CollaborationCategory.findAll({ include: [{ model: CollaborationCategory, as: "children" }] });
+    return categories;
+  };
+  
+  async deleteCollaboration(collaboration: any) {
+    await CollaborationTag.destroy({where: { collaborationId: collaboration.id } });
+    await CollaborationRequest.destroy({where: { collaborationId: collaboration.id } });
+    
+    const collab = await Collaboration.destroy({where: { id: collaboration.id } });
+    return collab;
+  };
+
+  async similarCollaborations(collaborationId: number, category: number) {
+    const collabs = await Collaboration.findAll({ 
+      where: { 
+        collaborationCategoryId: category,
+        id: { 
+          [Op.notIn]: [collaborationId]
+        },
+      },
+      include: [
+      { model: Post, include: [
+        { model: User, include: [ { model: Person }, { model: Company }] }
+      ] }
+    ],
+    limit: 5,
+    order: [[ "deadline", "DESC" ]] });
+    return collabs;
+  };
+
+  async applyCollaboration(application: any) {
+    const applicationObject = await CollaborationRequest.create({...application}, { include: [{ all: true }] });
+    return applicationObject;
+  };
+
+  async getCollaborationRequest(id: number) {
+    const applicationObject = await CollaborationRequest.findOne({where: { id: id }, include: [{model: User }, { model: Collaboration, include: [ { model: Post, include: [ { model: User, include: [ { model: Company }, { model: Person}] }] }] }]} );
+    return applicationObject;
+  };
+
+  async updateCollaborationRequest(id: number, status: string) {
+    const affectedRows = await CollaborationRequest.update(
+      { status },
+      { where: { id: id } }
+    );
+
+    return affectedRows[0];
+  };
 }
 
 export default new PostRepository()
