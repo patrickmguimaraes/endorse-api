@@ -20,9 +20,6 @@ export default class Category extends Model {
   })
   name?: string;
 
-  @HasMany(() => Company, { foreignKey: 'categoryId', sourceKey: 'id' })
-  companies?: Company[];
-
   @HasMany(() => Showcase, { foreignKey: 'categoryId', sourceKey: 'id' })
   showcases?: Showcase[];
 }

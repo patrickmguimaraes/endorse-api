@@ -6,6 +6,7 @@ import Category from "../models/category.model";
 import ApiError from "../utils/ApiError";
 import httpStatus from "http-status";
 import Follower from "../models/follower.model";
+import Industry from "../models/industry.model";
 
 interface SearchCondition {
   [key: string]: any;
@@ -17,7 +18,7 @@ class UserRepository {
       let condition: SearchCondition = {};
       condition.authId = { [Op.like]: `${searchParams.authId}` };
 
-      return await User.findOne({ where: { authId: searchParams.authId }, include: [{ model: Person, as: 'person' }, { model: Company, as: 'company', include: [{ model: Category, as: 'category' }] }] });
+      return await User.findOne({ where: { authId: searchParams.authId }, include: [{ model: Person, as: 'person' }, { model: Company, as: 'company', include: [{ model: Industry }] }] });
     } catch (error) {
       throw new Error("Failed to login!");
     }
@@ -25,7 +26,9 @@ class UserRepository {
 
   async existsEmail(email: string): Promise<User | null> {
     try {
-      return await User.findOne({ where: { email: email }, include: [{ model: Person, as: 'person' }, { model: Company, as: 'company', include: [{ model: Category, as: 'category' }] }] });
+      const user = await User.findOne({ where: { email: email }, include: [{ model: Person, as: 'person' }, { model: Company, as: 'company'}] });
+      
+      return user;
     } catch (error) {
       throw new Error("Failed to looking for the email!");
     }
@@ -83,12 +86,12 @@ class UserRepository {
 
   async retrieveById(userId: number, includeAll: boolean = false): Promise<User | null> {
     try {
-      var include: any = [{ model: Person, as: 'person' }, { model: Company, as: 'company', include: [{ model: Category, as: 'category' }] }]
+      var include: any = [{ model: Person, as: 'person' }, { model: Company, as: 'company', include: [{ model: Industry }] }]
       
       if(includeAll) { 
         include = [
           { model: Person, as: 'person' }, 
-          { model: Company, as: 'company', include: [{ model: Category, as: 'category' }] },
+          { model: Company, as: 'company', include: [{ model: Industry }] },
           { model: Follower, as: 'followers', limit: 5 },
           { model: Follower, as: 'followeds', limite: 5 }
         ]
@@ -183,7 +186,7 @@ class UserRepository {
 
   async findByUsername(username: string): Promise<User | null> {
     try {
-      return User.findOne({ where: {username: username}, include: [{ model: Person, as: 'person' }, { model: Company, as: 'company', include: [{ model: Category, as: 'category' }] }] });
+      return User.findOne({ where: {username: username}, include: [{ model: Person, as: 'person' }, { model: Company, as: 'company', include: [{ model: Industry }] }] });
     } catch (error: any) {
       throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'A problem happened when getting the user... Try later.');
     }

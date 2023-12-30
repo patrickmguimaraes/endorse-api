@@ -1,5 +1,7 @@
 import { Router } from "express";
 import CompanyController from "../controllers/company.controller";
+import { auth } from "../middlewares/auth";
+import { validate } from "../middlewares/validate";
 
 class CompanyRoutes {
   router = Router();
@@ -32,6 +34,8 @@ class CompanyRoutes {
     this.router.delete("/", this.controller.deleteAll);
 
     this.router.get("/findByCategory/:categoryId", this.controller.findByCategory);
+    this.router.get("/getAllIndustries", auth('autoManagement'), this.controller.getAllIndustries);
+    
   }
 }
 

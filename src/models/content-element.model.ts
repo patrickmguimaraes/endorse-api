@@ -1,5 +1,5 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
-import RequestContentElement from "./request-content-element.model";
+import RequestContentElement from "./request-copyright-content-element.model";
 
 @Table({timestamps: false,
   tableName: "contentElements",

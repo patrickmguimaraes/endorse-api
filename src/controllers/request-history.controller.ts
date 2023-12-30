@@ -1,5 +1,5 @@
 import { Response } from "express";
-import RequestHistory from "../models/request-history.model";
+import RequestHistory from "../models/request-copyright-history.model";
 import requestHistoryRepository from "../repositories/request-history.repository";
 
 export default class RequestHistoryController {

@@ -1,5 +1,5 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
-import Request from "./request.model";
+import Request from "./request-copyright.model";
 import User from "./user.model";
 import Post from "./post.model";
 import Showcase from "./showcase.model";

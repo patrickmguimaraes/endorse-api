@@ -1,5 +1,5 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
-import RequestGeograficScope from "./request-geografic-scope.model";
+import RequestGeograficScope from "./request-copyright-geografic-scope.model";
 
 @Table({timestamps: false,
   tableName: "geograficScopes",

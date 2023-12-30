@@ -1,6 +1,6 @@
 import Company from "../models/company.model";
-import RequestHistory from "../models/request-history.model";
-import Request from "../models/request.model";
+import RequestHistory from "../models/request-copyright-history.model";
+import Request from "../models/request-copyright.model";
 import Person from "../models/person.model";
 import User from "../models/user.model";
 

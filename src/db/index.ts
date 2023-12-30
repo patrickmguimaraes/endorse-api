@@ -9,19 +9,19 @@ import Category from "../models/category.model";
 import ComplianceMeasure from "../models/compliance-measure.model";
 import ContentElement from "../models/content-element.model";
 import Copyright from "../models/copyright.model";
-import Request from "../models/request.model";
-import RequestActivationDate from "../models/request-activation-date.model";
-import RequestComplianceMeasure from "../models/request-compliance-measure.model";
-import RequestContentElement from "../models/request-content-element.model";
-import RequestGeograficScope from "../models/request-geografic-scope.model";
-import RequestMediaChannel from "../models/request-media-channel.model";
-import RequestMetric from "../models/request-metric.model";
+import RequestCopyright from "../models/request-copyright.model";
+import RequestCopyrightActivationDate from "../models/request-copyright-activation-date.model";
+import RequestCopyrightComplianceMeasure from "../models/request-copyright-compliance-measure.model";
+import RequestCopyrightContentElement from "../models/request-copyright-content-element.model";
+import RequestCopyrightGeograficScope from "../models/request-copyright-geografic-scope.model";
+import RequestCopyrightMediaChannel from "../models/request-copyright-media-channel.model";
+import RequestCopyrightMetric from "../models/request-copyright-metric.model";
 import GeograficScope from "../models/geografic-scope.model";
 import MediaChannel from "../models/media-channel.model";
 import Metric from "../models/metric.model";
-import RequestAssignment from "../models/request-assignment.model";
+import RequestCopyrightAssignment from "../models/request-copyright-assignment.model";
 import File from "../models/file.model";
-import RequestHistory from "../models/request-history.model";
+import RequestCopyrightHistory from "../models/request-copyright-history.model";
 import Token from "../models/token.model";
 import { logger } from "../config/logger";
 import Power from "../models/power.model";
@@ -44,6 +44,13 @@ import Collaboration from "../models/collaboration.model";
 import CollaborationTag from "../models/collaboration-tag.model";
 import CollaborationCategory from "../models/collaboration-category.model";
 import CollaborationRequest from "../models/collaboration-request.model";
+import Notification from "../models/notification.model";
+import PeopleDataLabs from "../companyAPI";
+import Country from "../models/country.model";
+import Industry from "../models/industry.model";
+import City from "../models/city.model";
+import State from "../models/state.model";
+import Address from "../models/address.model";
 
 class Database {
   public sequelize: Sequelize | undefined;
@@ -77,19 +84,19 @@ class Database {
         ComplianceMeasure,
         ContentElement,
         Copyright,
-        Request,
-        RequestActivationDate,
-        RequestComplianceMeasure,
-        RequestContentElement,
-        RequestGeograficScope,
-        RequestMediaChannel,
-        RequestMetric,
+        RequestCopyright,
+        RequestCopyrightActivationDate,
+        RequestCopyrightComplianceMeasure,
+        RequestCopyrightContentElement,
+        RequestCopyrightGeograficScope,
+        RequestCopyrightMediaChannel,
+        RequestCopyrightMetric,
         GeograficScope,
         MediaChannel,
         Metric,
-        RequestAssignment,
+        RequestCopyrightAssignment,
         File,
-        RequestHistory,
+        RequestCopyrightHistory,
         UserAgreement,
         Agreement,
         Token,
@@ -108,7 +115,13 @@ class Database {
         Collaboration,
         CollaborationTag,
         CollaborationCategory,
-        CollaborationRequest
+        CollaborationRequest,
+        Notification,
+        Country,
+        Industry,
+        City,
+        State,
+        Address,
       ]
     });
 
@@ -117,7 +130,6 @@ class Database {
       .then(async () => {
         logger.info("Connection has been established successfully.");
         await this.sync();
-        new NewsFeed();
       })
       .catch((err) => {
         logger.error("Unable to connect to the Database:", err);
@@ -125,7 +137,7 @@ class Database {
   }
 
   public async sync() {
-    this.sequelize?.sync({ force: false, alter: true }).then((value) => {
+    this.sequelize?.sync({ force: false, alter: true }).then(async (value) => {
       this.insertInitialTermsAndConditions();
       this.insertInitialValuesCategory();
       this.insertInitialValuesCollaborationCategory();
@@ -137,6 +149,9 @@ class Database {
       this.insertInitialValuesMetrics();
       this.insertInitialValuesUsers();
       //this.insertInitialValuesCopyright();
+
+      new NewsFeed();
+      //await new PeopleDataLabs().updateCompanies();
     })
   }
 

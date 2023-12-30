@@ -438,7 +438,7 @@ class PostRepository {
   };
 
   async getCollaborationRequest(id: number) {
-    const applicationObject = await CollaborationRequest.findOne({where: { id: id }, include: [{model: User }, { model: Collaboration, include: [ { model: Post, include: [ { model: User, include: [ { model: Company }, { model: Person}] }] }] }]} );
+    const applicationObject = await CollaborationRequest.findOne({where: { id: id }, include: [{model: User, include: [ { model: Person}, { model: Company}] }, { model: Collaboration, include: [ { model: Post, include: [ { model: User, include: [ { model: Company }, { model: Person}] }] }] }]} );
     return applicationObject;
   };
 

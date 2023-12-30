@@ -1,5 +1,5 @@
 import { Response } from "express";
-import Request from "../models/request.model";
+import Request from "../models/request-copyright.model";
 import requestRepository from "../repositories/request.repository";
 import fileUpload from "express-fileupload";
 import path from "path";

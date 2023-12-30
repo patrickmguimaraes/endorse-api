@@ -1,5 +1,5 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
-import RequestComplianceMeasure from "./request-compliance-measure.model";
+import RequestComplianceMeasure from "./request-copyright-compliance-measure.model";
 
 @Table({timestamps: false,
   tableName: "complianceMeasures",

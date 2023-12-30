@@ -1,8 +1,9 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
-import Contract from "./contract.model";
 import User from "./user.model";
 import Category from "./category.model";
 import Copyright from "./copyright.model";
+import Industry from "./industry.model";
+import City from "./city.model";
 
 @Table({timestamps: false,
   tableName: "companies",
@@ -17,41 +18,63 @@ export default class Company extends Model {
   id?: number;
 
   @Column({
-    type: DataType.STRING(50),
+    type: DataType.TEXT,
     field: "name"
   })
   name?: string;
 
   @Column({
-    type: DataType.STRING(60),
-    field: "businessLocation"
+    type: DataType.STRING,
+    field: "handle"
   })
-  businessLocation?: string;
+  handle?: string;
 
   @Column({
-    type: DataType.STRING(100),
-    field: "businessWebsite"
+    type: DataType.STRING,
+    field: "type"
   })
-  businessWebsite?: string;
+  type?: string;
 
   @Column({
-    type: DataType.STRING(50),
-    field: "businessSize"
+    type: DataType.STRING,
+    field: "founded"
   })
-  businessSize?: string;
+  founded?: string;
 
-  @ForeignKey(() => Category)
+  @Column({
+    type: DataType.STRING,
+    field: "website"
+  })
+  website?: string;
+
+  @Column({
+    type: DataType.STRING,
+    field: "size"
+  })
+  size?: string;
+
+  @ForeignKey(() => Industry)
   @Column({
     type: DataType.INTEGER,
-    field: "categoryId"
+    field: "industryId"
   })
-  categoryId!: number;
+  industryId!: number;
+
+  @BelongsTo(() => Industry)
+  industry?: Industry;
+
+  @ForeignKey(() => City)
+  @Column({
+    type: DataType.INTEGER,
+    field: "cityId"
+  })
+  cityId!: number;
+
+  @BelongsTo(() => City)
+  city?: City;
 
   @HasOne(() => User, { foreignKey: 'companyId', sourceKey: 'id' })
   user?: User;
-
-  @BelongsTo(() => Category)
-  category?: Category;
 
   @HasMany(() => Copyright, { foreignKey: 'companyId', sourceKey: 'id' })
   copyrights?: Copyright[];

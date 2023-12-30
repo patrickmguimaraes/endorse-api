@@ -1,5 +1,5 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
-import RequestMetric from "./request-metric.model";
+import RequestMetric from "./request-copyright-metric.model";
 
 @Table({timestamps: false,
   tableName: "metrics",

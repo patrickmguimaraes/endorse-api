@@ -2,7 +2,7 @@ import winston from 'winston';
 import { config } from './db.config';
 
 const enumerateErrorFormat = winston.format((info) => {
-  if (info instanceof Error) {
+  if (info instanceof Error && info.message!="Please authenticate") {
     Object.assign(info, { message: info.stack });
   }
   return info;

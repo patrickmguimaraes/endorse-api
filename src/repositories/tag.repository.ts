@@ -1,5 +1,3 @@
-import httpStatus from 'http-status';
-import ApiError from '../utils/ApiError';
 import Tag from '../models/tag.model';
 
 class TagRepository {

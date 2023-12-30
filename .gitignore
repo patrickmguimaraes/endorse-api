@@ -3,3 +3,4 @@ node_modules
 package-lock.json
 storage
 storage-public
+free_company_dataset.json

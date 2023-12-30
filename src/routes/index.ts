@@ -19,6 +19,7 @@ import storageRoute from "./storage.route";
 import postRoute from "./post.route";
 import followerRoute from "./follower.route";
 import tagRoute from "./tag.route";
+import notificationRoute from "./notification.route";
 
 class Routes {
   public router = express.Router();
@@ -95,6 +96,10 @@ class Routes {
     { 
       path: '/tags',
       route: tagRoute,
+    },
+    { 
+      path: '/notifications',
+      route: notificationRoute,
     },
   ];
 

@@ -51,6 +51,7 @@ export const config = {
 
   OPEN_AI_API_KEY: "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",
   NEWS_API_KEY: envVars.NEWS_API_KEY,
+  PEOPLE_DATA_LABS: envVars.PEOPLE_DATA_LABS,
 
   env: envVars.NODE_ENV,
   port: envVars.PORT,

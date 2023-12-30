@@ -25,19 +25,19 @@ export default class Showcase extends Model {
   title?: string;
 
   @Column({
-    type: DataType.STRING(700),
+    type: DataType.STRING(1500),
     field: "description"
   })
   description?: string;
 
   @Column({
-    type: DataType.STRING(700),
+    type: DataType.STRING(1500),
     field: "implementationPlan"
   })
   implementationPlan?: string;
 
   @Column({
-    type: DataType.STRING(700),
+    type: DataType.STRING(1500),
     field: "challenges"
   })
   challenges?: string;

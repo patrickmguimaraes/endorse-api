@@ -1,4 +1,4 @@
-import Request from "../models/request.model";
+import Request from "../models/request-copyright.model";
 
 interface IRequestRepository {
   save(request: Request): Promise<Request>;

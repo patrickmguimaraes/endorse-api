@@ -1,5 +1,5 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
-import RequestActivationDate from "./request-activation-date.model";
+import RequestActivationDate from "./request-copyright-activation-date.model";
 
 @Table({timestamps: false,
   tableName: "activationDates",

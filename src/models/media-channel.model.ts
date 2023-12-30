@@ -1,5 +1,5 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
-import RequestMediaChannel from "./request-media-channel.model";
+import RequestMediaChannel from "./request-copyright-media-channel.model";
 
 @Table({timestamps: false,
   tableName: "mediaChannels",

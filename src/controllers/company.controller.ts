@@ -136,4 +136,17 @@ export default class CompanyController {
       });
     }
   }
+
+  async getAllIndustries(req: Request, res: Response) {
+    try {
+      const industries = await companyRepository.getAllIndustries();
+
+      res.status(200).send(industries);
+    } catch (err) {
+      res.status(500).send({
+        message: "Some error occurred while getAllIndustries."
+      });
+    }
+  }
+  
 }

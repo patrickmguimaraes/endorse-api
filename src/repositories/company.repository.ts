@@ -2,6 +2,7 @@ import { Op } from "sequelize";
 import Company from "../models/company.model";
 import Copyright from "../models/copyright.model";
 import User from "../models/user.model";
+import Industry from "../models/industry.model";
 
 interface ICompanyRepository {
   save(company: Company): Promise<Company>;
@@ -89,7 +90,15 @@ class CompanyRepository implements ICompanyRepository {
 
       return await Company.findAll({ where: condition, include: [{ model: Copyright, as: 'copyrights' }, { model: User, as: 'user' }] });
     } catch (error) {
-      throw new Error("Failed to login!");
+      throw new Error("Failed to findByCategory!");
+    }
+  }
+
+  async getAllIndustries(): Promise<Industry[]> {
+    try {
+      return await Industry.findAll({ order: [["name", "ASC"]] });
+    } catch (error) {
+      throw new Error("Failed to getAllIndustries!");
     }
   }
 }

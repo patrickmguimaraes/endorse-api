@@ -24,13 +24,13 @@ export default class Collaboration extends Model {
   title?: string;
 
   @Column({
-    type: DataType.STRING(1000),
+    type: DataType.STRING(2000),
     field: "description"
   })
   description?: string;
 
   @Column({
-    type: DataType.STRING(1000),
+    type: DataType.STRING(2000),
     field: "workingExperience"
   })
   workingExperience?: string;

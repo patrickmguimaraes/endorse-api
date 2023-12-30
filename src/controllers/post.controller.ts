@@ -6,6 +6,8 @@ import ApiError from '../utils/ApiError';
 import fileRepository from '../repositories/file.repository';
 import followerRepository from '../repositories/follower.repository';
 import emailRepository from '../repositories/email.repository';
+import notificationRepository from '../repositories/notification.repository';
+import { config } from '../config/db.config';
 
 export default class PostController {
   getPost = catchAsync(async (req: any, res: any) => {
@@ -150,6 +152,11 @@ export default class PostController {
     }
 
     const application = await postRepository.applyCollaboration(req.body.application);
+    
+    const collab = await postRepository.getCollaborationRequest(application.id!);
+    var name = collab?.user?.type=="Person" ? collab?.user.person?.name + " " + collab?.user.person?.surname : collab?.user?.company?.name;
+    await notificationRepository.save({userId: collab?.collaboration?.post?.userId, title: name + " just applied for your collaboration", text: "Your collaboration has a new applicant.", image: "/files/users/" + collab?.user?.id + "/profile.png", link: '/' + collab?.collaboration?.post?.user?.username + '/' + collab?.collaboration?.post?.link + '/collaboration-request/' + collab?.collaboration?.id, date: new Date(), read: false});
+
     res.status(httpStatus.OK).send(application);
   }); 
 
@@ -163,8 +170,14 @@ export default class PostController {
     const application = await postRepository.updateCollaborationRequest(req.body.collaborationRequestId, req.body.status);
     
     var name = collab?.collaboration?.post?.user?.type=="Person" ? collab?.collaboration?.post?.user.person?.name + " " + collab?.collaboration?.post?.user.person?.surname : collab?.collaboration?.post?.user?.company?.name;
-    if(req.body.status=="Approved") { await emailRepository.sendCollaborationApprovedEmail(name!, collab?.user?.email!); }
-    else { await emailRepository.sendCollaborationReprovedEmail(name!, collab?.user?.email!); }
+    if(req.body.status=="Approved") { 
+      await emailRepository.sendCollaborationApprovedEmail(name!, collab?.user?.email!);
+      await notificationRepository.save({userId: collab?.userId, title: "You were approved!", text: "Congratulations, " + name + " reviwed your CV and approved you.", image: "/files/users/" + collab?.collaboration?.post?.user?.id + "/profile.png", link: '/' + collab?.collaboration?.post?.user?.username + '/' + collab?.collaboration?.post?.link + '/collaboration-request/' + collab?.collaboration?.id, date: new Date(), read: false});
+    }
+    else { 
+      await emailRepository.sendCollaborationReprovedEmail(name!, collab?.user?.email!);
+      await notificationRepository.save({userId: collab?.userId, title: "You were reproved!", text: "We are sorry to inform you, but " + name + " reviwed your CV and rejected you.", image: "/files/users/" + collab?.collaboration?.post?.user?.id + "/profile.png", link: '/' + collab?.collaboration?.post?.user?.username + '/' + collab?.collaboration?.post?.link + '/collaboration-request/' + collab?.collaboration?.id, date: new Date(), read: false});
+    }
     
     res.status(httpStatus.OK).send(application>0);
   }); 

@@ -1,6 +1,6 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
 import Company from "./company.model";
-import Request from "./request.model";
+import Request from "./request-copyright.model";
 
 @Table({timestamps: false,
   tableName: "copyrights",

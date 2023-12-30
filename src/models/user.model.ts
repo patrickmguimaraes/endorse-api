@@ -2,14 +2,14 @@ import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo 
 import Contract from "./contract.model";
 import Person from "./person.model";
 import Company from "./company.model";
-import Request from "./request.model";
-import RequestAssignment from "./request-assignment.model";
+import Request from "./request-copyright.model";
+import RequestAssignment from "./request-copyright-assignment.model";
 import File from "./file.model";
-import RequestHistory from "./request-history.model";
+import RequestHistory from "./request-copyright-history.model";
 import Token from "./token.model";
 import Like from "./power.model";
 import Comment from "./comment.model";
-import Requestment from "./request.model";
+import Requestment from "./request-copyright.model";
 import Post from "./post.model";
 import Follower from "./follower.model";
 import View from "./view.model";
@@ -17,6 +17,7 @@ import EndorseView from "./endorse-view.model";
 import UserAgreement from "./user-agreement.model";
 import UserSettings from "./user-settings.model";
 import CollaborationRequest from "./collaboration-request.model";
+import Notification from "./notification.model";
 
 @Table({timestamps: false,
   tableName: "users",
@@ -241,4 +242,7 @@ export default class User extends Model {
 
   @HasMany(() => CollaborationRequest, { foreignKey: 'userId', sourceKey: 'id' })
   collaborationRequests?: CollaborationRequest[];
+
+  @HasMany(() => Notification, { foreignKey: 'userId', sourceKey: 'id' })
+  notifications?: Notification[];
 }
