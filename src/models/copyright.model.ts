@@ -26,6 +26,12 @@ export default class Copyright extends Model {
   })
   text?: string;
 
+  @Column({
+    type: DataType.BOOLEAN,
+    field: "visibleToAllPeople"
+  })
+  visibleToAllPeople?: boolean;
+
   @ForeignKey(() => Company)
   @Column({
     type: DataType.INTEGER,

@@ -1,6 +1,7 @@
 
 import { Router } from "express";
 import RequestController from "../controllers/request.controller";
+import { auth } from "../middlewares/auth";
 
 class RequestRoutes {
   router = Router();
@@ -11,19 +12,10 @@ class RequestRoutes {
   }
 
   intializeRoutes() {
-    // Create a new Request
-    this.router.post("/", this.controller.create);
-
-    // Retrieve all Requests
-    this.router.get("/", this.controller.findAll);
-
-    // Update a Request with id
-    this.router.put("/:id", this.controller.update);
-
-    // Delete a Request with id
-    this.router.delete("/:id", this.controller.delete);
-
-    this.router.post("/attachFile", this.controller.attachFile);
+    this.router.post("/", auth('post'), this.controller.create);
+    this.router.get("/", auth('post'), this.controller.findAll);
+    this.router.put("/:id", auth('post'), this.controller.update);
+    this.router.delete("/:id", auth('post'), this.controller.delete);
   }
 }
 

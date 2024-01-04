@@ -30,4 +30,10 @@ export default class UserValidation {
       username: Joi.string().required(),
     }),
   };
+
+  retriveAllEmployees = {
+    body: Joi.object().keys({
+      companiesId: Joi.array().required(),
+    }),
+  };
 }

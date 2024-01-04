@@ -4,18 +4,17 @@ import requestRepository from "../repositories/request.repository";
 import fileUpload from "express-fileupload";
 import path from "path";
 import fs from "fs";
+import ApiError from "../utils/ApiError";
+import httpStatus from "http-status";
 
 export default class RequestController {
   async create(req: any, res: Response) {
-    if (!req.body.name) {
-      res.status(400).send({
-        message: "Content can not be empty!"
-      });
-      return;
-    }
-
     try {
       const request: Request = req.body;
+
+      if(request.userId!=req.user.id) {
+        throw new ApiError(httpStatus.LOCKED, 'The copyright you want to update is from another user!');
+      }
 
       const savedRequest = await requestRepository.save(request);
 
@@ -82,38 +81,6 @@ export default class RequestController {
     } catch (err) {
       res.status(500).send({
         message: `Could not delete Request with id==${id}.`
-      });
-    }
-  }
-
-  async attachFile(req: any, res: Response) {
-    try {
-      let sampleFile: fileUpload.UploadedFile;
-      let uploadPath: string;
-      let name: string;
-
-      if (!req.files || Object.keys(req.files).length === 0) {
-        return res.status(400).send('No files were uploaded.');
-      }
-
-      if (!fs.existsSync(path.join(__dirname, '../../../storage/request/'))) {
-        fs.mkdirSync(path.join(__dirname, '../../../storage/request/'), { recursive: true });
-      }
-
-      sampleFile = req.files.sampleFile as fileUpload.UploadedFile;
-      name = new Date().getTime() + sampleFile.mimetype.replace("image/", ".").replace("application/", ".");
-      uploadPath = path.join(__dirname, '../../../storage/request/' + name);
-
-      sampleFile.mv(uploadPath, function (err) {
-        if (err) {
-          return res.status(500).send(err);
-        }
-        
-        res.send({name});
-      });
-    } catch (err) {
-      res.status(500).send({
-        message: "Some error occurred while attaching a file."
       });
     }
   }

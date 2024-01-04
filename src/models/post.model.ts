@@ -10,6 +10,7 @@ import Power from "./power.model";
 import File from "./file.model";
 import Showcase from "./showcase.model";
 import Collaboration from "./collaboration.model";
+import RequestCopyright from "./request-copyright.model";
 
 @Table({timestamps: false,
   tableName: "posts",
@@ -101,4 +102,7 @@ export default class Post extends Model {
 
   @HasMany(() => Collaboration, { foreignKey: 'postId', sourceKey: 'id' })
   collaborations?: Collaboration[];
+
+  @HasMany(() => RequestCopyright, { foreignKey: 'postId', sourceKey: 'id' })
+  requestCopyrights?: RequestCopyright[];
 }

@@ -164,4 +164,34 @@ export default class StorageController {
       throw new ApiError(httpStatus.EXPECTATION_FAILED, err.message);
     }
   });
+
+  attachFileCopyright = catchAsync(async (req: any, res: any) => {
+    try {
+      let sampleFile: fileUpload.UploadedFile;
+      let uploadPath: string;
+      let name: string;
+
+      if (!req.files || Object.keys(req.files).length === 0) {
+        throw new ApiError(httpStatus.BAD_REQUEST, 'No files were uploaded!');
+      }
+
+      if (!fs.existsSync(path.join(__dirname, '../../../storage-public/users/' + req.user.id + '/posts/' + req.params.postId + "/copyright/"))) {
+        fs.mkdirSync(path.join(__dirname, '../../../storage-public/users/' + req.user.id + '/posts/' + req.params.postId + "/copyright/"), { recursive: true });
+      }
+
+      sampleFile = req.files.sampleFile as fileUpload.UploadedFile;
+      name = new Date().getTime() + sampleFile.mimetype.replace("image/", ".").replace("application/", ".");
+      uploadPath = path.join(__dirname, '../../../storage-public/users/' + req.user.id + '/posts/' + req.params.postId + "/copyright/" + name);
+
+      sampleFile.mv(uploadPath, function (err) {
+        if (err) {
+          throw new ApiError(httpStatus.EXPECTATION_FAILED, err.message);
+        }
+        
+        res.send({name});
+      });
+    } catch (err: any) {
+      throw new ApiError(httpStatus.EXPECTATION_FAILED, err.message);
+    }
+  });
 }

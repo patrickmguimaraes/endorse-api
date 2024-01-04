@@ -207,4 +207,15 @@ export default class UserController {
       throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'We had a problem looking for this user. Try later...');
     }
   }
+
+  async retriveAllEmployees(req: Request, res: Response) {
+    try {
+      const user = await userRepository.retriveAllEmployees(req.body.companiesId);
+      
+      res.status(200).send(user);
+    } catch (err) {
+      console.log(err)
+      throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'We had a problem looking for this user. Try later...');
+    }
+  }
 }

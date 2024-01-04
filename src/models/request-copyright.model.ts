@@ -11,6 +11,8 @@ import RequestCopyrightAssignment from "./request-copyright-assignment.model";
 import File from "./file.model";
 import RequestCopyrightHistory from "./request-copyright-history.model";
 import Copyright from "./copyright.model";
+import Company from "./company.model";
+import Post from "./post.model";
 
 @Table({timestamps: false,
   tableName: "requestCopyrights",
@@ -25,12 +27,6 @@ export default class RequestCopyright extends Model {
   id?: number;
 
   @Column({
-    type: DataType.STRING(100),
-    field: "name"
-  })
-  name?: string;
-
-  @Column({
     type: DataType.TEXT,
     field: "description"
   })
@@ -43,28 +39,16 @@ export default class RequestCopyright extends Model {
   objective?: string;
 
   @Column({
-    type: DataType.STRING(10),
+    type: DataType.DATE,
     field: "start"
   })
   start?: string;
 
   @Column({
-    type: DataType.STRING(10),
+    type: DataType.DATE,
     field: "end"
   })
   end?: string;
-
-  @Column({
-    type: DataType.DATE,
-    field: "startDate"
-  })
-  startDate?: string;
-
-  @Column({
-    type: DataType.DATE,
-    field: "endDate"
-  })
-  endDate?: string;
 
   @Column({
     type: DataType.STRING(200),
@@ -79,22 +63,10 @@ export default class RequestCopyright extends Model {
   reportingFrequency?: string;
 
   @Column({
-    type: DataType.TEXT,
-    field: "requestText"
-  })
-  requestText?: string;
-
-  @Column({
     type: DataType.STRING(10),
     field: "visibility"
   })
   visibility?: string;
- 
-  @Column({
-    type: DataType.STRING(300),
-    field: "picture"
-  })
-  picture?: string;
 
   @Column({
     type: DataType.STRING(30),
@@ -109,6 +81,9 @@ export default class RequestCopyright extends Model {
   })
   userId!: number;
 
+  @BelongsTo(() => User)
+  user?: User;
+
   @ForeignKey(() => Copyright)
   @Column({
     type: DataType.INTEGER,
@@ -116,11 +91,28 @@ export default class RequestCopyright extends Model {
   })
   copyrightId!: number;
 
-  @BelongsTo(() => User)
-  user?: User;
-
   @BelongsTo(() => Copyright)
-  category?: Copyright;
+  copyright?: Copyright;
+
+  @ForeignKey(() => Company)
+  @Column({
+    type: DataType.INTEGER,
+    field: "companyId",
+  })
+  companyId!: number;
+
+  @BelongsTo(() => Company)
+  company?: Company;
+
+  @ForeignKey(() => Post)
+  @Column({
+    type: DataType.INTEGER,
+    field: "postId",
+  })
+  postId!: number;
+
+  @BelongsTo(() => Post)
+  post?: Post;
 
   @HasMany(() => RequestCopyrightActivationDate, { foreignKey: 'requestId', sourceKey: 'id' })
   requestActivationDates?: RequestCopyrightActivationDate[];

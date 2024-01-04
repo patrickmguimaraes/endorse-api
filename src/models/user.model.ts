@@ -3,13 +3,12 @@ import Contract from "./contract.model";
 import Person from "./person.model";
 import Company from "./company.model";
 import Request from "./request-copyright.model";
-import RequestAssignment from "./request-copyright-assignment.model";
+import RequestCopyrightAssignment from "./request-copyright-assignment.model";
 import File from "./file.model";
-import RequestHistory from "./request-copyright-history.model";
+import RequestCopyrightHistory from "./request-copyright-history.model";
 import Token from "./token.model";
 import Like from "./power.model";
 import Comment from "./comment.model";
-import Requestment from "./request-copyright.model";
 import Post from "./post.model";
 import Follower from "./follower.model";
 import View from "./view.model";
@@ -18,6 +17,7 @@ import UserAgreement from "./user-agreement.model";
 import UserSettings from "./user-settings.model";
 import CollaborationRequest from "./collaboration-request.model";
 import Notification from "./notification.model";
+import RequestCopyright from "./request-copyright.model";
 
 @Table({timestamps: false,
   tableName: "users",
@@ -198,8 +198,8 @@ export default class User extends Model {
   @HasMany(() => Request, { foreignKey: 'userId', sourceKey: 'id' })
   requests?: Request[];
 
-  @HasMany(() => RequestAssignment, { foreignKey: 'userId', sourceKey: 'id' })
-  requestAssignments?: RequestAssignment[];
+  @HasMany(() => RequestCopyrightAssignment, { foreignKey: 'userId', sourceKey: 'id' })
+  requestAssignments?: RequestCopyrightAssignment[];
 
   @HasOne(() => UserSettings, { foreignKey: 'userId', sourceKey: 'id' })
   settings?: UserSettings;
@@ -207,8 +207,8 @@ export default class User extends Model {
   @HasMany(() => File, { foreignKey: 'userId', sourceKey: 'id' })
   files?: File[];
 
-  @HasMany(() => RequestHistory, { foreignKey: 'userId', sourceKey: 'id' })
-  requestHistory?: RequestHistory[];
+  @HasMany(() => RequestCopyrightHistory, { foreignKey: 'userId', sourceKey: 'id' })
+  requestHistory?: RequestCopyrightHistory[];
 
   @HasMany(() => UserAgreement, { foreignKey: 'userId', sourceKey: 'id' })
   userAgreements?: UserAgreement[];
@@ -222,8 +222,8 @@ export default class User extends Model {
   @HasMany(() => Comment, { foreignKey: 'userId', sourceKey: 'id' })
   comments?: Comment[];
 
-  @HasMany(() => Requestment, { foreignKey: 'userId', sourceKey: 'id' })
-  requestments?: Requestment[];
+  @HasMany(() => RequestCopyright, { foreignKey: 'userId', sourceKey: 'id' })
+  requestments?: RequestCopyright[];
 
   @HasMany(() => Post, { foreignKey: 'userId', sourceKey: 'id' })
   posts?: Post[];

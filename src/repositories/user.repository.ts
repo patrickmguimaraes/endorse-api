@@ -191,6 +191,14 @@ class UserRepository {
       throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'A problem happened when getting the user... Try later.');
     }
   }
+
+  async retriveAllEmployees(companiesId: Array<number>): Promise<User[]> {
+    try {
+      return User.findAll({ where: {type: 'Person', companyId: { [Op.in]: companiesId }}, include: [{ model: Person, as: 'person' }, { model: Company, as: 'company', include: [{ model: Industry }] }] });
+    } catch (error: any) {
+      throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'A problem happened when getting the user... Try later.');
+    }
+  }
 }
 
 export default new UserRepository();

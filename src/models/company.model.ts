@@ -4,6 +4,7 @@ import Category from "./category.model";
 import Copyright from "./copyright.model";
 import Industry from "./industry.model";
 import City from "./city.model";
+import RequestCopyright from "./request-copyright.model";
 
 @Table({timestamps: false,
   tableName: "companies",
@@ -31,12 +32,6 @@ export default class Company extends Model {
 
   @Column({
     type: DataType.STRING,
-    field: "type"
-  })
-  type?: string;
-
-  @Column({
-    type: DataType.STRING,
     field: "founded"
   })
   founded?: string;
@@ -52,6 +47,30 @@ export default class Company extends Model {
     field: "size"
   })
   size?: string;
+
+  @Column({
+    type: DataType.TEXT,
+    field: "summary"
+  })
+  summary?: string;
+
+  @Column({
+    type: DataType.STRING(400),
+    field: "linkedin"
+  })
+  linkedin?: string;
+
+  @Column({
+    type: DataType.STRING(400),
+    field: "facebook"
+  })
+  facebook?: string;
+
+  @Column({
+    type: DataType.STRING(400),
+    field: "twitter"
+  })
+  twitter?: string;
 
   @ForeignKey(() => Industry)
   @Column({
@@ -78,4 +97,7 @@ export default class Company extends Model {
 
   @HasMany(() => Copyright, { foreignKey: 'companyId', sourceKey: 'id' })
   copyrights?: Copyright[];
+
+  @HasMany(() => RequestCopyright, { foreignKey: 'companyId', sourceKey: 'id' })
+  requests?: RequestCopyright[];
 }

@@ -24,6 +24,7 @@ export default class PostValidation {
       files: Joi.array().allow(null),
       article: Joi.object().allow(null),
       idea: Joi.object().allow(null),
+      requestCopyrights: Joi.array().allow(null),
     }),
   };
 

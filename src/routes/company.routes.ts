@@ -2,6 +2,7 @@ import { Router } from "express";
 import CompanyController from "../controllers/company.controller";
 import { auth } from "../middlewares/auth";
 import { validate } from "../middlewares/validate";
+import { companyValidation } from "../validations";
 
 class CompanyRoutes {
   router = Router();
@@ -12,30 +13,18 @@ class CompanyRoutes {
   }
 
   intializeRoutes() {
-    // Create a new Company
-    this.router.post("/", this.controller.create);
+    this.router.get("/getAllIndustries", this.controller.getAllIndustries);
+    this.router.post("/getCompanies", auth('autoManagement'), validate(companyValidation.getCompanies), this.controller.getCompanies);
 
-    // Retrieve all Companys
-    this.router.get("/", this.controller.findAll);
+    this.router.post("/", auth('manageUsers'), this.controller.create);
+    this.router.get("/", auth('manageUsers'), this.controller.findAll);
+    this.router.get("/published", auth('manageUsers'),this.controller.findAllPublished);
+    this.router.get("/:id", auth('manageUsers'), this.controller.findOneCompany);
+    this.router.put("/:id", auth('manageUsers'), this.controller.update);
+    this.router.delete("/:id", auth('manageUsers'), this.controller.delete);
+    this.router.delete("/", auth('manageUsers'), this.controller.deleteAll);
 
-    // Retrieve all published Companys
-    this.router.get("/published", this.controller.findAllPublished);
-
-    // Retrieve a single Company with id
-    this.router.get("/:id", this.controller.findOne);
-
-    // Update a Company with id
-    this.router.put("/:id", this.controller.update);
-
-    // Delete a Company with id
-    this.router.delete("/:id", this.controller.delete);
-
-    // Delete all Companys
-    this.router.delete("/", this.controller.deleteAll);
-
-    this.router.get("/findByCategory/:categoryId", this.controller.findByCategory);
-    this.router.get("/getAllIndustries", auth('autoManagement'), this.controller.getAllIndustries);
-    
+    this.router.get("/findByindustry/:industryId", auth('autoManagement'), this.controller.findByIndustry);
   }
 }
 

@@ -20,6 +20,7 @@ import postRoute from "./post.route";
 import followerRoute from "./follower.route";
 import tagRoute from "./tag.route";
 import notificationRoute from "./notification.route";
+import addressRoute from "./address.route";
 
 class Routes {
   public router = express.Router();
@@ -100,6 +101,10 @@ class Routes {
     { 
       path: '/notifications',
       route: notificationRoute,
+    },
+    { 
+      path: '/addresses',
+      route: addressRoute,
     },
   ];
 

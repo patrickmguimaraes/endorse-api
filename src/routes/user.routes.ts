@@ -2,6 +2,7 @@ import { Router } from "express";
 import UserController from "../controllers/user.controller";
 import { validate } from "../middlewares/validate";
 import { userValidation } from "../validations";
+import { auth } from "../middlewares/auth";
 
 class UserRoutes {
   router = Router();
@@ -12,8 +13,9 @@ class UserRoutes {
   }
 
   intializeRoutes() {
-    this.router.post('/search', validate(userValidation.search), this.controller.search);
+    this.router.post('/search', auth('autoManagement'), validate(userValidation.search), this.controller.search);
     this.router.post('/username', validate(userValidation.findByUsername), this.controller.findByUsername);
+    this.router.post('/retriveAllEmployees', auth('autoManagement'), validate(userValidation.retriveAllEmployees), this.controller.retriveAllEmployees);
 
     this.router.get("/login/:id", this.controller.login);
 

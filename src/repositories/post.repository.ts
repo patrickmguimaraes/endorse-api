@@ -23,6 +23,26 @@ import CollaborationTag from '../models/collaboration-tag.model';
 import Collaboration from '../models/collaboration.model';
 import CollaborationCategory from '../models/collaboration-category.model';
 import CollaborationRequest from '../models/collaboration-request.model';
+import RequestCopyright from '../models/request-copyright.model';
+import RequestCopyrightActivationDate from '../models/request-copyright-activation-date.model';
+import RequestCopyrightAssignment from '../models/request-copyright-assignment.model';
+import RequestCopyrightComplianceMeasure from '../models/request-copyright-compliance-measure.model';
+import RequestCopyrightContentElement from '../models/request-copyright-content-element.model';
+import RequestCopyrightGeograficScope from '../models/request-copyright-geografic-scope.model';
+import RequestCopyrightHistory from '../models/request-copyright-history.model';
+import RequestCopyrightMediaChannel from '../models/request-copyright-media-channel.model';
+import RequestCopyrightMetric from '../models/request-copyright-metric.model';
+import Copyright from '../models/copyright.model';
+import Industry from '../models/industry.model';
+import City from '../models/city.model';
+import State from '../models/state.model';
+import Country from '../models/country.model';
+import ActivationDate from '../models/activation-date.model';
+import ComplianceMeasure from '../models/compliance-measure.model';
+import ContentElement from '../models/content-element.model';
+import GeograficScope from '../models/geografic-scope.model';
+import MediaChannel from '../models/media-channel.model';
+import Metric from '../models/metric.model';
 
 class PostRepository {
   async getPostById(id: number) {
@@ -67,6 +87,21 @@ class PostRepository {
             { model: CollaborationRequest, include: [ { model: File }] },
             { model: CollaborationTag },
             { model: CollaborationCategory },
+          ]
+        }, 
+        {
+          model: RequestCopyright,
+          include: [
+            { model: RequestCopyrightActivationDate, include: [ { model: ActivationDate } ] },
+            { model: RequestCopyrightAssignment, include: [ { model: User, include: [{ model: Company}, { model: Person }] }] },
+            { model: RequestCopyrightComplianceMeasure, include: [ { model: ComplianceMeasure }] },
+            { model: RequestCopyrightContentElement, include: [ { model: ContentElement }] },
+            { model: RequestCopyrightGeograficScope, include: [ { model: GeograficScope }] },
+            { model: RequestCopyrightMediaChannel, include: [ { model: MediaChannel }] },
+            { model: RequestCopyrightMetric, include: [ { model: Metric}] },
+            { model: File },
+            { model: Company, include: [ { model: Copyright}, { model: Industry }, { model: City, include: [ { model: State, include: [ { model: Country }] }] }] },
+            { model: Copyright },
           ]
         }
       ]

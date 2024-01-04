@@ -1,3 +1,4 @@
+import AddressValidation from "./address.validation";
 import AuthValidation from "./auth.validation";
 import CompanyValidation from "./company.validation";
 import FollowerValidation from "./follower.validation";
@@ -13,3 +14,4 @@ export const userValidation = new UserValidation();
 export const tagValidation = new TagValidation();
 export const notificationValidation = new NotificationValidation();
 export const companyValidation = new CompanyValidation();
+export const addressValidation = new AddressValidation();

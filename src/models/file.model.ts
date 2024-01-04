@@ -1,5 +1,5 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
-import Request from "./request-copyright.model";
+import RequestCopyright from "./request-copyright.model";
 import User from "./user.model";
 import Post from "./post.model";
 import Showcase from "./showcase.model";
@@ -36,15 +36,15 @@ export default class File extends Model {
   })
   path?: string;
 
-  @ForeignKey(() => Request)
+  @ForeignKey(() => RequestCopyright)
   @Column({
     type: DataType.INTEGER,
     field: "requestId",
   })
   requestId!: number;
 
-  @BelongsTo(() => Request)
-  request?: Request;
+  @BelongsTo(() => RequestCopyright)
+  request?: RequestCopyright;
 
   @ForeignKey(() => User)
   @Column({

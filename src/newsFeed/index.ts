@@ -35,7 +35,7 @@ class NewsFeed {
                                     endorsements: 0,
                                     link: this.decode(article.title),
                                     status: 'Posted',
-                                    userId: 11
+                                    userId: 1
                                 });
 
                                 await File.create({
@@ -77,7 +77,7 @@ class NewsFeed {
                                 endorsements: 0,
                                 link: this.decode(article.title),
                                 status: 'Posted',
-                                userId: 11
+                                userId: 1
                             });
     
                             await File.create({

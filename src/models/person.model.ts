@@ -1,5 +1,4 @@
 import { Model, Table, Column, DataType, HasOne, ForeignKey, HasMany, BelongsTo } from "sequelize-typescript";
-import Contract from "./contract.model";
 import User from "./user.model";
 
 @Table({timestamps: false,

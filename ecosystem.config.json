@@ -4,6 +4,7 @@
       "name": "endorse-api",
       "script": "/Users/patrickguimaraes/Projects/endorse-api/build/server.js",
       "instances": 1,
+      "max_memory_restart": "800M",
       "autorestart": true,
       "watch": false,
       "time": true,

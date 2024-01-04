@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Company from "../models/company.model";
 import companyRepository from "../repositories/company.repository";
+import httpStatus from "http-status";
 
 export default class CompanyController {
   async create(req: Request, res: Response) {
@@ -38,7 +39,7 @@ export default class CompanyController {
     }
   }
 
-  async findOne(req: Request, res: Response) {
+  async findOneCompany(req: Request, res: Response) {
     const id: number = parseInt(req.params.id);
 
     try {
@@ -125,9 +126,9 @@ export default class CompanyController {
     }
   }
 
-  async findByCategory(req: Request, res: Response) {
+  async findByIndustry(req: Request, res: Response) {
     try {
-      const categories = await companyRepository.findByCategory({ categoryId: req.params.categoryId});
+      const categories = await companyRepository.findByIndustry({ industryId: req.params.industryId});
 
       res.status(200).send(categories);
     } catch (err) {
@@ -149,4 +150,14 @@ export default class CompanyController {
     }
   }
   
+  async getCompanies(req: Request, res: Response) {
+    try {
+      const companies = await companyRepository.getCompanies(req.body.name);
+      res.status(httpStatus.OK).send(companies);
+    } catch (err) {
+      res.status(500).send({
+        message: "Some error occurred while getCompanies."
+      });
+    }
+  }
 }

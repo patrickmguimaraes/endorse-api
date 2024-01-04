@@ -45,12 +45,14 @@ import CollaborationTag from "../models/collaboration-tag.model";
 import CollaborationCategory from "../models/collaboration-category.model";
 import CollaborationRequest from "../models/collaboration-request.model";
 import Notification from "../models/notification.model";
-import PeopleDataLabs from "../companyAPI";
 import Country from "../models/country.model";
 import Industry from "../models/industry.model";
 import City from "../models/city.model";
 import State from "../models/state.model";
 import Address from "../models/address.model";
+import path from "path";
+import fs from "fs";
+import { where } from "sequelize";
 
 class Database {
   public sequelize: Sequelize | undefined;
@@ -151,7 +153,10 @@ class Database {
       //this.insertInitialValuesCopyright();
 
       new NewsFeed();
-      //await new PeopleDataLabs().updateCompanies();
+      
+      //this.addCountries();
+      //this.addStates();
+      //this.addCities();
     })
   }
 
@@ -1140,312 +1145,13 @@ class Database {
     User.sync().then(() => {
       User.findAll().then(async value => {
         if (!value || value.length == 0) {
-          var p = await Person.create({
-            name: 'João',
-            surname: 'Dias Guimarães',
-            birth: new Date().toISOString().substring(0, 10),
-            gender: 'Male',
-            profession: 'Farmer',
-          });
-
-          await User.create({
-            role: 'user',
-            username: "joao",
-            email: "user1@outlook.com",
-            password: "YjVmMTQ0NjQ1YmUyYWRjODEwNjlkYWRhYTUxYzFkNmU=",
-            type: "Person",
-            phone: "+55 (77) 9 8135-0987",
-            streetLine1: "Rua Ayrton Senna, 18",
-            streetLine2: "Casa",
-            country: "Brazil",
-            state: "Bahia",
-            city: "Pindaí",
-            postalCode: "46360-000",
-            contractId: 1,
-            personId: p.id,
-            isEmailVerified: true,
-            language: 'pt-BR',
-            location: 'Brazil',
-            date: new Date(),
-            status: 'Active'
-          });
-
-          var p = await Person.create({
-            name: 'Leonidia',
-            surname: 'Mendes Guimarães',
-            birth: new Date().toISOString().substring(0, 10),
-            gender: 'Female',
-            profession: 'Farmer',
-          });
-
-          await User.create({
-            role: 'user',
-            username: "leonidia",
-            email: "user2@outlook.com",
-            password: "YjVmMTQ0NjQ1YmUyYWRjODEwNjlkYWRhYTUxYzFkNmU=",
-            type: "Person",
-            phone: "+55 (77) 9 8135-0987",
-            streetLine1: "Rua Ayrton Senna, 18",
-            streetLine2: "Casa",
-            country: "Brazil",
-            state: "Bahia",
-            city: "Pindaí",
-            postalCode: "46360-000",
-            contractId: 1,
-            personId: p.id,
-            isEmailVerified: true,
-            language: 'pt-BR',
-            location: 'Brazil',
-            date: new Date(),
-            status: 'Active'
-          });
-
-          var p = await Person.create({
-            name: 'Maria',
-            surname: 'Mendes Trindade',
-            birth: new Date().toISOString().substring(0, 10),
-            gender: 'Female',
-            profession: 'Farmer',
-          });
-
-          await User.create({
-            role: 'user',
-            username: "maria-mendes",
-            email: "user3@outlook.com",
-            password: "YjVmMTQ0NjQ1YmUyYWRjODEwNjlkYWRhYTUxYzFkNmU=",
-            type: "Person",
-            phone: "+55 (77) 9 8135-0987",
-            streetLine1: "Rua Ayrton Senna, 18",
-            streetLine2: "Casa",
-            country: "Brazil",
-            state: "Bahia",
-            city: "Pindaí",
-            postalCode: "46360-000",
-            contractId: 1,
-            personId: p.id,
-            isEmailVerified: true,
-            language: 'pt-BR',
-            location: 'Brazil',
-            date: new Date(),
-            status: 'Active'
-          });
-
-          var p = await Person.create({
-            name: 'Paloma',
-            surname: 'Mendes Guimarães',
-            birth: new Date().toISOString().substring(0, 10),
-            gender: 'Female',
-            profession: 'Social Service',
-          });
-
-          await User.create({
-            role: 'user',
-            username: "paloma",
-            email: "user4@outlook.com",
-            password: "YjVmMTQ0NjQ1YmUyYWRjODEwNjlkYWRhYTUxYzFkNmU=",
-            type: "Person",
-            phone: "+55 (77) 9 8135-0987",
-            streetLine1: "Rua Ayrton Senna, 18",
-            streetLine2: "Casa",
-            country: "Brazil",
-            state: "Bahia",
-            city: "Pindaí",
-            postalCode: "46360-000",
-            contractId: 1,
-            personId: p.id,
-            isEmailVerified: true,
-            language: 'pt-BR',
-            location: 'Brazil',
-            date: new Date(),
-            status: 'Active'
-          });
-
-          var p = await Person.create({
-            name: 'Wilian',
-            surname: 'Moraes',
-            birth: new Date().toISOString().substring(0, 10),
-            gender: 'Male',
-            profession: 'Investor',
-          });
-
-          await User.create({
-            role: 'user',
-            username: "wilianmoraes",
-            email: "user5@outlook.com",
-            password: "YjVmMTQ0NjQ1YmUyYWRjODEwNjlkYWRhYTUxYzFkNmU=",
-            type: "Person",
-            phone: "+55 (77) 9 8135-0987",
-            streetLine1: "Rua Ayrton Senna, 18",
-            streetLine2: "Casa",
-            country: "Brazil",
-            state: "Bahia",
-            city: "Pindaí",
-            postalCode: "46360-000",
-            contractId: 1,
-            personId: p.id,
-            isEmailVerified: true,
-            language: 'pt-BR',
-            location: 'Brazil',
-            date: new Date(),
-            status: 'Active'
-          });
-
-          var p = await Person.create({
-            name: 'José',
-            surname: 'Trindade',
-            birth: new Date().toISOString().substring(0, 10),
-            gender: 'Male',
-            profession: 'Farmer',
-          });
-
-          await User.create({
-            role: 'user',
-            username: "josetrindade",
-            email: "user6@outlook.com",
-            password: "YjVmMTQ0NjQ1YmUyYWRjODEwNjlkYWRhYTUxYzFkNmU=",
-            type: "Person",
-            phone: "+55 (77) 9 8135-0987",
-            streetLine1: "Rua Ayrton Senna, 18",
-            streetLine2: "Casa",
-            country: "Brazil",
-            state: "Bahia",
-            city: "Pindaí",
-            postalCode: "46360-000",
-            contractId: 1,
-            personId: p.id,
-            isEmailVerified: true,
-            language: 'pt-BR',
-            location: 'Brazil',
-            date: new Date(),
-            status: 'Active'
-          });
-
-          var c = await Company.create({
-            name: 'Disney',
-            businessLocation: 'Miami, Florida',
-            businessWebsite: "www.disney.com",
-            businessSize: 'Large',
-            categoryId: 4,
-          });
-
-          await User.create({
-            role: 'user',
-            username: "disney",
-            email: "user7@outlook.com",
-            password: "YjVmMTQ0NjQ1YmUyYWRjODEwNjlkYWRhYTUxYzFkNmU=",
-            type: "Company",
-            phone: "+55 (77) 9 8135-0987",
-            streetLine1: "Rua Ayrton Senna, 18",
-            streetLine2: "Casa",
-            country: "Brazil",
-            state: "Bahia",
-            city: "Pindaí",
-            postalCode: "46360-000",
-            contractId: 1,
-            companyId: c.id,
-            isEmailVerified: true,
-            language: 'pt-BR',
-            location: 'Brazil',
-            date: new Date(),
-            status: 'Active'
-          });
-
-          var c = await Company.create({
-            name: 'PMG Systems',
-            businessLocation: 'Pindaí, Bahia',
-            businessWebsite: "www.pmgsystems.com.br",
-            businessSize: 'Small',
-            categoryId: 1,
-          });
-
-          await User.create({
-            role: 'user',
-            username: "pmgsystems",
-            email: "user8@outlook.com",
-            password: "YjVmMTQ0NjQ1YmUyYWRjODEwNjlkYWRhYTUxYzFkNmU=",
-            type: "Company",
-            phone: "+55 (77) 9 8135-0987",
-            streetLine1: "Rua Ayrton Senna, 18",
-            streetLine2: "Casa",
-            country: "Brazil",
-            state: "Bahia",
-            city: "Pindaí",
-            postalCode: "46360-000",
-            contractId: 1,
-            companyId: c.id,
-            isEmailVerified: true,
-            language: 'pt-BR',
-            location: 'Brazil',
-            date: new Date(),
-            status: 'Active'
-          });
-
-          var c = await Company.create({
-            name: 'DC Pictures',
-            businessLocation: 'Hollywood, California',
-            businessWebsite: "www.dcpictures.com",
-            businessSize: 'Large',
-            categoryId: 4,
-          });
-
-          await User.create({
-            role: 'user',
-            username: "dc",
-            email: "user9@outlook.com",
-            password: "YjVmMTQ0NjQ1YmUyYWRjODEwNjlkYWRhYTUxYzFkNmU=",
-            type: "Company",
-            phone: "+55 (77) 9 8135-0987",
-            streetLine1: "Rua Ayrton Senna, 18",
-            streetLine2: "Casa",
-            country: "Brazil",
-            state: "Bahia",
-            city: "Pindaí",
-            postalCode: "46360-000",
-            contractId: 1,
-            companyId: c.id,
-            isEmailVerified: true,
-            language: 'pt-BR',
-            location: 'Brazil',
-            date: new Date(),
-            status: 'Active'
-          });
-
-          var c = await Company.create({
-            name: 'Capigemini',
-            businessLocation: 'Salvador, Bahia',
-            businessWebsite: "www.capgemini.com",
-            businessSize: 'Large',
-            categoryId: 2,
-          });
-
-          await User.create({
-            role: 'user',
-            username: "capigemini",
-            email: "user10@outlook.com",
-            password: "YjVmMTQ0NjQ1YmUyYWRjODEwNjlkYWRhYTUxYzFkNmU=",
-            type: "Company",
-            phone: "+55 (77) 9 8135-0987",
-            streetLine1: "Rua Ayrton Senna, 18",
-            streetLine2: "Casa",
-            country: "Brazil",
-            state: "Bahia",
-            city: "Pindaí",
-            postalCode: "46360-000",
-            contractId: 1,
-            companyId: c.id,
-            isEmailVerified: true,
-            language: 'pt-BR',
-            location: 'Brazil',
-            date: new Date(),
-            status: 'Active'
-          });
-
           var c = await Company.create({
             name: 'Endorse',
             businessLocation: 'San Francisco, California',
             businessWebsite: "www.endorseanidea.com",
-            businessSize: 'Small',
-            categoryId: 1,
+            businessSize: '0-10',
+            cityId: 125809,
+            industryId: 466
           });
 
           await User.create({
@@ -1455,23 +1161,109 @@ class Database {
             password: "YjVmMTQ0NjQ1YmUyYWRjODEwNjlkYWRhYTUxYzFkNmU=",
             type: "Company",
             phone: "+55 (77) 9 8135-0987",
-            streetLine1: "Rua Ayrton Senna, 18",
-            streetLine2: "Casa",
-            country: "Brazil",
-            state: "Bahia",
-            city: "Pindaí",
-            postalCode: "46360-000",
             contractId: 1,
             companyId: c.id,
             isEmailVerified: true,
             language: 'pt-BR',
             location: 'Brazil',
             date: new Date(),
-            status: 'Active'
+            status: 'Active',
           });
         }
       })
     });
+  }
+
+  async addCountries() {
+    try {
+      fs.readFile(path.join(__dirname, '../../../src/db/countries.json'), "utf8", async (err, jsonString) => {
+        if (err) {
+          console.log("File read failed:", err);
+          return;
+        }
+        await JSON.parse(jsonString).forEach(async (country: any) => {
+          var c: any = {};
+          c.id = country.id;
+          c.name = country.name;
+          c.iso = country.iso2;
+          c.iso3 = country.iso3;
+          c.numcode = country.numeric_code;
+          c.phonecode = country.phone_code;
+          c.capital = country.capital;
+          c.currency = country.currency;
+          c.currencyName = country.currency_name;
+          c.currencySymbol = country.currency_symbol;
+          c.region = country.region;
+          c.subRegion = country.subregion;
+          c.nativeName = country.native!;
+          c.tld = country.tld;
+          c.nationality = country.nationality;
+          c.emojiU = country.emojiU;
+
+          await Country.create(c);
+          console.log(c.name)
+        })
+
+        console.log("finished countries!")
+      });
+    } catch (error: any) {
+      console.log(error.message)
+    }
+
+  }
+
+  async addStates() {
+    try {
+      fs.readFile(path.join(__dirname, '../../../src/db/states.json'), "utf8", async (err, jsonString) => {
+        if (err) {
+          console.log("File read failed:", err);
+          return;
+        }
+        await JSON.parse(jsonString).forEach(async (state: any) => {
+          var c: any = {};
+          c.id = state.id;
+          c.name = state.name;
+          c.stateCode = state.state_code;
+          c.countryId = state.country_id;
+
+          await State.create(c);
+          console.log(c.name);
+        })
+
+        console.log("finished states!")
+      });
+    } catch (error: any) {
+      console.log(error.message)
+    }
+
+  }
+
+  async addCities() {
+    try {
+      fs.readFile(path.join(__dirname, '../../../src/db/cities.json'), "utf8", async (err, jsonString) => {
+        if (err) {
+          console.log("File read failed:", err);
+          return;
+        }
+        await JSON.parse(jsonString).forEach(async (city: any) => {
+          var c: any = {};
+          c.id = city.id;
+          c.name = city.name;
+          c.latitude = city.latitude;
+          c.longitude = city.longitude;
+          c.wikiDataId = city.wikiDataId;
+          c.stateId = city.state_id;
+
+          await City.create(c);
+          console.log(c.name);
+        });
+
+        console.log("finished cities!")
+      });
+    } catch (error: any) {
+      console.log(error.message)
+    }
+
   }
 }
 

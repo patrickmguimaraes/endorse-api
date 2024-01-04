@@ -12,6 +12,7 @@ class StorageRoute {
         this.router.post('/savePostVideo', auth('post'), this.controller.savePostVideo);
         this.router.post('/attachShowcaseFile/:postId&:showcaseId', auth('post'), this.controller.attachShowcaseFile);
         this.router.post('/saveCurriculum/:postId&:collaborationId', auth('post'), this.controller.saveCurriculum);
+        this.router.post('/attachFileCopyright/:postId', auth('post'), this.controller.attachFileCopyright);
     }
 }
 
