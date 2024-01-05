@@ -92,6 +92,7 @@ class PostRepository {
         {
           model: RequestCopyright,
           include: [
+            { model: RequestCopyrightHistory },
             { model: RequestCopyrightActivationDate, include: [ { model: ActivationDate } ] },
             { model: RequestCopyrightAssignment, include: [ { model: User, include: [{ model: Company}, { model: Person }] }] },
             { model: RequestCopyrightComplianceMeasure, include: [ { model: ComplianceMeasure }] },

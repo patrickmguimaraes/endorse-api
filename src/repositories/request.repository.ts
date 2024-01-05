@@ -1,3 +1,4 @@
+import RequestCopyrightAssignment from "../models/request-copyright-assignment.model";
 import Request from "../models/request-copyright.model";
 
 interface IRequestRepository {
@@ -46,6 +47,16 @@ class RequestRepository implements IRequestRepository {
       return rows;
     } catch (error) {
       throw new Error("Failed to getAll!");
+    }
+  }
+
+  async getById(requestId: number): Promise<Request | null> {
+    try {
+      const request = await Request.findOne({where: { id: requestId }, include: [ {model: RequestCopyrightAssignment}]});
+
+      return request;
+    } catch (error) {
+      throw new Error("Failed to getById!");
     }
   }
 }

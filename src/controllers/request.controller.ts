@@ -1,9 +1,6 @@
 import { Response } from "express";
 import Request from "../models/request-copyright.model";
 import requestRepository from "../repositories/request.repository";
-import fileUpload from "express-fileupload";
-import path from "path";
-import fs from "fs";
 import ApiError from "../utils/ApiError";
 import httpStatus from "http-status";
 
@@ -12,18 +9,38 @@ export default class RequestController {
     try {
       const request: Request = req.body;
 
-      if(request.userId!=req.user.id) {
-        throw new ApiError(httpStatus.LOCKED, 'The copyright you want to update is from another user!');
+      var hasPermission = false;
+
+      if(request.id) {
+        var reqOriginal = await requestRepository.getById(request.id);
+
+        reqOriginal?.requestAssignments?.forEach(ra => {
+          if(ra.email==req.user.email && ra.permission=='Edit') { hasPermission = true; }
+        })
+      }
+      
+      if((!request.id && request.userId!=req.user.id) || (request.id && !hasPermission)) {
+        throw new ApiError(httpStatus.LOCKED, 'You do not have permission to edit it!');
       }
 
-      const savedRequest = await requestRepository.save(request);
+      var savedRequest;
 
-      res.status(201).send(savedRequest);
-    } catch (err) {
-      console.log(err)
+      if(!request.id) {
+        request.date = new Date();
+        savedRequest = await requestRepository.save(request);
+      }
+      else {
+        savedRequest = await requestRepository.update(request);
+
+        request.requestComplianceMeasures
+      }
+      
+      res.status(httpStatus.OK).send(savedRequest);
+    } catch (err: any) {
+      console.log(err.message)
 
       res.status(500).send({
-        message: "Some error occurred while retrieving people."
+        message: "Some error occurred while saving the request copyright."
       });
     }
   }

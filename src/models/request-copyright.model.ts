@@ -27,6 +27,12 @@ export default class RequestCopyright extends Model {
   id?: number;
 
   @Column({
+    type: DataType.DATE,
+    field: "date"
+  })
+  date?: Date;
+
+  @Column({
     type: DataType.TEXT,
     field: "description"
   })
