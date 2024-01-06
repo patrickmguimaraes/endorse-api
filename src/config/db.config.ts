@@ -38,7 +38,7 @@ export const SECRET_IV = "Mary is the Queen!";
 export const ECNRYPTION_METHOD = "aes-256-cbc";
 
 export const config = {
-  HOST: "127.0.0.1",
+  HOST: "35.192.16.65",
   USER: "postgres",
   PASSWORD: "PMG@2Endorse",
   DB: "endorse",
